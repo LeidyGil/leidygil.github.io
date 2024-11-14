@@ -5,5 +5,5 @@ plugins:
 title: [QAKnowledge]
 description: [This is a knowledge base about all the topics I have learned during my experience as a QA Software Engineer.]
 
-show_downloads: ["false"]
+show_downloads: ["true"]
 google_analytics: [Your Google Analytics tracking ID]
