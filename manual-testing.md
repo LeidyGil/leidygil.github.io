@@ -1,7 +1,10 @@
-#About Manual Testing
+# About Manual Testing
 
-##Test Cases Techniques
+## Test Cases Techniques
+text 1
 
-##Type of Testing
+## Type of Testing
+list of type
 
-#Acording to my experience
+# Acording to my experience
+text 2
