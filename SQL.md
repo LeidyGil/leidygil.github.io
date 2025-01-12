@@ -163,5 +163,42 @@ select count(*) from empleados
 where departamento = 'Finanzas'
 or departamento = 'Marketing';
 
--- Conteo con condiciones con string
+--Conteo con condiciones con string
 select count(*) from usuarios where nombre like'%a'
+
+--Distinct
+--Seleccionar filtrando datos repetidos
+En SQL el keyword DISTINCT nos permite filtrar los resultados repetidos de una consulta.
+SELECT DISTINCT color AS color_unico
+FROM colores
+
+select distinct color as color_unico from colores;
+
+--Seleccionando correos únicos
+select distinct correo as correo_unico from usuarios;
+
+--Seleccionar distintos años
+Se nos ha solicitado crear una consulta que muestre los años en los que se han realizado transacciones, excluyendo repeticiones.
+Como ya aprendimos en ejercicios anteriores, para obtener el año a partir de la fecha de venta, podemos utilizar el siguiente código:
+SELECT strftime('%Y', fecha_venta) as año_venta FROM ventas
+Sin embargo, para asegurarnos de obtener años únicos, podemos agregar la cláusula DISTINCT a nuestra consulta de la siguiente manera:
+SELECT DISTINCT strftime('%Y', fecha_venta) as año_unico FROM ventas
+
+select distinct strftime('%m', fecha_venta) as mes_unico from ventas;
+
+--Contar los valores distintos
+Si queremos contar los valores distintos en una columna de una tabla, podemos combinar las funciones COUNT y DISTINCT de la siguiente manera:COUNT(DISTINCT columna)
+
+select count(distinct telefono) as telefonos_unicos from usuarios;
+
+--Contando correos únicos
+select count(distinct correo) as correos_cant from usuarios;
+
+--Distinct con múltiples columnas
+Podemos usar DISTINCT con más de una columna para obtener combinaciones únicas de esas columnas. Supongamos que tienes una tabla llamada empleados con las columnas departamento y puesto.
+Luego podemos obtener todas las combinaciones únicas de Departamento y Puesto utilizando la siguiente consulta:
+SELECT DISTINCT departamento, puesto FROM empleados;
+
+select distinct categoria, precio from productos;
+
+--
