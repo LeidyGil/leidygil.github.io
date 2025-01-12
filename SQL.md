@@ -111,4 +111,57 @@ SELECT * FROM ventas WHERE strftime('%Y', fecha_venta) = '2012';
 
 Select * from ventas where strftime('%Y',fecha_venta) = '2015';
 
---
+--Funciones de agregación
+--El mayor valor de una columna
+la función MAX() la cual nos permite encontrar el valor más alto del campo que especifiquemos.
+SELECT MAX(columna) FROM tabla
+Podemos encontrar el salario más alto utilizando:
+SELECT MAX(salario) FROM empleados;
+Cuando usamos funciones de agregación, no podemos seleccionar directamente otros elementos de la misma tabla. Por ejemplo, SELECT email, MAX(salario) FROM empleados; arrojaría error ya que estaríamos seleccionando email junto a la función. Pero no te preocupes, ya que aprenderemos cómo hacerlo apropiadamente cuando veamos la cláusula group by más adelante.
+
+select MAX(edad) from empleados;
+
+--El menor valor de una columna
+. Esta función toma como argumento el nombre de la columna y devuelve el valor más pequeño en esa columna.
+SELECT MIN(columna) FROM tabla
+
+select MIN(sueldo) from empleados;
+
+--Suma de elementos en una columna
+SUM(). Con esta podemos sumar todos los elementos de una columna.
+SELECT SUM(columna) FROM tabla
+Es importante tener en cuenta que la columna sobre la cual se aplica la función SUM() debe contener valores numéricos, de lo contrario, la consulta puede generar un error o un resultado inesperado.
+
+select sum(sueldo) from empleados;
+
+--Promedio de una columna
+AVG(). El nombre de la función viene del término en inglés average
+SELECT AVG(columna) FROM tabla
+
+select AVG(sueldo) from empleados;
+
+--Contando elementos en una tabla
+COUNT(). Con esta podemos contar la cantidad de registros dentro de una tabla.
+SELECT COUNT(*) FROM tabla
+
+select count(*) from empleados;
+
+--Ejercicio 1 : Funciones de agregacion con where
+SELECT AVG(columna1) FROM tabla WHERE columna2 < valor
+select sum(sueldo) from empleados where edad > '27'
+
+--Ejercicio 2 : Funciones de agregacion con where
+select AVG(sueldo) from empleados where sueldo > '50000'
+
+--Ejercicio 3
+select count(*) from empleados where departamento = 'Marketing'
+
+--Ejercicio 4 :
+And es excluyente. cuando quieres filtrar por múltiples valores en una columna, debes usar OR en lugar de AND
+
+select count(*) from empleados 
+where departamento = 'Finanzas'
+or departamento = 'Marketing';
+
+-- Conteo con condiciones con string
+select count(*) from usuarios where nombre like'%a'
