@@ -201,4 +201,75 @@ SELECT DISTINCT departamento, puesto FROM empleados;
 
 select distinct categoria, precio from productos;
 
---
+--Introduccion a Grupos
+--Agrupando valores con GROUP BY
+La cláusula GROUP BY es una poderosa herramienta en SQL que se utiliza para agrupar filas con valores idénticos en una o varias columnas específicas, permitiendo realizar operaciones de agregación en cada grupo.
+En este primer ejercicio aprenderemos a utilizar GROUP BY para obtener todos los elementos distintos de una tabla, lo mismo que previamente hicimos con distinct.
+
+Podemos seleccionar los elementos únicos utilizando GROUP BY de la siguiente forma:
+SELECT color as color_unico FROM colores GROUP BY color
+
+select correo as correo_unico from usuarios group by correo;
+
+--Agrupar y contar
+GROUP BY es comúnmente utilizada junto con funciones de agregación como COUNT, MAX, MIN, SUM y AVG para obtener información resumida de un conjunto de datos.
+Queremos saber cuantas veces aparece cada color. Esto lo podemos lograr combinando GROUP BY y la función de agregación COUNT
+SELECT color, COUNT(color) as Repeticiones FROM colores GROUP BY color
+
+Select correo, count(correo) as repeticiones from usuarios group by correo;
+
+--Ejercitando agrupar y contar
+Select departamento, count(departamento) as cantidad_empleados from empleados group by departamento;
+
+--Agrupar y sumar
+Si queremos calcular cuanto ha gastado cada cliente, podemos realizar la siguiente consulta
+SELECT Cliente, SUM(Monto) AS Monto_Total FROM pedidos GROUP BY Cliente;
+
+Select categoria, SUM(monto) as monto_total from ventas group by categoria;
+
+--Agrupar y promediar
+calcular promedios por grupo.
+SELECT grupo, AVG(columna) FROM tabla GROUP by grupo
+
+Select nombre_completo, AVG(nota) as Promedio_Notas from estudiantes group by nombre_completo;
+
+--Máximo por grupo
+obtener el monto mas alto de cada grupo. La sintaxis de la consulta será igual a las vistas previamente, es decir:
+SELECT grupo, MAX(columna) FROM tabla GROUP by grupo
+
+select categoria, MAX(monto) as monto_mas_alto from ventas group by categoria;
+
+--Mínimo por grupo
+obtener el monto mas bajo de cada grupo.La sintaxis de la consulta será igual a las vistas previamente, es decir:
+SELECT grupo, MIN(columna) FROM tabla GROUP by grupo
+
+Select categoria, MIN(monto) as monto_mas_bajo from ventas group by categoria;
+
+--Funciones de agregación y fechas
+A la hora de construir informes, frecuentemente necesitaremos entregar información agrupada en un periodo de tiempo. Para lograr esto utilizaremos una combinación de GROUP BY con la función strftime.
+Se nos solicita determinar el monto total de ventas por año. Para resolverlo tenemos que agrupar por fecha y sumar los montos de la siguiente forma:
+SELECT SUM(monto), strftime("%Y", fecha_venta) AS año FROM ventas GROUP BY strftime("%Y", fecha_venta)
+
+Select sum(monto) as suma_ventas, strftime('%m', fecha_venta) as mes from ventas group by strftime('%m', fecha_venta);
+
+select strftime('%m',fecha_inscripcion) as mes, count(fecha_inscripcion) as cantidad_usuarios from inscripciones group by strftime('%m', fecha_inscripcion);
+
+--Agrupando sin indicar el nombre de las columnas
+Cuando se trata de agrupar datos en una consulta SQL, existe una forma de evitar la redundancia de la cláusula SELECT. Por ejemplo, considera la siguiente consulta:
+SELECT strftime("%Y", fecha_venta) AS año, SUM(monto) FROM ventas GROUP BY strftime("%Y", fecha_venta)
+Puedes simplificarla de la siguiente manera:
+SELECT strftime("%Y", fecha_venta) AS año, SUM(monto) FROM ventas GROUP BY 1
+Esta notación se interpreta como "agrupa por el primer criterio". También es posible aplicar esta sintaxis en la cláusula ORDER BY:
+SELECT strftime("%Y", fecha_venta) AS año, SUM(monto) FROM ventas GROUP BY 1 ORDER BY 1
+De esta manera, puedes lograr la misma agrupación y ordenamiento sin repetir la expresión de la cláusula SELECT.
+
+select correo, count(correo) as repeticiones from usuarios group by 1 order by 1;
+
+--Agrupando por múltiples columnas
+En SQL es posible agrupar por múltiples columnas utilizando la siguiente sintaxis:
+SELECT columna1, columna2, funcion_agrupado(columna3) FROM tabla GROUP BY columna1, columna2
+Y como aprendimos en el ejercicio anterior, también podemos escribir la consulta de la siguiente manera:
+SELECT columna1, columna2, funcion_agrupado(columna3) FROM tabla GROUP BY 1, 2
+
+Calcula el promedio de cada estudiante en cada materia. Las columnas deben llamarse correo, materia y promedio_notas
+select correo, materia, avg(nota) as promedio_notas from estudiantes group by 1,2;
