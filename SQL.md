@@ -273,3 +273,65 @@ SELECT columna1, columna2, funcion_agrupado(columna3) FROM tabla GROUP BY 1, 2
 
 Calcula el promedio de cada estudiante en cada materia. Las columnas deben llamarse correo, materia y promedio_notas
 select correo, materia, avg(nota) as promedio_notas from estudiantes group by 1,2;
+
+-- Introducción a Having
+En SQL, la cláusula GROUP BY nos permite agrupar datos. Si queremos filtrar la información obtenida utilizaremos HAVING.
+HAVING se emplea para filtrar los resultados de una consulta que involucra funciones agregadas. En otras palabras, HAVING permite aplicar condiciones de filtrado a los resultados de funciones como COUNT, MAX, MIN, SUM y AVG después de que se han agrupado los datos con la cláusula GROUP BY.
+Nos piden crear un reporte mostrando los meses y la cantidad de inscritos, pero solo donde hayan 2 o más inscritos.
+
+SELECT strftime("%m", Fecha_Inscripcion) AS mes, COUNT(Fecha_Inscripcion) cantidad_usuarios 
+FROM inscripciones 
+GROUP BY strftime("%m", Fecha_Inscripcion)
+HAVING cantidad_usuarios >= 2
+En esta consulta, primero utilizamos GROUP BY para agrupar por mes. Luego, utilizamos la función de agregación COUNT(Fecha_Inscripcion) para contar la cantidad de inscritos.Después de haber agrupado los datos y calculado el total de inscritos, aplicamos la cláusula HAVING para filtrar los resultados.
+
+Select strftime('%m', fecha_inscripcion) as mes, count(fecha_inscripcion) as cantidad_usuarios from inscripciones
+group by strftime('%m', fecha_inscripcion)
+having cantidad_usuarios = 1; 
+
+--Buscando duplicados
+Uno de los usos mas recurrentes de HAVING es buscar duplicados.
+Muestra los correos que aparezcan en más de una ocasión. La tabla resultante debe tener dos columnas: una llamada correo, y otra llamada cuenta_correos que muestra la cantidad de repeticiones correspondiente a cada correo.
+
+select correo, count(correo) as cuenta_correos from correos_corporativos
+group by correo
+having cuenta_correos > 1;
+
+--Having y cuenta
+Crea una consulta que muestre la cantidad de usuarios y el departamento en donde haya más de un empleado. Las columnas deben llamarse cantidad_de_usuarios y departamento, respectivamente.
+
+select count(nombre) as cantidad_de_usuarios, departamento from empleados
+group by departamento
+having cantidad_de_usuarios > 1;
+
+--Having y promedio
+Crea una consulta para determinar cuales son los estudiantes que aprobaron. El criterio de aprobación es promedio de notas >= 50.
+Las columnas a mostrar deben ser email y promedio_notas.
+
+select email, avg(notas) as promedio_notas from notas
+group by email
+having promedio_notas >= 50;
+
+--Having y order
+Una vez que hemos agrupado datos utilizando la cláusula GROUP BY, es común que necesitemos ordenar esos grupos según algún criterio específico. Por lo general, queremos ordenar los grupos en función de alguna métrica agregada, como la suma, el conteo, el promedio, etc. Para hacer esto, usamos la cláusula ORDER BY junto con las funciones de agregación.
+El orden de las clausulas en una consulta debe ser el siguiente:
+Orden	Clausula	Descripción
+1	SELECT	Especifica las columnas que se deben retornar en el resultado.
+2	FROM	Especifica las tablas de las cuales se extraerán los datos.
+3	WHERE	Filtra registros antes de cualquier agregación o agrupación.
+4	GROUP BY	Agrupa registros por una o más columnas.
+5	HAVING	Filtra registros después de la agregación.
+6	ORDER BY	Ordena los registros retornados por una o más columnas.
+7	LIMIT	Limita el número de registros retornados.
+
+Dada la siguiente tabla ventas, escribe una consulta SQL para obtener los productos que se han vendido en una cantidad total mayor a 1000, ordenados en orden descendente de cantidad vendida.
+
+select producto, sum(cantidad) as cantidad_total from ventas
+group by producto
+having cantidad_total > 1000 order by 2 desc;
+
+Tu tarea es escribir una consulta SQL que devuelva los departamentos cuyo salario promedio es mayor a 3000, ordenados de mayor a menor salario promedio. Los resultados deben mostrar el nombre del departamento y el salario promedio, con los nombres de las columnas como Departamento y Salario_Promedio respectivamente.
+
+Select Departamento, AVG(salario) as Salario_Promedio from empleados
+group by Departamento
+having Salario_Promedio > 3000 order by 2 desc;
