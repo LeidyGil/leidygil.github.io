@@ -379,4 +379,45 @@ WHERE estudiante_id IN (SELECT estudiante_id from notas where promedio_notas <= 
 Select nombre from estudiantes 
 where estudiante_id IN (Select estudiante_id from promedios where promedio_notas > 50)
 
---
+Crea una consulta que muestre todos los títulos con valoración_promedio > 4. La columna resultante debe llamarse nombres_seleccionados.
+Select nombre as nombres_seleccionados from libros 
+where libro_id in (Select libro_id from valoraciones where valoracion_promedio > 4)
+
+Se pide obtener los nombres de todos los pacientes que tuvieron su última consulta antes del 16 de mayo de 2023. La columna se debe llamar nombres_pacientes.
+Select nombre as nombres_pacientes from pacientes 
+where paciente_id in (select paciente_id from consultas where fecha_consulta < '2023-05-16')
+
+--Subconsultas en el FROM
+Una subconsulta en el FROM tiene la siguiente forma.
+
+SELECT * 
+    FROM (
+        SELECT * FROM tabla1
+)
+Se tiene la tabla ventas que tiene el código de vendedor y el monto de cada venta realizada. Nos piden saber cuanto es el promedio total vendido.
+Para esto primero necesitamos sumar los montos por vendedor y luego sobre estos resultados sacamos el promedio de las ventas.
+
+SELECT AVG(total_venta) as promedio_ventas
+FROM (
+    SELECT empleado_id, SUM(monto) as total_venta
+    FROM ventas
+    GROUP BY empleado_id
+) 
+
+Select avg(total_venta) as promedio_ventas
+from (
+select empleado_id, sum(monto) as total_venta
+from ventas
+group by 1
+)
+
+Se tiene la tabla goles que registra los goles logrados por cada jugador en distintos partidos.
+Nos piden una consulta para calcular el promedio total de goles por jugador.
+Tip: No es lo mismo que el promedio de goles por partido.
+Select avg(total_goles) as promedio_goles
+from (
+Select jugador_id, sum(goles) as total_goles
+from goles
+group by 1
+)
+
