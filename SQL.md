@@ -335,3 +335,48 @@ Tu tarea es escribir una consulta SQL que devuelva los departamentos cuyo salari
 Select Departamento, AVG(salario) as Salario_Promedio from empleados
 group by Departamento
 having Salario_Promedio > 3000 order by 2 desc;
+
+--Subconsultas
+--Introduccion a subconsultas
+Las subconsultas, también conocidas como "subqueries", nos permiten utilizar los resultados de una consulta dentro de otra consulta.
+Se nos pide seleccionar a todas las personas que ganan sobre el promedio.
+Este tipo de preguntas podemos contestarlas utilizando subconsultas.
+La idea para contestar esto es la siguiente.
+Calculamos el promedio SELECT avg(sueldo) FROM empleados
+Seleccionamos todos los empleados cuyo sueldo es mayor a la consulta anterior. SELECT * FROM empleados WHERE sueldo > (SELECT AVG(sueldo) FROM empleados)
+
+select * from empleados where sueldo <= (select avg(sueldo) from empleados)
+
+--Subconsultas y where parte 1
+Dentro de las subconsultas, podemos utilizar las mismas cláusulas que hemos aprendido hasta ahora, como la cláusula WHERE. Esto significa que podemos aplicar la cláusula WHERE tanto dentro de la subconsulta como fuera de ella.
+
+Selecciona toda la información de los registros que sean mayores al sueldo promedio del departamento de finanzas.
+Select * from empleados where sueldo > (select avg(sueldo) from empleados where departamento = 'Finanzas')
+
+Utilizando los datos de la tabla empleados, selecciona todos los empleados cuyo sueldo sea mayor al empleado que tiene el mayor sueldo del departamento de finanzas.
+Select * from empleados where sueldo > (select max(sueldo) from empleados where Departamento = 'Finanzas')
+
+Selecciona todos los registros superiores al promedio de nota.
+Select * from notas where notas > (Select avg(notas) from notas)
+
+--Subconsultas con IN
+El operador IN es un operador muy útil en subconsultas
+Queremos seleccionar todos los códigos de Argentina, Brasil, Chile o Colombia. Una forma de abordar el problema sería combinar todas las opciones con where y múltiples operadores or. Otra opción es utilizando el operador IN de la siguiente manera:
+SELECT * 
+FROM paises 
+WHERE pais IN ('Argentina', 'Brasil', 'Chile', 'Colombia')
+De la misma forma podemos hacer una consulta como la siguiente:
+SELECT *
+FROM table
+WHERE columna IN (SELECT * from otra_tabla)
+
+Se nos pide mostrar los nombres de todas las personas que tengan un promedio de notas menor que 50.
+Seleccionamos los ids de la tabla notas con promedio_notas <= 50
+Seleccionamos los nombres de de la tabla estudiantes cuyo id esté dentro de la subconsulta anterior.
+SELECT nombre from estudiantes
+WHERE estudiante_id IN (SELECT estudiante_id from notas where promedio_notas <= 50)
+
+Select nombre from estudiantes 
+where estudiante_id IN (Select estudiante_id from promedios where promedio_notas > 50)
+
+--
