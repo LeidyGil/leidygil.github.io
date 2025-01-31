@@ -421,3 +421,73 @@ from goles
 group by 1
 )
 
+--Combinacion de consultas
+-- Introducción a la cláusula unión de SQL
+El operador UNION en SQL se utiliza para combinar el resultado de dos o más SELECT en un solo conjunto de resultados.
+La sintaxis básica de UNION es la siguiente:
+SELECT columna1, columna2
+FROM tabla1 
+UNION SELECT columna1, columna2
+FROM tabla2; 
+Las columnas que se seleccionan en los SELECT deben tener los mismos nombres de columna, secuencia y tipos de datos.
+SELECT apellido 
+FROM Estudiantes 
+UNION 
+SELECT apellido 
+FROM Profesores; 
+
+Select nombre as nombres from estudiantes
+Union
+Select nombre from profesores;
+
+--Eliminar duplicados con union
+La principal característica de UNION es que elimina las filas duplicadas del resultado final.
+
+Select email as correos_unicos from usuarios
+Union
+Select email from clientes;
+
+--Union vs Union all
+En los ejercicios anteriores aprendimos que el operador UNION se utiliza para combinar los resultados de dos o más consultas SELECT en un solo conjunto de resultados, eliminando las filas duplicadas.
+Si queremos obtener las filas duplicadas en el resultado, utilizaremos el operador UNION ALL.
+Podemos combinar ambas tablas utilizando UNION ALL de la siguiente forma:
+SELECT * FROM tabla1 UNION ALL SELECT * FROM tabla2;
+
+Ejercicio:
+Dadas las siguientes tablas empleados1 y empleados2
+
+empleados1
+Nombre	Apellido	Edad
+Juan	Pérez	30
+María	González	25
+Carlos	Rodríguez	40
+
+empleados2
+Nombre	Apellido	Edad
+Ana	Martínez	22
+María	González	25
+Carmen	López	25
+Crea una consulta que combine ambas tablas incluyendo las filas duplicadas.
+
+Select * from empleados1
+Union all
+Select * from empleados2
+
+--Introducción a intersección
+El operador INTERSECT se utiliza para combinar dos SELECT y devolver los resultados que se encuentran en ambas consultas.
+Podemos encontrar los clientes en común utilizando INTERSECT de la siguiente forma:
+SELECT nombre FROM clientes1 INTERSECT SELECT nombre FROM clientes2
+
+Select * from lista1
+intersect
+Select * from lista2
+
+--El operador Except
+El operador EXCEPT en SQL se utiliza para devolver todas las filas en la primera consulta que no están presentes en la segunda consulta. En otras palabras, EXCEPT devuelve solo las filas, que son parte de la primera consulta pero no de la segunda consulta.
+Podemos usar EXCEPT para encontrar los nombres que están en 'Tabla1' pero no en 'Tabla2' con la siguiente consulta:
+SELECT nombre FROM Tabla1 EXCEPT SELECT nombre FROM Tabla2;
+
+Crea una consulta que muestre los nombres de los empleados que no son gerentes.
+Select nombre from empleados
+except
+Select nombre from gerentes;
