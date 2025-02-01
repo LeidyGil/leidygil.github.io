@@ -491,3 +491,159 @@ Crea una consulta que muestre los nombres de los empleados que no son gerentes.
 Select nombre from empleados
 except
 Select nombre from gerentes;
+
+--Inserción de Registros
+--Añadir un registro en una tabla
+Con SQL podemos ingresar datos nuevos a tablas existentes. Para lograrlo utilizaremos la instrucción INSERT .
+La instrucción INSERT la acompañaremos de las palabra clave INTO para especificar en qué tabla queremos insertar un valor y VALUES para especificar los valores que queremos insertar.
+Por ejemplo. Si tenemos una tabla llamada productos con las columnas id, nombre y precio, podemos agregar un nuevo producto a la tabla usando utilizando:
+INSERT INTO productos VALUES (1, 'Camiseta', 2000);
+Para cada columna en la tabla debemos ingresar los valores correspondientes en el mismo orden en que se definen en la sentencia. Debemos utilizar comillas simples para valores de tipo de datos de texto.
+
+Insert into usuarios values (7,'Lucía','Sánchez','luciasanchez@outlook.com','555-5555');
+Insert into productos values (7,'Bolso',1000,10);
+
+--Especificando valores nulos
+A la hora de insertar datos, si hay un valor que no conocemos, o es un valor que no queremos especificar, podemos ingresar un valor nulo.
+INSERT INTO productos VALUES (1, 'Camiseta', NULL, NULL);
+
+Insert into productos values (7,'Bolso',1000,NULL);
+
+--Añadir un registro especificando columnas
+A la hora de insertar datos es posible mencionar específicamente las columnas que se van a insertar, en lugar de mencionar todos los valores en el orden en que se definen en la tabla.
+Se pide insertar un nuevo producto con los siguientes datos, pero especificando las columnas
+id: 7
+nombre: Bolso
+Precio: 1000
+Stock: 10
+INSERT INTO productos (id, precio, nombre, stock) VALUES (7, 1000,'Bolso', 10);
+Una ventaja de este método es que no es necesario ingresar los valores en el mismo orden en que se definen en la tabla.
+
+Insert into usuarios (id, apellido, nombre, telefono, email) values (7, 'Sánchez','Lucía','333-3333','luciasanchez@outlook.com');
+
+--Añadir un registro especificando solo algunas columnas
+Otro beneficio de especificar las columnas al momento de insertar datos es que se insertarán valores nulos en las columnas no mencionadas automáticamente.
+Podemos ingresar el producto "Gorro" con un precio de 1000 y dejar el stock en nulo de la siguiente manera:
+INSERT INTO productos (nombre, precio) VALUES ('Gorro', 1000);
+
+Insert into productos (nombre, stock) values ('Bolso',10);
+
+--Añadir fecha de hoy a un registro
+Si queremos insertar la fecha actual al momento de crear un registro, podemos utilizar la función CURRENT_DATE para obtenerla.
+Ejemplo: INSERT INTO usuarios (nombre, fecha_creacion) VALUES ('Gonzalo', CURRENT_DATE);
+
+insert into productos (nombre, stock, fecha) values ('Bolso', 10, CURRENT_DATE);
+
+--Añadiendo fecha y hora al insertar
+Si queremos insertar una fecha cualquiera al momento de crear un registro, simplemente debemos hacerlo especificando la fecha en el formato esperado.
+El formato de fecha es: YYYY-MM-DD, o sea año-mes-día, donde el año es de 4 dígitos, el mes es de 2 dígitos y el día es de 2 dígitos.
+Ejemplo: INSERT INTO usuarios (nombre, fecha_creacion) VALUES ('Gonzalo', '2021-01-01');
+
+Inserta un nuevo producto con los siguientes datos:
+nombre: Bolso
+stock: 10
+fecha: fecha_con_formato
+La fecha del producto debe ser del primero de enero del 2023.
+Insert into productos (nombre, stock, fecha) values ('Bolso', 10, '2023-01-01');
+
+-- Añadir múltiples valores
+Podemos ingresar varios registros en una tabla en una sola sentencia INSERT. Para lograrlo, debemos especificar los valores de cada registro separados por comas.
+Por ejemplo, si tenemos una tabla llamada ventas con las columnas producto, cantidad y precio, podemos agregar varios registros a la tabla usando:
+INSERT INTO ventas VALUES ('Camiseta', 5, 2000), ('Pantalón', 3, 1500), ('Zapatos', 2, 3000);
+
+Insert into ventas values ('Gorro', 5, 1000),('Camiseta', 10, 500),('Pantalón', 8, 1500);
+
+--Crear un registro con un campo autoincremental
+En una base de datos SQL, es posible agilizar el proceso de inserción de datos en una tabla mediante el uso de un campo autoincremental. Este tipo de campo es especialmente útil cuando se trata de gestionar identificadores únicos, como por ejemplo el campo "id" de una tabla. La característica de autoincremento se logra empleando la cláusula AUTOINCREMENT en la definición del campo.
+
+Para ilustrar este proceso, consideremos una tabla llamada "empleados" con tres columnas: "id" (autoincremental), "nombre" y "apellido". Esta es la forma en que se crea la tabla:
+CREATE TABLE empleados (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT,apellido TEXT);
+Aquí, hemos definido la columna "id" como un campo autoincremental utilizando la cláusula AUTOINCREMENT, lo que asegura que se generará automáticamente un valor único y creciente para cada nuevo registro.
+Supongamos que deseamos insertar un nuevo empleado en esta tabla. Podemos utilizar la siguiente consulta SQL:
+INSERT INTO empleados (nombre, apellido) VALUES ('John', 'Doe');
+Al ejecutar esta consulta, se creará un nuevo empleado en la tabla "empleados". La columna "id" se incrementará automáticamente, mientras que los valores proporcionados para "nombre" y "apellido" serán almacenados en las columnas correspondientes. Esto garantiza que cada nuevo empleado tendrá un identificador único y que el proceso de inserción sea más eficiente.
+
+Dada la tabla empleados con las columnas id, nombre y apellido, crea un nuevo empleado con el nombre "Jane" y el apellido "Smith".
+Insert into empleados (nombre, apellido) values ('Jane','Smith');
+
+--Añadir un registro asumiendo un valor por defecto
+Al crear una tabla en SQL, puedes asignar valores predeterminados a sus columnas. Esto implica que al insertar nuevos datos, si no se proporciona un valor específico para una columna, se usará automáticamente el valor por defecto asignado.
+Supongamos que queremos crear una tabla llamada "Productos" con las siguientes columnas:
+ID (identificador único del producto)
+Nombre (nombre del producto)
+Precio (precio del producto, con un valor por defecto de 10)
+CREATE TABLE Productos (ID INTEGER PRIMARY KEY AUTOINCREMENT, Nombre TEXT, Precio INTEGER DEFAULT 10);
+Si insertamos un nuevo producto sólo con el nombre, se utilizará automáticamente el valor por defecto del precio:
+INSERT INTO Productos (Nombre) VALUES ('Ejemplo Producto');
+En este caso, el producto se insertará con el valor 10 en la columna Precio.
+Si deseamos insertar un producto con un precio diferente, simplemente proporcionamos el valor correspondiente:
+INSERT INTO Productos (Nombre, Precio) VALUES ('Otro Producto', 25);
+
+Dada la tabla usuarios con las columnas id, nombre, apellido, email y telefono, crea un nuevo usuario con los valores:
+nombre: Lucía
+apellido: Sánchez
+email: luciasanchez@outlook.com
+La columna telefono tendrá el valor por defecto 111-1111
+Insert into usuarios (nombre, apellido, email) values ('Lucía', 'Sánchez', 'luciasanchez@outlook.com')
+
+--Borrado y modificación de registros
+--Borrar todos los registros de una tabla
+En SQL, la cláusula DELETE se utiliza para eliminar registros de una tabla. Cuando se ejecuta la instrucción DELETE FROM nombre_tabla, se eliminan todos los registros de la tabla especificada.
+Es importante tener en cuenta que esta operación es irreversible y eliminará permanentemente los datos de la tabla, por lo que debes tener mucho cuidado al usar esta instrucción.
+
+Delete from productos;
+Note: en el delete no se incluye el *
+
+--Borrar un registro con where
+La sentencia DELETE se utiliza para eliminar datos de una tabla. Si queremos eliminar filas específicas en lugar de todos los datos de la tabla, podemos usar la cláusula WHERE junto con la sentencia DELETE. Esto nos permite especificar una condición para determinar qué filas se eliminarán.
+Por ejemplo, si tenemos una tabla de productos y queremos eliminar solo aquellos productos cuyo precio sea igual a 1000, podemos usar la siguiente consulta:
+DELETE FROM productos WHERE precio = 1000
+
+Delete from usuarios where id = 2;
+
+--Editar registros
+La sentencia UPDATE se utiliza para realizar modificaciones en datos ya existentes de una tabla.
+Se utiliza de la siguiente forma
+UPDATE nombre_tabla SET nombre_columna = nuevo_valor
+Supongamos que tenemos una tabla ventas con una columna llamada "total". Si queremos aumentar en un 10% el total de todas las ventas registradas en la tabla, podemos hacerlo de la siguiente manera:
+UPDATE ventas SET total = total * 1.10;
+La instrucción UPDATE afecta todas las filas de la tabla, ya que no hemos utilizado la cláusula WHERE para establecer una condición de filtro.
+
+Edita la columna "registrado" para que todos los usuarios tengan el valor TRUE
+Update usuarios set registrado = TRUE;
+
+--Editar todos los registros utilizando where
+Si queremos editar solamente algunas filas de nuestra tabla, podemos utilizar UPDATE en conjunto con WHERE. De esta forma solo se modificarán los registros que cumplan con la condición especificada.
+UPDATE nombre_tabla SET nombre_columna = nuevo_valor WHERE condicion;
+Supongamos que gestionamos una tabla llamada empleados que contiene información sobre los empleados de una empresa. Entre las columnas se encuentran id_empleado, nombre, salario y departamento. Si deseamos aumentar el salario en un 15% solamente para los empleados que trabajan en el departamento de "Ventas", podríamos emplear la instrucción UPDATE junto con WHERE de la siguiente manera:
+UPDATE empleados SET salario = salario * 1.15 WHERE departamento = 'Ventas';
+Es importante ser precavido al elegir la condición de filtrado para tus filas. De esta manera, te aseguras de no alterar accidentalmente datos equivocados.
+
+Update usuarios set telefono = '123-456' where id = 4;
+
+--Editar múltiples columnas
+En SQL es posible editar múltiples columnas de un registro utilizando la cláusula SET. Para lograrlo, debemos especificar el nombre de cada columna que queremos modificar, seguido del nuevo valor que queremos asignarle.
+UPDATE tabla 
+  SET 
+    columna1 = 'nuevo_valor',
+    columna2 = 'nuevo_valor',
+    columna3 = 'nuevo_valor'
+  WHERE 
+    condicion;
+
+Ejercicio:
+Se tiene una tabla de posts con las siguientes columnas:
+Columna	Tipo de dato
+id	INTEGER
+titulo	TEXT
+contenido	TEXT
+autor	TEXT
+fecha	TEXT
+Edita el post con id 1 para que tenga el título "Aprendiendo SQL" y el contenido "SQL es un lenguaje de programación para gestionar bases de datos relacionales".
+
+Update posts
+set
+    titulo = 'Aprendiendo SQL',
+    contenido = 'SQL es un lenguaje de programación para gestionar bases de datos relacionales'
+where id = 1;
+
