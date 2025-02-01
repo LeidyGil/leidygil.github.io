@@ -647,3 +647,137 @@ set
     contenido = 'SQL es un lenguaje de programación para gestionar bases de datos relacionales'
 where id = 1;
 
+--Tables
+--Nuestra primera tabla
+Para crear una tabla en SQL, se utiliza la sentencia CREATE TABLE de la siguiente forma:
+CREATE TABLE nombre_tabla (nombre_columna1 tipo_de_dato) 
+Esta sentencia permite definir la estructura de la tabla, incluyendo el nombre de las columnas y sus tipos de datos. Veamos un ejemplo de cómo crear una tabla de productos que incluye diferentes tipos de datos para las columnas:
+CREATE TABLE productos (nombre TEXT);
+Luego, una vez creada la tabla, podemos insertar datos tal como aprendimos en ejercicios anteriores:
+INSERT INTO productos values   ('Ipad Pro 2022'),  ('Iphone 13 Pro Max'),  ('Macbook Pro 2023');
+
+Ejercicio:
+Crea una tabla llamada alumnos que almacene una columan nombre de tipo texto
+Columna	Tipo de dato
+nombre	texto
+Inserta un registro dentro de la tabla creada utilizado los siguientes datos:
+nombre: Lucía
+
+Create table alumnos (nombre text);
+Insert into alumnos values ('Lucía');
+
+--Una tabla con múltiples columnas
+Al momento de crear una tabla podemos especificar múltiples columnas, cada una con su nombre y tipo de dato. Por ejemplo, si queremos crear una tabla de productos que incluya el nombre, descripción y precio de cada producto, podemos hacerlo de la siguiente forma:
+CREATE TABLE productos (nombre TEXT, descripcion TEXT, precio INT);
+
+Ejercicio
+Crea una tabla llamada alumnos con las siguientes columnas:
+
+Columna	Tipo de dato
+nombre	texto
+apellido	texto
+telefono	texto
+Inserta un registro dentro de la tabla creada utilizado los siguientes datos:
+nombre: Lucía
+apellido: Sánchez
+telefono: 12345678
+
+Create table alumnos (nombre text, apellido text, telefono text);
+Insert into alumnos values ('Lucía','Sánchez','12345678');
+
+--Tablas con distintos tipos de datos
+Adicionalmente a los datos de tipo Texto podemos utilizar otros tipos de datos, en este ejercicio abordaremos los 3 siguientes tipos.
+INTEGER para almacenar números enteros
+BOOLEAN para almacenar valores de verdadero o falso
+DATE para almacenar fechas
+
+Crea una tabla llamada usuarios con las siguientes columnas:
+Columna	Tipo de dato
+nombre	text
+apellido	text
+edad	integer
+activo	boolean
+nacimiento	date
+Luego inserta un registro dentro de la tabla creada utilizado los siguientes datos:
+nombre: Lucía
+apellido: Sánchez
+edad: 25
+activo: true
+nacimiento: 1996-01-01
+
+Create table usuarios (nombre text, apellido text, edad integer, activo boolean, nacimiento date);
+Insert into usuarios values ('Lucía','Sánchez', 25, true, '1996-01-01');
+
+--Tipos reales
+En este ejercicio veremos el tipo de dato REAL, que permite almacenar números con decimales.
+
+Ejercicio:
+Crea una tabla llamada temperaturas con la columna temperatura_celsius:
+
+Columna	Tipo de dato
+temperatura_celsius	real
+Luego inserta los siguientes registros:
+temperatura_celsius
+23.4
+26.5
+27.1
+Importante. Para ingresar la parte decimal de los números, utiliza el punto (.) como separador decimal
+
+create table temperaturas (temperatura_celsius double);
+Insert into temperaturas values (23.4), (26.5), (27.1);
+
+--Borrar un tabla
+En SQL podemos utilizar el comando DROP TABLE para eliminar una tabla.
+Por ejemplo, si queremos eliminar la tabla temperaturas que creamos en el ejercicio anterior, podemos hacerlo con la siguiente query:
+DROP TABLE temperaturas;
+Si intentamos hacer un SELECT de la tabla temperaturas luego de eliminarla, obtendremos un error.
+
+Ejercicio:
+En este ejercicio tendremos una tabla con datos que no nos interesan, deberemos borrarla, crearla de nuevo y poblarla con los datos pedidos.
+Borra la tabla temperaturas y vuelve a crearla con las siguientes columnas:
+Columna	Tipo de dato
+ciudad	TEXT
+temperatura	REAL
+fecha	Date
+Luego, inserta los siguientes registros:
+ciudad	temperatura	fecha
+Buenos Aires	20.0	2024-01-01
+Buenos Aires	21.0	2024-01-02
+Santiago	22.0	2024-01-01
+Santiago	23.0	2024-01-02
+
+drop table temperaturas;
+Create table temperaturas (ciudad text, temperatura double, fecha date);
+Insert into temperaturas 
+values 
+('Buenos Aires', 20.0, '2024-01-01'), 
+('Buenos Aires', 21.0, '2024-01-02'), 
+('Santiago', 22.0, '2024-01-01'),
+('Santiago', 23.0, '2024-01-02');
+
+--Actualizar una tabla
+En este ejercicio aprenderemos a añadir una columna a una tabla existente. Para ello, utilizaremos la sentencia ALTER TABLE, que nos permite modificar la definición de una tabla.
+La sintaxis para lograrlo es la siguiente:
+ALTER TABLE nombre_tabla ADD COLUMN nombre_columna tipo_dato;
+donde tenemos que especificar el nombre de la tabla existente, el nombre de la columna nueva y el tipo de dato que utilizaremos.
+Por ejemplo si tenemos la tabla personas con las columnas nombre y apellido, y queremos agregar la columna edad de tipo INTEGER, podemos hacerlo de la siguiente manera:
+ALTER TABLE personas ADD COLUMN edad INTEGER;
+
+Ejercicio:
+En este ejercicio, vamos a modificar la tabla productos para agregar la columna descripcion de tipo TEXT.
+Actualmente la tabla productos tiene las siguientes columnas:
+Columna	Tipo de dato
+nombre	TEXT
+precio	REAL
+Luego de crearla deberás insertar los siguientes registros:
+nombre	precio	descripcion
+Camisa	1000.00	Camisa de manga corta
+Pantalón	2000.00	Pantalón de mezclilla
+Camisa XL	1000.00	Camisa de manga larga
+
+Alter table productos add column descripcion text;
+Insert into productos 
+values
+    ('Camisa', 1000.00, 'Camisa de manga corta'),
+    ('Pantalón', 2000.00, 'Pantalón de mezclilla'),
+    ('Camisa XL', 1000.00, 'Camisa de manga larga');
