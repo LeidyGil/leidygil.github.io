@@ -781,3 +781,282 @@ values
     ('Camisa', 1000.00, 'Camisa de manga corta'),
     ('Pantalón', 2000.00, 'Pantalón de mezclilla'),
     ('Camisa XL', 1000.00, 'Camisa de manga larga');
+
+--Restrictions - Constrains
+--Introducción a restricciones
+Ideas clave
+Las restricciones o constraints en inglés, son reglas que se pueden aplicar a las columnas de una tabla.
+La restricción NOT NULL es un tipo de restricción que impide que se ingresen valores nulos en una columna.
+Si ingresamos un valor nulo en una columna con la restricción NOT NULL, la operación fallará.
+Añadir una restricción al crear una tabla
+Al crear tablas, podemos añadir restricciones (en inglés constraints) a las columnas para evitar que se ingresen datos que no cumplan ciertas condiciones.
+En este ejercicio, aprenderemos a agregar la restricción NOT NULL, que impide agregar valores nulos en una columna. Por ejemplo, al crear una tabla de personas con nombre y apellido, podemos hacer que el nombre sea obligatorio (no nulo) y el apellido opcional.
+Para lograrlo, crearemos la tabla y en la columna nombre agregaremos la restricción NOT NULL de la siguiente manera:
+CREATE TABLE personas (
+    nombre TEXT NOT NULL,
+    apellido TEXT
+)
+Para agregar una restricción, simplemente debemos especificarla junto con la columna.
+
+create table empleados (nombre text not null, apellido text);
+Insert into empleados values ('Pedro', 'Pérez');
+
+--Agregar una restricción a una tabla existente
+Ideas clave
+Las restricciones o constraints en inglés son reglas que se pueden aplicar a las columnas de una tabla.
+Se puede agregar una restricción al momento de crear una tabla.
+En SQLite no se pueden agregar directamente restricciones a tablas ya creadas.
+Pero podemos lograrlo creando una nueva tabla con la restricción, copiando los datos de la tabla original a la nueva tabla, borrando la tabla original y renombrando la nueva tabla con el nombre de la tabla original.
+Agregar una restricción a una tabla existente
+Por ejemplo, si tenemos una tabla personas con las columnas nombre y apellido.
+Columna	Tipo de dato	Restricciones
+nombre	TEXT	
+apellido	TEXT	
+y queremos agregarle la restricción NOT NULL a la columna nombre.
+Lo que tenemos que hacer es:
+Crear una nueva tabla con la restricción.
+/* 1. Creamos la nueva tabla con la restricción */
+CREATE TABLE personas2 (
+    nombre TEXT NOT NULL,
+    apellido TEXT
+);
+Copiar los datos de la tabla original a la nueva tabla.
+/* 2. Copiamos los datos de la tabla original a la nueva tabla */
+INSERT INTO personas2 (nombre, apellido)
+    SELECT nombre, apellido
+    FROM personas;
+Borrar la tabla original.
+/* 3. Borramos la tabla original */
+DROP TABLE personas;
+Renombrar la nueva tabla con el nombre de la tabla original.
+/* 4. Renombramos la nueva tabla con el nombre de la tabla original */
+ALTER TABLE personas2 RENAME TO personas;
+En otros motores de bases de datos como PostgreSQL o MySQL si es posible agregar restricciones a tablas existente sin necesidad de crear una nueva tabla.
+
+Ejercicio
+create table patentes2 (patente text not null);
+Insert into patentes2 (patente)
+    select patente from patentes;
+Drop table patentes;
+Alter table patentes2 rename to patentes;
+
+--Borrar una restricción
+Así como se pueden agregar restricciones a las columnas, también se pueden borrar.
+Borrar una restricción de una tabla existente
+Para borrar una restricción de una tabla existente en SQLite, se debe seguir un procedimiento similar al de agregar una restricción.
+Crear una nueva tabla sin la restricción.
+Copiar los datos de la tabla original a la nueva tabla.
+Borrar la tabla original.
+Renombrar la nueva tabla con el nombre de la tabla original.
+
+Ejercicio
+Create table personas2 (nombre text, apellido text, edad integer);
+Insert into personas2 (nombre, apellido, edad)
+    select nombre, apellido, edad
+    from personas;
+Drop table personas;
+Alter table personas2 rename to personas;
+
+--Restricción unique
+Ideas clave
+Existen distintos tipos de restricciones que se pueden aplicar a las columnas de una tabla.
+La restricción de unicidad, o UNIQUE, nos permite evitar duplicados en una columna específica.
+Un caso muy popular de esta restricción es evitar personas con el mismo correo electrónico.
+
+Para agregar una restricción de UNIQUE simplemente tenemos que especificarla al crear la tabla. Por ejemplo, si queremos que el correo electrónico de las personas sea único, podemos crear la tabla de la siguiente manera:
+CREATE TABLE personas (
+    nombre text
+    apellido text
+    email text UNIQUE
+)
+
+Create table productos (nombre text not null, precio double not null, codigo text unique);
+Insert into productos values
+    ('Camisa', 1000.00, 'CAM-001'),
+    ('Pantalón', 2000.00, 'PAN-001'),
+    ('Camisa XL', 1000.00, 'CAM-002');
+
+--Restricciones con check
+Ideas clave
+Existen distintos tipos de restricciones que se pueden aplicar a las columnas de una tabla.
+La restricción de no nulidad, o NOT NULL, impide que se ingresen valores nulos en una columna.
+La restricción de unicidad, o UNIQUE, nos permite evitar duplicados en una columna específica.
+La restricción CHECK nos permite establecer una condición que los valores de una columna deben cumplir.
+Restricciones CHECK
+La restricción CHECK nos permite establecer una condición que los valores de una columna deben cumplir. Por ejemplo, si queremos que el salario de los empleados sea mayor a cero, podemos agregar una restricción de CHECK a la columna salario.
+Para agregar una restricción de CHECK simplemente tenemos que especificarlo en la definición de la columna, proporcionando la condición que debe cumplir el valor de la columna. Por ejemplo:
+CREATE TABLE empleados (
+    nombre TEXT,
+    salario REAL CHECK (salario > 0)
+);
+
+create table productos (nombre text not null, precio double not null, stock integer check(stock>=0));
+Insert into productos values
+('Camisa', 1000.00, 10),
+('Pantalón', 2000.00, 5),
+('Camisa XL', 1000.00, 3);
+
+--Clave primaria
+Existen distintos tipos de restricciones que se pueden aplicar a las columnas de una tabla como NOT NULL, UNIQUE y CHECK.
+La restricción Primary Key impide que se ingresen valores nulos y asegura que no haya duplicados en una columna específica. Para efectos prácticos, podemos decir que es una combinación de Unique y Not Null
+¿Qué es una clave primaria?
+La clave primaria, o en inglés PRIMARY KEY es una restricción que sirve para identificar de forma única cada registro en una tabla. Por ejemplo supongamos que tenemos una tabla llamada boletas con los siguientes registros:
+id	monto de la boleta	fecha de emision
+1	10.000	2021-10-01
+2	12.000	2021-10-02
+3	16.000	2021-10-03
+Y queremos buscar la boleta con id 2. Si no tuvieramos una clave primaria, podríamos tener dos boletas con el mismo id, y no sabríamos cuál de las dos es la que queremos, o podríamos tener boletas con id nulo, y no sabríamos cuál es la boleta que buscamos.
+La restricción de primary key nos asegura esto no suceda.
+Cuando tenemos una clave primaria, tenemos certeza de que podemos buscar cualquier registro en la base de datos y luego modificarlo o eliminarlo, y no habrá ningún otro registro modificado o eliminado que el seleccionado. Esto nos permite cuidar la integridad de los datos.
+Agregar una clave primaria a una tabla nueva
+Para agregar una clave primaria a una tabla nueva, simplemente tenemos que especificarlo en la definición de la columna. Por ejemplo:
+CREATE TABLE boletas (
+    id INT PRIMARY KEY,
+    monto_de_la_boleta REAL,
+    fecha_de_emision DATE
+);
+
+Create table posts (id int primary key, title text, content text);
+Insert into posts values
+    (1, 'Introducción', '¡Bienvenido al mundo de la programación!'),
+    (2, 'Primeros Pasos', 'Sumérgete en los conceptos básicos de la programación.'),
+    (3, 'Temas Avanzados', 'Explora conceptos y técnicas avanzadas en programación.');
+
+--Autoincremental
+Ideas clave
+La restricción Primary Key impide que se ingresen valores nulos y asegura que no haya duplicados en una columna específica. Para efectos prácticos, podemos decir que es una combinación de Unique y Not Null.
+Los campos autoincrementales nos permiten generar un valor único de forma automática para cada registro que insertemos en una tabla.
+Si un campo de clave primaria es un número entero, se convierte automáticamente en un campo autoincremental en SQLITE.
+¿Qué son los campos autoincrementales?
+Los campos autoincrementales son campos que generan un valor único de forma automática para cada registro que insertemos en una tabla. Usualmente, el incremento es de 1 en 1.
+Entonces si tenemos una tabla como la siguiente:
+id	monto de la boleta	fecha de emision
+1	10.000	2021-10-01
+2	12.000	2021-10-02
+3	16.000	2021-10-03
+Y agregamos un nuevo registro sin especificar el valor del campo id, la base de datos se encargará de generar un valor único para ese campo, que para este caso sería 4.
+
+Create table usuarios (id integer primary key, nombre text not null, fecha_creacion date);
+Insert into usuarios (nombre, fecha_creacion) values
+    ('Ana', '2024-01-01'),
+    ('Gonzalo', '2024-01-02'),
+    ('Juan', '2024-01-03'),
+    ('María', '2024-01-04');
+Note: the autoincrement word is optional in SQLlite in the table definition. In fact, sometimes it can cause some issues.
+
+--Autoincremental parte 2
+Si se ingresa un registro con un valor mayor al de la secuencia actual, la base de datos se encarga de actualizar la secuencia para que el siguiente registro tenga un valor mayor al del registro que acabamos de insertar.
+Por ejemplo, si tenemos una tabla con los siguientes registros:
+id	nombre
+1	Ana
+2	Gonzalo
+3	Juan
+Luego insertamos un nuevo registro con un id mayor al de la secuencia actual:
+INSERT INTO usuarios (id, nombre) VALUES (10, 'María');
+Y luego insertamos un nuevo registro sin especificar el id:
+INSERT INTO usuarios (nombre) VALUES ('Pedro');
+Obtendremos la siguiente tabla:
+id	nombre
+1	Ana
+2	Gonzalo
+3	Juan
+10	María
+11	Pedro
+
+Ejercicio:
+Create table transacciones (id integer primary key, monto real not null, fecha date);
+Insert into transacciones (monto, fecha) values
+    (1000.00, '2024-01-01'),
+    (2000.00, '2024-01-02'),
+    (3000.00, '2024-01-03');
+Insert into transacciones values (10, 4000.00, '2024-01-04');
+Insert into transacciones (monto, fecha) values (5000.00, '2024-01-05');
+
+--Primary key y texto
+La clave primaria no está limitada exclusivamente a valores numéricos; también se pueden utilizar datos de texto. Tomemos, por ejemplo, una tabla de personas, donde podríamos emplear la dirección de correo electrónico como clave primaria, ya que cada individuo posee una dirección de correo única.
+En SQLite, los campos que son de tipo INTEGER y se designan como PRIMARY KEY no pueden contener valores nulos. No obstante, a diferencia de otros sistemas de gestión de bases de datos como MySQL o PostgreSQL, cuando se utiliza PRIMARY KEY con tipos de datos como texto u otros, se permite que el valor sea nulo.
+Por lo tanto, si queremos que un campo sea tanto clave primaria como no nulo, debemos especificarlo mediante la combinación de PRIMARY KEY y NOT NULL.
+Ejemplo:
+CREATE TABLE posts (
+    title text primary key not null
+)
+
+Create table personas (email text primary key not null, nombre text, apellido text);
+Insert into personas values
+    ('example1@example.com','John', 'Doe'),
+    ('example2@example.com','Jane', 'Smith'),
+    ('example3@example.com','Mike', 'Johnson');
+
+--Clave Foránea
+La clave foránea es una restricción que se le puede agregar a una columna de una tabla para indicar que los valores que se inserten en esa columna deben existir en otra tabla.
+Por ejemplo, si tenemos una tabla de personas y una tabla de autos, podríamos agregar una columna persona_id a la tabla de autos, y agregarle la restricción de clave foránea para indicar que el valor de esa columna debe existir en la tabla de personas. De esta forma nos aseguramos que no se inserten autos de personas que no existen o que se borren personas que tienen autos asignado a su nombre dejando autos sin dueño.
+personas
+Columna	Tipo de dato	Restricciones
+id	INTEGER	PRIMARY KEY
+nombre	TEXT	
+apellido	TEXT	
+autos
+Columna	Tipo de dato	Restricciones
+id	INTEGER	PRIMARY KEY
+patente	TEXT	
+persona_id	INTEGER	FOREIGN KEY (persona_id) REFERENCES personas(id)
+Con los siguientes datos:
+personas
+id	nombre	apellido
+1	John	Doe
+2	Jane	Smith
+autos
+id	patente	persona_id
+1	ABC123	1
+2	DEF456	2
+Podemos ver que el auto con patente ABC123 pertenece a la persona con id 1, y el auto con patente DEF456 pertenece a la persona con id 2. Adicionalmente la clave foránea nos asegura que no podamos borrar la persona con id 1 mientras exista un auto con persona_id 1. De la misma forma, no podremos insertar un auto con persona_id 3, ya que no existe una persona con id 3.
+Agregando la clave foránea
+Para agregar una clave foránea a una tabla existente, debemos especificar la restricción FOREIGN KEY seguida del nombre de la columna y la tabla a la que hace referencia, y finalmente la columna de la tabla a la que hace referencia.
+La sintaxis es la siguiente:
+ALTER TABLE nombre_tabla ADD COLUMN nombre_columna tipo_dato REFERENCES nombre_tabla_referencia(nombre_columna_referencia);
+Se ve complicado, pero veamos un ejemplo con las tablas personas y autos.
+ALTER TABLE autos ADD COLUMN persona_id INTEGER REFERENCES personas(id);
+La clave foránea debe hacer referencia a una columna que tenga una restricción de clave primaria
+
+Ejercicio:
+Se pide agregar una clave foránea a la tabla articulos para que la columna categoria_id haga referencia a la columna id de la tabla categorias.
+Alter table articulos add column categoria_id integer references categorias(id);
+
+--Pk y fks
+Ejercicio:
+Se tiene la tabla transacciones y la tabla usuarios con la siguiente estructuras:
+transacciones
+Columna	Tipo de dato	Restricciones
+id	INTEGER	PRIMARY KEY
+monto	REAL	
+usuario_id	INTEGER	FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+usuarios
+Columna	Tipo de dato	Restricciones
+id	INTEGER	PRIMARY KEY
+nombre	TEXT	
+apellido	TEXT	
+Con los siguientes datos:
+transacciones
+id	monto	usuario_id
+1	100	1
+2	200	2
+3	300	1
+usuarios
+id	nombre	apellido
+1	John	Doe
+2	Jane	Smith
+En este ejercicio primero intentaremos crear una transacción con un usuario que no existe para observar el error.
+Intentaremos borrar un usuario que tiene transacciones asociadas para observar el error.
+Luego eliminaremos nuestras consultas anteriores y modificaremos la tabla de transacciones para eliminar la clave foránea. Solo se debe eliminar la clave foránea, no la columna.
+TIP: Esto requiere crear una tabla temporal, copiar los datos de la tabla original a la tabla temporal, borrar la tabla original, y renombrar la tabla temporal con el nombre de la tabla original.
+Finalmente se deben asociar las transacciones al usuario con id 3. El cual no existe y la idea es demostrar que sin la FK podemos insertar transacciones sin usuarios asociados.
+Los puntos 1 y 2 son para observar que sucede. Para lograr la respuesta correcta tienes que realizar los puntos 3 y 4 en el editor.
+
+Insert into transacciones (monto, usuario_id) values (300, 3);
+Delete from usuarios where id = 1;
+Create table transacciones2 (id integer primary key, monto real, usuario_id integer);
+Insert into transacciones2 (id, monto, usuario_id)
+    select id, monto, usuario_id from transacciones;
+drop table transacciones;
+Alter table transacciones2 rename to transacciones;
+Update transacciones set usuario_id = 3;
