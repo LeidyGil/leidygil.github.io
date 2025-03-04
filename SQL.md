@@ -1060,3 +1060,21 @@ Insert into transacciones2 (id, monto, usuario_id)
 drop table transacciones;
 Alter table transacciones2 rename to transacciones;
 Update transacciones set usuario_id = 3;
+
+--Consultas en multiples tablas
+Ideas clave
+La cláusula JOIN permite combinar datos de varias tablas en una única tabla de resultados.
+Para realizar la unión, es necesario especificar las tablas que se desean unir y la condición de unión correspondiente.
+SELECT *
+FROM 
+    usuarios
+INNER JOIN 
+    datos_contacto
+ON 
+    email1 = email2;
+
+Ejercicio:
+Utilizando lo aprendido, selecciona todos los usuarios junto a sus notas. Observa los resultados antes de avanzar.
+Select *
+from usuarios inner join notas
+on email1 = email2;
