@@ -1078,3 +1078,136 @@ Utilizando lo aprendido, selecciona todos los usuarios junto a sus notas. Observ
 Select *
 from usuarios inner join notas
 on email1 = email2;
+
+--Multiples tablas: Utilizando atributos del mismo nombre
+Cuando la columna se llama igual en las dos tablas, tenemos que especificar el nombre de la tabla para evitar ambigüedad.
+Para arreglar esto NO tenemos que cambiarle el nombre a la columna, simplemente tenemos que especificar a qué tabla pertenece el atributo. Por ejemplo, podemos hacer lo siguiente:
+SELECT * 
+FROM 
+    usuarios 
+JOIN 
+    datos_contacto 
+ON 
+    usuarios.email = datos_contacto.email
+
+Alias
+En SQL, podemos utilizar alias para referirnos a las tablas de una forma más corta. Por ejemplo, si queremos referirnos a la tabla usuarios como u y a la tabla datos_contacto como dc, podemos hacer lo siguiente:
+SELECT * 
+FROM 
+    usuarios u
+JOIN 
+    datos_contacto dc 
+ON 
+    u.email = dc.email
+
+Ejercicio:
+Select *
+from 
+    usuarios u
+inner join 
+    notas n
+on
+    u.email = n.email;
+
+--Seleccionando algunos atributos
+Podemos seleccionar los datos de cada tabla que deseamos mostrar en la consulta.
+>Seleccionando algunos atributos
+Al igual que cuando trabajamos con una sola tabla, podemos seleccionar sólo los atributos que deseamos mostrar en la consulta. Cuando tenemos dos tablas, podemos seleccionar todos los atributos de una tabla y sólo algunos de la otra de la siguiente forma:
+SELECT tabla1.*, 
+    tabla2.atributo1, 
+    tabla2.atributo2
+FROM tabla1
+JOIN tabla2 ON tabla1.id = tabla2.id;
+
+De esta forma, seleccionamos todo de la tabla usuarios y sólo los teléfonos de la tabla datos_contacto. Asi no tenemos dos columnas email con datos repetidos
+SELECT usuarios.*, datos_contacto.telefono 
+FROM usuarios 
+JOIN datos_contacto 
+ON usuarios.email = datos_contacto.email
+
+Ejercicio:
+Select usuarios.*, notas.notas
+from
+    usuarios
+join
+    notas
+on
+    usuarios.email = notas.email;
+
+--JOIN sin resultados
+La cláusula JOIN solo une los registros que tienen una clave común en ambas tablas. Existen otros tipos de JOIN que revisaremos más adelante.
+La respuesta es bien sencilla: si no hay ningún dato común entre ambas tablas, no obtendremos resultados.
+Se tiene email en ambas tablas pero los datos que tiene usuarios en email no estan en datos_contacto, por eso el resultado es empty
+select
+    usuarios.*,
+    datos_contacto.telefono
+from
+    usuarios
+join
+    datos_contacto
+on
+    usuarios.email = datos_contacto.email;
+
+--Orden de cláusulas
+Las cláusulas tienen un orden específico que debemos seguir para que la consulta funcione correctamente.
+Comando	Se lee como:
+SELECT	Selecciona estos datos.
+FROM	De esta tabla.
+JOIN	Únelos con esta tabla.
+WHERE	Filtra los valores que cumplan tal condición.
+GROUP BY	Agrupa los resultados por este criterio.
+HAVING	Filtra por estos criterios agrupados.
+ORDER BY	Ordena los resultados por este otro criterio.
+LIMIT	Limita los resultados a esta cantidad.
+
+Ejercicio: Dadas las siguientes tablas, selecciona toda la información del usuario juan.perez@example.com.
+Select *
+from
+    usuarios
+join
+    notas
+on
+    usuarios.email = notas.email
+Where
+    usuarios.email = 'juan.perez@example.com';
+
+--Agrupar por múltiples columnas
+Utilizando GROUP BY y funciones de agregación en consultas con múltiples tablas
+Al igual que en las consultas sobre una tabla, podemos utilizar funciones de agregación y agrupado en consultas sobre múltiples tablas.
+Supongamos que tenemos dos tablas: una tabla llamada clientes y otra tabla llamada pedidos
+Tabla clientes:
+cliente_id	nombre
+1	Juan Pérez
+2	Ana Gómez
+3	Luis Fernández
+Tabla pedidos:
+pedido_id	cliente_id	fecha
+101	1	2023-01-15
+102	2	2023-02-20
+103	1	2023-03-10
+104	3	2023-04-22
+105	2	2023-05-18
+106	1	2023-06-30
+Para mostrar la cantidad total de pedidos realizados por cada cliente, podemos usar la siguiente consulta SQL:
+
+SELECT nombre, COUNT(p.pedido_id) AS total_pedidos
+FROM clientes c
+JOIN pedidos p ON c.cliente_id = p.cliente_id
+GROUP BY c.cliente_id, nombre;
+
+Algunos detalles importantes a tener en cuenta:
+Si hay columnas con el mismo nombre entonces tenemos que especificar el nombre de la tabla antes del nombre de la columna.
+A la hora de agrupar datos debemos tener en cuenta que las columnas que no están en la cláusula GROUP BY deben ser utilizadas con funciones de agregación. Por lo mismo, en este tipo de ejercicios, el SELECT * no es recomendable, especialmente si la tabla tiene muchas columnas.
+
+Ejercicio: Tenemos dos tablas: Productos y Ventas. Realiza una consulta que nos muestre el producto más vendido y la cantidad total de unidades vendidas de ese producto. La columna que muestre el total de unidades vendidas debe llamarse "total_vendido"
+Pista: Recuerda el uso de order by y limit
+-debemos usr desc en el order by porque nos estan preguntando por el valor mas alto
+Select nombre, sum(v.cantidad) as total_vendido
+from
+    productos p
+join
+    ventas v
+on
+    p.productoid = v.productoid
+group by p.productoid, nombre
+order by total_vendido desc limit 1;
