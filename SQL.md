@@ -1211,3 +1211,178 @@ on
     p.productoid = v.productoid
 group by p.productoid, nombre
 order by total_vendido desc limit 1;
+
+--Cardinalidad
+--Relaciones 1 a 1
+**Ideas clave**
+La cardinalidad de una relación es la cantidad de elementos de una tabla que pueden estar relacionados con los de otra tabla.
+Dependiendo de como se modelen las relaciones entre tablas, se pueden tener relaciones de uno a uno, uno a muchos o muchos a muchos.
+En una relación uno a uno, un registro de una tabla solo puede estar relacionado con un registro de la otra tabla.
+**¿Qué es la cardinalidad de una relación?**
+La cardinalidad de una relación es la cantidad de elementos de una tabla que pueden estar relacionados con los de otra tabla.
+Las relaciones entre tablas se pueden clasificar en tres tipos principales según su cardinalidad.
+En este ejercicio veremos la relación uno a uno, denotada como 1:1. En esta relación, cada registro de una tabla está relacionado con un único registro de otra tabla. Por ejemplo, cada persona puede tener un único pasaporte y cada pasaporte pertenece a una única persona.
+
+Ejercicio: Se pide crear una consulta que muestre toda la información de las matrículas de los vehículos junto a su matrícula correspondiente.
+Select *
+from
+    vehiculos v
+join
+    matriculas m
+on 
+    v.id = m.vehiculo_id
+
+--Relaciones 1 a n
+En una relación uno a muchos, un registro de una tabla puede estar relacionado con uno o varios registros de otra tabla. Por ejemplo, podriamos tener una tabla de empleados y otra de departamentos. Cada empleado pertenece a un único departamento, pero un departamento puede tener varios empleados.
+
+Ejercicio: Se pide crear una consulta que muestre toda la información de los países junto a su continente correspondiente. Observa dentro de los resultados que un país pertenece a un único continente, pero un continente puede tener varios países.
+Select
+    p.pais_id, 
+    p.nombre, 
+    p.continente_id, 
+    c.continente_id,
+    c.nombre
+from
+    continentes c
+join
+    paises p
+on
+    c.continente_id = p.continente_id
+
+--Relaciones n a n
+En una relación muchos a muchos, un registro de una tabla puede estar relacionado con uno o varios registros de otra tabla, y viceversa.
+Relaciones N a N
+En bases de datos relaciones, con dos tablas solo podemos lograr relaciones de uno a uno o uno a muchos. Para lograr relaciones muchos a muchos, se necesita una tabla intermedia con ciertas características que estudiaremos más adelante.
+
+Ejercicio resuelto
+Se tiene un sistema que guarda información de profesores y alumnos. Cada profesor puede tener varios alumnos y cada alumno puede tener varios profesores. Para lograr esto se tiene una tabla profesores, una tabla alumnos y una tabla profesores_alumnos que relaciona a los profesores con los alumnos.
+
+Tabla profesores
+
+profesor_id	nombre
+1	Ana
+2	Pedro
+3	Luis
+Tabla alumnos
+
+alumno_id	nombre
+1	Marta
+2	Elena
+3	Juan
+Tabla profesores_alumnos
+
+profesor_id	alumno_id
+1	1
+1	2
+2	1
+Al unir las tablas profesores y profesores_alumnos con un JOIN, obtendríamos:
+
+profesor_id	nombre	alumno_id
+1	Ana	1
+1	Ana	2
+2	Pedro	1
+Al unir las tabla anterior con la tabla alumnos, obtendríamos:
+
+profesor_id	nombre	alumno_id	nombre
+1	Ana	1	Marta
+1	Ana	2	Elena
+2	Pedro	1	Marta
+Donde podemos ver que por cada registro de la tabla profesores hay uno o varios registros en la tabla profesores_alumnos, y por cada registro de la tabla profesores_alumnos hay un registro en la tabla alumnos.
+
+Para hacer el join entre más de 2 tablas, se puede hacer un join por cada tabla que se quiera unir.
+
+SELECT *
+FROM profesores
+JOIN profesores_alumnos
+ON profesores.profesor_id = profesores_alumnos.profesor_id
+JOIN alumnos
+ON profesores_alumnos.alumno_id = alumnos.alumno_id;
+
+Ejercicio:Se tiene una base de datos con un catálogo de objetos y colores. Cada objeto puede tener varios colores y cada color puede estar asociado a varios objetos.
+Select *
+from
+    objetos o
+join
+    objetos_colores oc
+on 
+    o.objeto_id = oc.objeto_id
+join
+    colores c
+on
+    c.color_id = oc.color_id
+
+--Características de la tabla intermedia
+Ideas clave
+En una relación muchos a muchos, un registro de una tabla puede estar relacionado con uno o varios registros de otra tabla, y viceversa.
+Las bases de datos relacionales no permiten relaciones muchos a muchos directamente, por lo que se necesita una tabla intermedia que relacione a las tablas principales.
+La tabla intermedia debe tener una columna que sea clave foránea de cada una de las tablas principales.
+**Entendiendo la tabla intermedia**
+Si tenemos dos tablas A y B que queremos relacionar de manera muchos a muchos, necesitamos una tabla intermedia C que relacione a ambas tablas.
+
+Ejercicio: Agrega registros a la tabla profesores_alumnos para que Julia tenga a Elena como alumna y Pedro tenga a Juan como alumno. Luego muestra todas las columnas de las tres tablas.
+Insert into profesores_alumnos values (1,2), (2,3);
+Select *
+from profesores p
+join profesores_alumnos pa
+on p.profesor_id = pa.profesor_id
+join alumnos a
+on a.alumno_id = pa.alumno_id
+
+--Sin restricción de unicidad
+Ideas clave
+La tabla intermedia debe tener una columna que sea clave foránea de cada una de las tablas principales.
+Si hay una restricción de unicidad, se garantiza que no haya registros duplicados en la tabla intermedia. Esto se logra con una clave primaria compuesta de las claves foráneas de las tablas principales.
+Restricción de unicidad
+Supongamos que tenemos un sistema de gestión para una biblioteca que incluye tres tablas principales: Libros, Usuarios y Pedidos. La tabla Pedidos actúa como una tabla intermedia para manejar la relación de muchos a muchos entre Libros y Usuarios. En este sistema, un libro puede ser solicitado por múltiples usuarios, y cada usuario puede solicitar varios libros.
+Antes de construir la tabla intermedia tenemos que hacernos una pregunta importante: ¿un usuario puede pedir el mismo libro más de una vez?
+
+Si la respuesta es sí, entonces no necesitamos una restricción de unicidad en la tabla intermedia.
+
+Si la respuesta es no, entonces debemos asegurarnos de que no haya registros duplicados en la tabla intermedia y esto se hace con una restricción de unicidad.
+En este ejemplo tiene sentido que un usuario pueda pedir el mismo libro más de una vez, por lo que nuestra tabla intermedia tendría la siguiente estructura:
+
+libro_id	usuario_id
+1	1
+1	1
+2	2
+2	2
+3	1
+Dentro de la tabla podemos ver que el usuario 1 ha pedido el libro 1 dos veces, lo cual no es un problema si no hay una restricción de unicidad.
+
+Ejercicio:
+Selecciona a todos los usuarios que han pedido el mismo libro más de una vez. Las columnas a mostrar son usuario_id, libro_id y veces donde veceses el número de veces que el usuario ha pedido el libro.
+Pista: Agrupa por libro_id y usuario_id y cuenta cuantos registros hay por cada grupo. Reflexiona si debes ocupar where o having para filtrar los resultados.
+Select usuario_id, libro_id, count(libro_id) as veces
+from pedidos
+group by libro_id, usuario_id
+having veces > 1;
+
+--Con restricción de unicidad
+Supongamos que tenemos un sistema que guarda información de proyectos y empleados. Cada empleado puede trabajar en varios proyectos y cada proyecto puede tener varios empleados trabajando en él. Para manejar esto, tenemos una tabla empleados, una tabla proyectos y una tabla empleados_proyectos que relaciona a los empleados con los proyectos.
+Antes de construir la tabla intermedia tenemos que hacernos una pregunta importante: ¿un empleado puede estar en el mismo proeycto más de una vez?
+
+Si la respuesta es sí, entonces no necesitamos una restricción de unicidad en la tabla intermedia.
+
+Si la respuesta es no, entonces debemos asegurarnos de que no haya registros duplicados en la tabla intermedia y esto se hace con una restricción de unicidad.
+
+En este caso, un empleado no puede estar asignado al mismo proyecto más de una vez. Para evitar que esto suceda, al crear la tabla agregaremos una clave primaria compuesta de las claves foráneas de las tablas principales.
+
+CREATE TABLE Empleados_Proyectos (
+empleado_id INT,
+proyecto_id INT,
+PRIMARY KEY (empleado_id, proyecto_id),
+FOREIGN KEY (empleado_id) REFERENCES Empleados(id),
+FOREIGN KEY (proyecto_id) REFERENCES Proyectos(id)
+);
+De esta manera, si se intenta agregar un registro con un empleado y un proyecto que ya existen en la tabla, se generará un error, lo que asegura que no haya registros duplicados en la tabla intermedia.
+
+Ejercicio: Crea una consulta que seleccione todos los empleados junto con la cantidad de proyectos asignados a cada uno, demostrando que no hay registros duplicados en la tabla intermedia. Las columnas de la consulta deben ser nombre, puesto y cantidad_proyectos.
+Select e.nombre, e.puesto, count(ep.proyecto_id) as cantidad_proyectos
+from empleados_proyectos ep
+join empleados e
+on e.id = ep.empleado_id
+group by e.id
+order by cantidad_proyectos desc;
+
+
+
