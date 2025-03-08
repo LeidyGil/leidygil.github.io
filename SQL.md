@@ -1384,5 +1384,159 @@ on e.id = ep.empleado_id
 group by e.id
 order by cantidad_proyectos desc;
 
+--Inner Join
+**Ideas clave**
+La cláusula JOIN nos permite combinar los datos de varias tablas en una única tabla de resultados.
+Existen varios tipos de joins, cuando no se especifica el tipo de join se utiliza INNER JOIN.
+La diferencia entre los tipos de joins radica en cómo se manejan los registros que no tienen una clave común en ambas tablas.
+I**NNER JOIN es la opción por defecto**
+Hasta el momento hemos utilizado INNER JOIN, pero no lo hemos especificado. Si no se especifica el tipo de JOIN, por defecto se utiliza INNER JOIN. Esto implica que:
+SELECT * FROM usuarios JOIN datos_contacto ON usuarios.email = datos_contacto.email
+Es lo mismo que:
+SELECT * FROM usuarios INNER JOIN datos_contacto ON usuarios.email = datos_contacto.email
+**¿Qué hace INNER JOIN?**
+INNER JOIN combina los registros de ambas tablas en base a una condición de unión. Solo se incluyen los registros que tienen una clave común en ambas tablas. Si no hay una clave común, los registros no se incluyen en el resultado final.
+**Ejercicio**
+Une las tablas utilizando JOIN (o INNER JOIN) para obtener todos los registros de ambas tablas. Mira las tablas antes de realizar el ejercicio y pon especial atención en Francisco, quien no tiene ninguna nota en el sistema. francisco no aparece porque no tiene registro en notas asociado con el email de usuarios.
+Select *
+from
+    usuarios u
+inner join
+    notas n
+on u.email = n.email;
+
+--Inner Join con diagrama de venn
+**Ideas clave**
+Los diagramas de Venn son una forma visual de representar conjuntos y operaciones entre ellos.
+Podemos utilizar los diagramas de Venn para visualizar lo que sucede con los registros de las tablas al realizar distintos tipos de JOIN.
+En el diagrama de Venn, un INNER JOIN se visualiza como la intersección entre dos círculos.
+**Diagramas de Venn**
+Un diagrama de Venn nos permite visualizar conjuntos y operaciones entre ellos. Estos diagramas se componen de círculos que representan conjuntos de datos. En ellos, los elementos que tienen en común los distintos conjuntos de datos se representan en la intersección de los círculos.
+Cuando trabajamos con bases de datos, podemos utilizar estos diagramas para visualizar los registros que se obtendrían al realizar distintos tipos de JOIN. Especialmente, nos serán útiles para visualizar los resultados de una operación de join.
+Para hacerlo, pondremos como elementos las claves de unión de las tablas. Los elementos que solo estén en la primera tabla los representaremos en un círculo, los elementos que solo estén en la segunda tabla los representaremos en otro círculo y los elementos que estén en ambas tablas los representaremos en la intersección de ambos círculos.
+**Ejercicio**
+En un papel, dibuja un diagrama de Venn que muestre los registros que se obtendrían al realizar un INNER JOIN entre las tablas actores y peliculas.
+En el editor de código a continuación, realiza una consulta que muestre el nombre de los actores y los títulos de las películas en las que han actuado.
+¿El resultado del código coincide con tu dibujo? SI
+Select a.nombre, p.titulo
+from
+    actores a
+inner join
+    peliculas p
+on
+    a.actor_id = p.actor_id;
+
+--Left Join
+Al utilizar un LEFT JOIN, si en la tabla izquierda está la clave pero en la tabla derecha no, el registro de la tabla izquierda aparecerá en el resultado final con valores NULL en los campos de la tabla derecha.
+Inner join V.S Left join
+Para ilustrar la diferencia trabajaremos con las tablas usuarios y notas.
++-----------------------------+          +-----------------------------+
+|         usuarios            |          |           notas             |
++-----------------------------+          +-----------------------------+
+| email                       |----------| email                       |
+| nombre                      |          | notas                       |
+| edad                        |          |                             |
++-----------------------------+          +-----------------------------+
+Tabla usuarios
+
+email	nombre	edad
+juan.perez@example.com	Juan Pérez	30
+maria.gonzalez@example.com	Maria González	25
+john.doe@example.com	John Doe	40
+francisco@example.com	Test User	22
+Tabla notas
+
+email	notas
+juan.perez@example.com	90
+maria.gonzalez@example.com	100
+john.doe@example.com	80
+juan.perez@example.com	100
+maria.gonzalez@example.com	100
+
+Si hacemos un INNER JOIN entre las tablas usuarios y notas utilizando el campo email como clave, nos quedaremos con los siguientes registros:
+
+SELECT u.email, u.nombre, u.edad, n.notas
+FROM usuarios u
+INNER JOIN notas n ON u.email = n.email;
+email	nombre	edad	notas
+juan.perez@example.com	Juan Pérez	30	90
+juan.perez@example.com	Juan Pérez	30	100
+maria.gonzalez@example.com	Maria González	25	100
+maria.gonzalez@example.com	Maria González	25	100
+john.doe@example.com	John Doe	40	80
+Aquí veremos que francisco@example.com no aparece en el resultado final, ya que no tiene ninguna nota en el sistema. Sin embargo, si utilizamos un LEFT JOIN entre las tablas usuarios y notas, como el siguiente:
+
+SELECT u.email, u.nombre, u.edad, n.notas
+FROM usuarios u
+LEFT JOIN notas n ON u.email = n.email;
+Obtendremos los siguientes registros:
+
+email	nombre	edad	notas
+juan.perez@example.com	Juan Pérez	30	90
+juan.perez@example.com	Juan Pérez	30	100
+maria.gonzalez@example.com	Maria González	25	100
+maria.gonzalez@example.com	Maria González	25	100
+john.doe@example.com	John Doe	40	80
+francisco@example.com	Test User	22	NULL
+Al hacer un LEFT JOIN, el registro de francisco@example.com aparece en el resultado final con valores NULL en los campos de la tabla notas, puesto que Francisco no tiene ninguna nota en el sistema, sin embargo, está en la tabla de usuarios.
+
+**Realizando un LEFT JOIN**
+La sintaxis para utilizar LEFT JOIN es similar a INNER JOIN:
+SELECT * FROM tabla1 LEFT JOIN tabla2 ON tabla1.atributo = tabla2.atributo
+
+**Ejercicio**
+Ejercicio
+Se tiene una tabla llamada empleados y otra llamada *departamentos+. Utilizando lo aprendido, selecciona a todos los empleados junto a sus departamentos correspondientes, incluyendo a los empleados que aún no han sido asignados a ningún departamento. En ambas tablas existe la columna email.
+
++----------------------------+                   +----------------------------+
+|          empleados         |                   |        departamentos       |
++----------------------------+                   +----------------------------+
+| email                      |<----------------->| email                      |
+| nombre                     |                   | departamento               |
+| edad                       |                   +----------------------------+
++----------------------------+
+select *
+from
+    empleados e
+left join
+    departamentos d
+on e.email = d.email;
+
+--Left Join en diagrama de venn
+En el diagrama de Venn un LEFT JOIN se visualiza como el conjunto de la izquierda.
+Cuando hacemos una operación de Left Join entre la tabla A y la tabla B, en los resultados aparecerán todos los registros de la tabla A, incluso aquellos que no tienen una clave correspondiente en la tabla B. O sea podemos visualizar el Left Join como el conjunto de la izquierda en un diagrama de Venn.
+
+Analizando el resultado
+Adicionalmente viendo el diagrama de Venn podemos observar el resultado de la operación de Left Join entre las tablas productos y ventas. En el podemos ver:
+
+Los registros con id 1, 2 y 3 de la tabla productos aparecerán en los resultados del Left Join dado que los 3 están en el conjunto de la izquierda.
+Los registros con id 4 de la tabla ventas no aparecerán en los resultados del Left Join dado que no están en el conjunto de la izquierda.
+El registro 1 y 2 no aparecerán con datos de la tabla de venta ya que solo se encuentran en la tabla de la izquierda.
+El registro 3 aparecerá con los datos de la tabla venta ya que es el único que se encuentra en ambas tablas.
+**Ejercicio**
+Dada las siguientes tablas:
+
+Tabla Profesion
+
+id	Profesion
+1	Ingeniero
+2	Médico
+3	Abogado
+4	Arquitecto
+Tabla Personas
+
+id	Nombre	profesion_id
+1	Juan	1
+2	Maria	2
+3	Ana	3
+Se tiene una tabla llamada Personas que contiene el nombre de las personas y el id de la profesión a la que pertenecen. Se quiere obtener un listado de todas las profesiones y las personas que pertenecen a cada una de ellas. Si una profesión no tiene personas asociadas, se debe mostrar el nombre de la profesión y NULL en el campo Nombre. La tabla resultante sólo debe contener dos columnas: Profesion y Nombre.
+Select pr.profesion, pe.nombre
+from
+    profesion pr
+left join
+    personas pe
+on
+    pr.id = pe.profesion_id;
+
 
 
