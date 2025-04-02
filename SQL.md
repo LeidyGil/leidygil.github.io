@@ -1988,3 +1988,320 @@ from usuarios u
 left join notas n
 on u.email = n.email
 group by u.email;
+
+--Normalizacion
+--Introduccion a la primer forma normal
+Ideas clave
+La redundancia en una base de datos puede llevar a inconsistencias a la hora de identificar el dato correcto, actualizarlo o eliminarlo.
+La normalización es un proceso de eliminación de redundancia en una base de datos
+¿Qué es la normalización?
+La normalización es un proceso de eliminación de redundancia en una base de datos con el objetivo de prevenir inconsistencias. Este proceso consta de diversas etapas que, al aplicarse correctamente, permiten que la base de datos sea más eficiente y fácil de mantener. Cada una de estas etapas recibe el nombre de formas normales.
+Primera forma normal
+En la primera forma normal se busca que cada registro sea identificable de forma única en una tabla. Veamos un ejemplo de una tabla que no cumple con la primera forma normal:
+Nombre	Apellido	Estado_Civil
+Juan	Pérez	Casado
+María	González	Soltera
+Pedro	Rodríguez	Casado
+Juan	Pérez	Soltero
+María	González	Viuda
+Pedro	Rodríguez	Soltero
+Juan	Pérez	Divorciado
+María	González	Soltera
+Pedro	Rodríguez	Casado
+En esta tabla, si preguntamos por el estado civil de Juan Pérez, no sabríamos cuál es el correcto. Además, ¿es Juan Pérez una persona o son personas distintas y es una coincidencia que tengan el mismo nombre y apellido? Este es uno de los problemas que se busca solucionar con la primera forma normal.
+
+Ejercicio
+Supongamos que cada combinación de nombre y apellido de la tabla personas, previamente descrita, corresponde a una única persona, y el último registro de cada persona es el correcto. Borra los registros incorrectos.
+Hay formas de hacerlo automático, pero puedes simplemente borrar los registros incorrectos uno por uno separando las consultas con punto y coma. Es un trabajo tedioso, pero no olvidarás la lección de tener tablas que cumplan con la primera forma normal.
+--Esta es una manera asumiendo que se tienen IDs incrementales, si no se puede hacer uno por uno
+DELETE from personas
+where ID not in (
+    select max(ID)
+    from personas
+    group by nombre, apellido);
+)
+
+--Convirtiendo a 1fn
+En primera forma normal debería haber una clave primaria que identifique de forma única a cada registro en una tabla.
+En esta ocasión vamos a suponer que cada combinación de nombre y apellido de la tabla personas corresponde a una única persona, por lo tanto Juan Pérez con estado civil Casado, Soltero y Divorciado, son personas distintas. Para convertir esta tabla en primera forma normal agregaremos una clave primaria que identifique de forma única a cada registro.
+En SQLite no podemos agregar una clave primaria a una tabla que ya tiene datos, por lo que tendremos que crear una nueva tabla con la clave primaria y luego insertar los datos de la tabla original en la nueva tabla.
+
+CREATE TABLE personas2 (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  nombre TEXT NOT NULL,
+  apellido TEXT NOT NULL,
+  estado_civil TEXT NOT NULL
+);
+
+/* Seleccionamos los datos de personas y lo insertamos en personas2 */
+INSERT INTO personas2 (nombre, apellido, estado_civil)
+SELECT nombre, apellido, estado_civil
+FROM personas;
+
+/* Borramos la tabla personas */
+DROP TABLE personas;
+
+/* Renombramos la tabla personas2 a personas */
+ALTER TABLE personas2 RENAME TO personas;
+
+Ejercicio:
+Create table productos2 (
+    id integer primary key autoincrement,
+    producto text not null,
+    Categoría text not null,
+    precio double not null
+);
+
+Insert into productos2 (producto, Categoría, precio)
+select producto, Categoría, precio from productos;
+
+Drop table productos;
+
+Alter table productos2 rename to productos;
+
+--Grupos repetitivos
+Los grupos repetitivos son un indicio de que una tabla no cumple con la primera forma normal.
+¿Qué son los grupos repetitivos?
+Los grupos repetitivos son un conjunto de campos que se repiten en una tabla. Por ejemplo, si en una tabla se tienen los campos telefono1, telefono2 y telefono3, se podría considerar que estos campos forman un grupo repetitivo.
+id	nombre	apellido	telefono1	telefono2	telefono3
+1	Juan	Pérez	12345678	87654321	45678912
+2	María	González	23456789	98765432	56789123
+Existen diversos problemas asociados a los grupos repetitivos, pero en este caso puntual hay dos problemas evidentes:
+¿Qué pasa si una persona tiene más de tres teléfonos? ¿Se debería modificar la tabla para agregar un campo telefono4, telefono5, etc.? ¿Cuál es el límite?
+Si la mayoría de las personas solo tienen un teléfono, ¿cómo se maneja la información de los campos telefono2 y telefono3? ¿Se dejan en blanco? ¿Se les asigna un valor nulo? Probablemente terminemos con una gran cantidad de campos vacíos.
+Resolver el problema de los grupos repetitivos es un paso importante en la normalización de una base de datos. En este caso, se podría crear una tabla telefonos que contenga los teléfonos de las personas y se relacione con la tabla personas, quedando de la siguiente manera:
+
+tabla personas:
+id	nombre	apellido
+1	Juan	Pérez
+2	María	González
+tabla telefonos:
+id_persona	telefono
+1	12345678
+1	87654321
+1	45678912
+2	23456789
+2	98765432
+2	56789123
+De esta forma, se puede tener un número arbitrario de teléfonos por persona sin necesidad de modificar la estructura de la tabla personas.
+
+Ejercicio
+Dada la siguiente tabla, identifica los grupos repetitivos y propón una solución para normalizar la tabla.
+tabla empleados_desnormalizado:
+id	nombre	apellido	proyecto1	proyecto2	proyecto3
+1	Juan	Pérez	1	2	3
+Identifica los grupos repetitivos en la tabla empleados_desnormalizado. - El grupo repetitivo es el Proyecto
+Crea las tablas empleados y proyectos en primera forma normal para que permitan almacenar la información de los empleados y los proyectos en una estructura normalizada.
+Ingresa la información de la tabla empleados_desnormalizado en las tablas normalizadas.
+Crea una consulta que muestre la información de los empleados y los proyectos a los que están asignados en una estructura normalizada. Las columnas de la consulta deben ser nombre, apellido y id_proyecto.
+
+Create table empleados(
+    id integer primary key autoincrement,
+    nombre text not null,
+    apellido text not null
+);
+
+Create table proyectos(
+    id_proyecto integer primary key,
+    id_empleado integer,
+    foreign key (id_empleado) references empleados (id)
+);
+
+Insert into empleados (nombre, apellido) values ('juan', 'Pérez');
+Insert into proyectos (id_proyecto, id_empleado) values (1,1),(2,1),(3,1);
+
+Select e.nombre, e.apellido, p.id_proyecto
+from
+    empleados e
+join
+    proyectos p
+on 
+    e.id = p.id_empleado;
+
+--Grupos repetitivos parte 2
+Hay más de un forma de tener grupos repetitivos en una tabla
+Grupos repetitivos
+Los grupos repetitivos son conjuntos de campos que se repiten dentro de una tabla. Sin embargo, existen varias formas en las que estos grupos repetitivos pueden aparecer en una tabla.
+
+En el ejercicio anterior, se vio un ejemplo de un grupo repetitivo en el que se tenían varios campos con el mismo propósito. Por ejemplo: telefono1, telefono2 y telefono3. Otra forma de tener grupos repetitivos es tener varios valores en un solo campo.
+Los problema asociados a esta forma de grupos repetitivos son distintos:
+
+Al modificar el teléfono de una persona, se debe modificar el campo Teléfonos que tiene varios registros y podríamos olvidar alguno o pasarlo a llevar por error.
+Al tener los datos almacenados de esta forma es difícil saber cuanto teléfonos tiene cada persona.
+Los teléfonos podrían tener distintos formatos y sería difícil establecer una restricción para que todos los teléfonos tengan el mismo formato.
+Verificar si el mismo teléfono está asignado a más de una persona también se vuelve más complicado que al tener la tabla desnormalizada.
+
+Por ejemplo, si quisiéramos contar la cantidad de teléfonos de cada persona, podríamos contar la cantidad de símbolos + en el campo Teléfonos. Para lograr esto, podemos calcular la cantidad total de caracteres en el campo Teléfonos y restarle la cantidad de caracteres en el mismo campo después de eliminar los símbolos +.
+
+SELECT
+    id,
+    nombre_completo,
+    LENGTH(telefonos) - LENGTH(REPLACE(telefonos, '+', '')) AS cantidad_telefonos
+FROM
+    personas;
+Como se observa, es mucho más complicado que simplemente contar los registros de una tabla.
+
+Ejercicio
+
+El ejercicio se soluciona de la siguiente manera porque no productos en blanco, pero si hubieran, el error estaria incorrecto, porque estoy sumando 1 al final del conteo
+Select
+id, productos, length(productos) - length(replace(productos, ' ', '')) +1
+from pedidos;
+
+Si se quiere validar cuando el campo productos haya algun campo en blanco se podria utilizar el siguiente query.
+SELECT
+    id,
+    productos,
+    CASE 
+        WHEN LENGTH(productos) = 0 THEN 0
+        ELSE LENGTH(productos) - LENGTH(REPLACE(productos, ' ', '')) + 1 
+    END AS cantidad_productos
+FROM
+    pedidos;
+
+--Grupos repetitivos parte 3
+Ideas clave
+Los grupos repetitivos son un indicio de que una tabla no cumple con la primera forma normal.
+Hay grupos repetitivos cuando tienes columnas que se repiten en una tabla, ejemplo: proyecto1, proyecto2, proyecto3.
+Hay grupos repetitivos cuando tienes dentro de un campo varios valores, ejemplo: producto1 producto2 producto3.
+Finalmente hay grupos repetitivos cuando tienes columnas que se repiten en varias filas, ejemplo: nombre, `apellido
+Veamos por ejemplo la tabla departamentos:
+
+nombre_departamento	nombre_persona	apellido_persona
+Recursos Humanos	Ana	Pérez
+TI	Pedro	Rodríguez
+TI	Luis	González
+Marketing	Marta	López
+Marketing	Elena	Pérez
+La tabla anterior, aunque sea un poco más difícil de evidenciar, también tiene grupos repetitivos. Dado que nombre_departamento se repite en varias filas para distintas personas.
+
+Por ejemplo esto mismo podría estar como
+
+nombre_departamento	personas
+Recursos Humanos	Ana Pérez
+TI	Pedro Rodríguez, Luis González
+Marketing	Marta López, Elena Pérez
+O como:
+
+nombre_departamento	Nombre Persona 1	Nombre Persona 2	Nombre Persona 3
+Recursos Humanos	Ana		
+TI	Pedro	Luis	
+Marketing	Marta	Elena	
+Los problemas asociados a los grupos repetitivos son similares a los que se presentan en los ejercicios anteriores.
+
+Si se quiere cambiar el nombre de un departamento, se tendría que cambiar en todas las filas que correspondan a ese departamento.
+O un departamento podría quedar escrito de distintas formas, por ejemplo, TI, T.I., Tecnologías de la Información, etc. Y sería difícil establecer una restricción para que todos los departamentos tengan el mismo nombre.
+Para eliminar los grupos repetitivos de esta tabla, se debe crear una nueva tabla Personas separada de la tabla Departamentos que relacione a las personas con los departamentos.
+Deparamentos:
+
+id	nombre_departamento
+1	Recursos Humanos
+2	TI
+3	Marketing
+Personas:
+
+id	nombre_persona	apellido_persona	departamento_id
+1	Ana	Pérez	1
+2	Pedro	Rodríguez	2
+3	Luis	González	2
+4	Marta	López	3
+5	Elena	Pérez	3
+
+Ejercicio Didáctico
+Con las tablas normalizadas de Departamentos y Personas. Muestra todos los departamentos y cuántas personas trabajan en cada uno. Las columnas deben llamarse nombre_departamento y cantidad_personas.
+Select d.nombre_departamento, count(p.id) as cantidad_personas
+from departamentos d
+join personas p
+on d.id = p.departamento_id
+group by nombre_departamento;
+
+--Dependencias parciales
+En primera forma normal debe haber una clave primaria que identifique de forma única a cada registro en una tabla.
+En la segunda forma normal no deben existir dependencias parciales, o sea que cada columna de una tabla debe depender de la clave primaria completa y no de una parte de ella.
+Dependencias parciales
+Una dependencia parcial es cuando una columna depende de solo una parte de la clave primaria. Esto por supuesto solo aplica a tablas con claves primarias compuestas.
+
+Veamos un ejemplo de una tabla que tiene dependencias parciales:
+
+Se tiene un sistema de registro de notas guardado en una única tabla llamada notas. La tabla tiene la siguiente estructura:
+
+ID de estudiante	ID de curso	Nombre del estudiante	Nombre del curso	Nota
+1	101	Juan	Matemáticas	90
+1	102	Juan	Historia	85
+2	101	Ana	Matemáticas	95
+2	103	Ana	Ciencia	88
+En esta tabla tenemos una clave primaria compuesta por ID de estudiante e ID de curso. Esta combinación de columnas identifica de manera única a cada fila, dado que para este ejemplo un estudiante no puede estar en el mismo curso dos veces.
+
+Las dependencias parciales ocurren cuando un campo como Nombre del estudiante depende solo de ID de estudiante y no de ID de curso. O sea depende de una parte de la clave primaria y no de la clave primaria completa, por lo mismo se le llama dependencia parcial.
+
+¿Por qué es importante eliminar las dependencias parciales?
+Las dependencias parciales pueden causar problemas de actualización y eliminación de datos. Por ejemplo, si se cambia el nombre de un estudiante, se tendría que cambiar en todas las filas que correspondan a ese estudiante. O si se elimina un estudiante, se perdería la información de las notas asociadas a ese estudiante.
+
+Eliminar dependencias parciales
+Para llegar a la segunda forma normal (2FN) se deben identificar todas las dependencias parciales.
+
+Nombre del estudiante es parcial porque depende solo de ID de estudiante y no de la clave primaria completa
+Nombre del curso es parcial porque depende solo de ID de curso y no de la clave primaria completa
+El siguiente paso es separar la tabla notas en dos tablas adicionales, una para los estudiantes y otra para los cursos.
+
+Tabla estudiantes
+
+ID_de_estudiante	Nombre_del_estudiante
+1	Juan
+2	Ana
+Tabla cursos
+
+ID_de_curso	Nombre_del_curso
+101	Matemáticas
+102	Historia
+103	Ciencia
+Luego se debe eliminar las columnas Nombre del estudiante y Nombre del curso de la tabla notas y agregar las claves foráneas ID de estudiante e ID de curso respectivamente.
+
+Tabla notas
+
+ID_de_estudiante	ID_de_curso	Nota
+1	101	90
+1	102	85
+2	101	95
+2	103	88
+
+Ejercicio:
+Dada las tablas estudiantes y cursos y notas normalizadas, crea una consulta que muestre el nombre del estudiante, el nombre del curso y la nota que ha obtenido cada estudiante en cada curso. Las columnas deben llamarse nombre_estudiante, nombre_curso y nota.
+
+Select e.nombre_del_estudiante, c.nombre_del_curso, n.nota
+from estudiantes e
+join notas n
+on e.id_de_estudiante = n.id_de_estudiante
+join cursos c
+on n.id_de_curso = c.id_de_curso;
+
+--Dependencias transitivas
+En la tercera forma normal no deben existir dependencias transitivas, o sea que una columna no puede depender de otra que no sea la clave primaria.
+Qué son las dependencias transitivas
+Las dependencias transitivas ocurren cuando una columna depende de otra que no es la clave primaria de manera indirecta. En otras palabras, si la columna A depende de la columna B y la columna B depende de la clave primaria, entonces la columna A depende transitivamente de la clave primaria.
+
+Por ejemplo, consideremos la siguiente tabla Peliculas:
+
+ID	Película	Director	Nacionalidad Director
+1	El Padrino	Francis Ford Coppola	Estadounidense
+2	Ciudad de Dios	Fernando Meirelles	Brasileño
+3	El Laberinto del Fauno	Guillermo del Toro	Mexicano
+4	Amélie	Jean-Pierre Jeunet	Francés
+5	Parasite	Bong Joon-ho	Coreano
+En esta tabla, podemos observar que la columna Nacionalidad Director depende de la columna Director. A su vez, Director depende de la clave primaria ID. Por lo tanto, Nacionalidad Director depende indirectamente de la clave primaria ID, lo que implica que hay una dependencia transitiva.
+
+Este tipo de dependencia es importante de identificar y gestionar, especialmente en el contexto de la normalización de bases de datos, para evitar redundancias y asegurar la integridad de los datos.
+
+Ejercicio
+A partir de la siguiente tabla en 2FN, llamada Músicos, identifica las dependencias transitivas y propón una solución para normalizarla:
+
+id	pais	musico	edad_musico
+1	Estados Unidos	Beyoncé	42
+2	Brasil	Gilberto Gil	81
+3	Francia	David Guetta	56
+4	India	A. R. Rahman	57
+5	Corea del Sur	RM	29
+Las tablas normalizadas deberían ser paises y musicos . Manten los nombres de los músicos y países en la tabla musicos. La claves primarias deben llamarse id en ambas tablas y la clave foránea debe llamarse pais_id.
+
+Ingresa los datos normalizados en las tablas correspondientes.
+
