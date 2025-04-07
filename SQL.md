@@ -2304,4 +2304,26 @@ id	pais	musico	edad_musico
 Las tablas normalizadas deberían ser paises y musicos . Manten los nombres de los músicos y países en la tabla musicos. La claves primarias deben llamarse id en ambas tablas y la clave foránea debe llamarse pais_id.
 
 Ingresa los datos normalizados en las tablas correspondientes.
+Create Table paises(
+    id integer primary key,
+    pais text
+);
 
+Insert into paises(id, pais)
+values (1, 'Estados Unidos'), (2, 'Brasil'), (3, 'Francia'), (4, 'India'), (5, 'Corea del Sur');
+
+Create Table musicos(
+    id integer primary key,
+    musico text,
+    edad_musico integer,
+    pais_id integer,
+    foreign key (pais_id) references paises(id)
+);
+
+Insert into musicos (id, musico, edad_musico, pais_id)
+values (1, 'Beyoncé', 42, 1), (2, 'Gilberto Gil', 81, 2), (3, 'David Guetta', 56, 3), (4, 'A. R. Rahman', 57, 4), (5, 'RM', 29, 5);
+
+Select musicos.id, paises.pais
+from paises
+join musicos
+on paises.id = musicos.pais_id;
