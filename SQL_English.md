@@ -1,4 +1,5 @@
 [Home](index.md)
+> Knowledge aquired with the free course in Desafio Latam platform [https://sqlinteractivo.desafiolatam.com/cursos]
 
 # SQL Queries and Functions
 
