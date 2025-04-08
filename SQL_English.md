@@ -15,274 +15,319 @@ SELECT lower(email) as email_lower FROM users;
 ```
 
 ### Removing whitespace FROM a string
+```sql
 SELECT trim(name), trim(email) FROM users;
-
+```
 ### Combining functions
+```sql
 SELECT lower(trim(name)) as clean_name, lower(trim(lastname)) as clean_lastname, lower(trim(email)) as clean_email FROM users;
-
+```
 ### Getting the length of a string
+```sql
 SELECT length(lastname) FROM users;
 SELECT lastname, length(lastname) FROM users;
+```
 
 ### Getting the longest name in the table
-For example, if we want to SELECT the length of the shortest name in the users table, the query would be:
-
+For example, if we want to select the length of the shortest name in the users table, the query would be:
+```sql
 SELECT LENGTH(name) as name_length FROM users ORDER BY LENGTH(name) LIMIT 1 ;
-
-On the other hand, if we want to get the length of the longest name, we will reverse the order of the SELECTion.
-
+```
+On the other hand, if we want to get the length of the longest name, we will reverse the order of the selection.
+```sql
 SELECT LENGTH(name) as name_length FROM users ORDER BY LENGTH(name) DESC LIMIT 1 ;
-
 SELECT length(email) FROM users ORDER BY length(email) desc LIMIT 3;
+```
 
 ### Ordering all data and the function
 we are asked for the longest email instead of just its length
+```sql
 SELECT email FROM users ORDER BY LENGTH(email) DESC LIMIT 1;
-
-Additionally, we may be asked to SELECT all fields of the user whose email is the longest. To achieve this, we can use the following query:
+```
+Additionally, we may be asked to select all fields of the user whose email is the longest. To achieve this, we can use the following query:
+```sql
 SELECT * FROM users ORDER BY LENGTH(email) DESC LIMIT 1;
-
-Also, they may require us to SELECT all fields of the table and additionally include the length of the email. The idea is similar, we simply add the function to the SELECT:
+```
+Also, they may require us to select all fields of the table and additionally include the length of the email. The idea is similar, we simply add the function to the select:
+```sql
 SELECT *, LENGTH(email) as email_length FROM users ORDER BY LENGTH(email) DESC LIMIT 1;
-
 SELECT email, length(email) FROM users ORDER BY length(email) desc LIMIT 3;
+```
 
 ### Concatenating strings
+```sql
 SELECT name || ' ' || lastname AS full_name FROM employees;
-
 SELECT product || '-' || brand as brand_product FROM products;
+```
 
 ### Selecting characters FROM a string with SUBSTR
+```sql
 SUBSTR( string, start, length )
-In the syntax, we can see that the function has 3 arguments. 1. String: the name of the column or word that will be used 2. Start: an integer that specifies the starting position FROM the[...]
+```
+In the syntax, we can see that the function has 3 arguments:
+    1. String: the name of the column or word that will be used 
+    2. Start: an integer that specifies the starting position from which characters will be extracted from the string. 
+    3. Length: the number of characters extracted
 
-For example, if we have a products table with the field 'name' and want to SELECT only the first letter of each name, we can use the following query:
+For example, if we have a products table with the field 'name' and want to select only the first letter of each name, we can use the following query:
+```sql
 SELECT SUBSTR(name, 1, 1) AS first_letter FROM products;
-to achieve the same goal in PostgreSQL, we should use the LEFT() function
-
+> to achieve the same goal in PostgreSQL, we should use the LEFT() function
 SELECT substr(lastname, 1, 3) as first_letters FROM users;
 SELECT substr(lastname, 2, 3) as three_characters_of_lastname FROM users
 WHERE name like 'Mar%';
+```
 
 ## Operations with date
 ### Getting today's date
 DATE() we can get today's date.
-In MySQL, CURDATE() is used, and in Microsoft SQL Server, GETDATE() is used. When looking for documentation, it is important to specify which engine is being used. In this interactive tutorial we are[...].
-
+In MySQL, CURDATE() is used, and in Microsoft SQL Server, GETDATE() is used. When looking for documentation, it is important to specify which engine is being used. We are using SQLite
+```sql
 SELECT * FROM users WHERE registration_date = DATE(); -- both bring information about today's date
 SELECT * FROM users WHERE registration_date = DATE('now');
-
 SELECT description FROM tasks WHERE deadline = DATE();
-
+```
 ### Getting tomorrow's date
 In SQL, it is possible to add dates to get future dates. In SQLite we can achieve this by passing a second argument to the DATE function
+```sql
 DATE('now', '1 day')
-In this example, we are adding 1 day to today's date (now). If we want to add more days, for example, 5 days, we will use DATE('now', '5 day').
+```
+In this example, we are adding 1 day to today's date (now). If we want to add more days, for example, 5 days, we will use 
+```sql
+DATE('now', '5 day')
+```
 It is also possible to add weeks and months with:
+```sql
 2 Weeks: DATE('now', '2 week') 3 Months: DATE('now', '3 month')
+```
 In a query, this would look as follows:
+```sql
 SELECT * FROM table WHERE date > DATE('now', '2 week')
-
 SELECT * FROM tasks WHERE deadline = DATE('now','1 day');
-
+```
 ### Getting yesterday's date
 Just as it is possible to add dates, it is also possible to subtract them:
+```sql
 DATE('now', '-1 day') DATE('now', '-1 week')
+```
 It is important to clarify that when we do not specify the sign, it is assumed to be positive, meaning that
+```sql
 DATE('now', '1 day')
-is the same as
+> is the same as
 DATE('now', '+1 day')
-
+```
+```sql
 SELECT amount FROM earnings WHERE date = DATE('now','-1 day');
-
+```
 ### Extracting the year
 We are asked to show all the information in the table and additionally add a column with the year of the sale.
+```sql
 SELECT *, strftime('%Y', sale_date) as sale_year FROM sales
+```
 To display the results of this type of function, it is necessary to assign a name to the new column, otherwise, the resulting column will retain the name "strftime('%Y', sale_d[...].
-
+```sql
 SELECT amount, strftime('%Y',sale_date) as sale_year FROM sales;
-
+```
 ### Extracting the month
+```sql
 SELECT strftime('%m', column) FROM table
+```
 In this case, to get the month, we pass %m as an argument to the strftime function.
-
+```sql
 SELECT amount, strftime('%m',sale_date) as sale_month, strftime('%Y',sale_date) as sale_year FROM sales;
-
+```
 ### Extracting both the month and year
 We have learned to extract the month and the year FROM a date. However, how could we extract both data in a single column?
 To extract both the month and the year FROM a date in a single column, you can use the function strftime('%m-%Y'). This will allow you to get a result in the format "month-year".
-
+```sql
 SELECT amount, strftime('%m-%Y',sale_date) as month_year FROM sales;
-
+```
 ### Extractions and WHERE
 We are asked to show all sales FROM the year 2012. For this, we will use the strftime function to extract the year FROM the dates, and then filter by the indicated year:
+```sql
 SELECT * FROM sales WHERE strftime('%Y', sale_date) = '2012';
-
 SELECT * FROM sales WHERE strftime('%Y',sale_date) = '2015';
+```
 
 ## Aggregation functions
 ### The highest value in a column
 the function MAX() which allows us to find the highest value in the specified field.
+```sql
 SELECT MAX(column) FROM table
+```
 We can find the highest salary using:
+```sql
 SELECT MAX(salary) FROM employees;
-When we use aggregation functions, we cannot directly SELECT other items FROM the same table. For example, SELECT email, MAX(salary) FROM employees; would result in an error because we would be[...]
-
+```
+When we use aggregation functions, we cannot directly select other items FROM the same table. 
+For example, 
+```sql
+SELECT email, MAX(salario) FROM empleados; would throw an error because we would be selecting email along with the function.
 SELECT MAX(age) FROM employees;
-
+```
 ### The lowest value in a column
 This function takes as an argument the name of the column and returns the smallest value in that column.
+```sql
 SELECT MIN(column) FROM table
-
 SELECT MIN(salary) FROM employees;
-
+```
 ### Sum of elements in a column
 SUM(). With this, we can sum all the elements of a column.
 SELECT SUM(column) FROM table
 It is important to note that the column on which the SUM() function is applied must contain numerical values, otherwise, the query may generate an error or an unexpected result.
-
+```sql
 SELECT sum(salary) FROM employees;
-
+```
 ### Average of a column
 AVG(). The name of the function comes FROM the English term average
 SELECT AVG(column) FROM table
-
+```sql
 SELECT AVG(salary) FROM employees;
-
+```
 ### Counting elements in a table
 COUNT(). With this, we can count the number of records in a table.
 SELECT COUNT(*) FROM table
-
+```sql
 SELECT count(*) FROM employees;
-
+```
 --Exercise 1: Aggregation functions with WHERE
+```sql
 SELECT AVG(column1) FROM table WHERE column2 < value
 SELECT sum(salary) FROM employees WHERE age > '27'
-
+```
 --Exercise 2: Aggregation functions with WHERE
+```sql
 SELECT AVG(salary) FROM employees WHERE salary > '50000'
-
+```
 --Exercise 3
+```sql
 SELECT count(*) FROM employees WHERE department = 'Marketing'
-
+```
 --Exercise 4:
 And is exclusive. when you want to filter by multiple values in a column, you must use OR instead of AND
-
+```sql
 SELECT count(*) FROM employees 
 WHERE department = 'Finance'
 or department = 'Marketing';
-
+```
 ### Counting with string conditions
+```sql
 SELECT count(*) FROM users WHERE name like'%a'
+```
 
 ## Distinct
 ### Selecting and filtering repeated data
 In SQL, the DISTINCT keyword allows us to filter repeated results FROM a query.
+```sql
 SELECT DISTINCT color AS unique_color
 FROM colors
-
 SELECT distinct color as unique_color FROM colors;
-
+```
 ### Selecting unique emails
+```sql
 SELECT distinct email as unique_email FROM users;
-
+```
 ### Selecting distinct years
 We are asked to create a query that shows the years in which transactions have been made, excluding repetitions.
 As we learned in previous exercises, to get the year FROM the sale date, we can use the following code:
+```sql
 SELECT strftime('%Y', sale_date) as sale_year FROM sales
+```
 However, to ensure we obtain unique years, we can add the DISTINCT clause to our query as follows:
+```sql
 SELECT DISTINCT strftime('%Y', sale_date) as unique_year FROM sales
-
 SELECT distinct strftime('%m', sale_date) as unique_month FROM sales;
-
+```
 ### Counting distinct values
 If we want to count the distinct values in a column of a table, we can combine the COUNT and DISTINCT functions as follows:COUNT(DISTINCT column)
-
+```sql
 SELECT count(distinct phone) as unique_phones FROM users;
-
+```
 ### Counting unique emails
+```sql
 SELECT count(distinct email) as email_count FROM users;
-
+```
 ### Distinct with multiple columns
 We can use DISTINCT with more than one column to obtain unique combinations of those columns. Suppose you have a table called employees with the columns department and position.
 We can then get all the unique combinations of Department and Position using the following query:
+```sql
 SELECT DISTINCT department, position FROM employees;
-
 SELECT distinct category, price FROM products;
-
+```
 ## Introduction to Groups
 ### Grouping values with GROUP BY
 The GROUP BY clause is a powerful tool in SQL that is used to group rows with identical values in one or more specific columns, allowing for aggregation operations[...]
 In this first exercise, we will learn to use GROUP BY to get all the distinct elements of a table, the same as we previously did with distinct.
-
 We can select unique elements using GROUP BY as follows:
+```sql
 SELECT color as unique_color FROM colors GROUP BY color
-
 SELECT email as unique_email FROM users group by email;
-
+```
 ### Grouping and counting
 GROUP BY is commonly used together with aggregation functions such as COUNT, MAX, MIN, SUM, and AVG to obtain summarized information FROM a dataset.
 We want to know how many times each color appears. We can achieve this by combining GROUP BY and the aggregation function COUNT
+```sql
 SELECT color, COUNT(color) as Repetitions FROM colors GROUP BY color
-
 SELECT email, count(email) as repetitions FROM users group by email;
-
+```
 --Practicing grouping and counting
+```sql
 SELECT department, count(department) as employee_count FROM employees group by department;
-
+```
 ### Grouping and summing
 If we want to calculate how much each customer has spent, we can perform the following query
+```sql
 SELECT Customer, SUM(Amount) AS Total_Amount FROM orders GROUP BY Customer;
-
 SELECT category, SUM(amount) as total_amount FROM sales group by category;
-
+```
 ### Grouping and averaging
 calculating averages by group.
+```sql
 SELECT group, AVG(column) FROM table GROUP by group
-
 SELECT full_name, AVG(grade) as Grade_Average FROM students group by full_name;
-
+```
 ### Maximum by group
 getting the highest amount in each group. The syntax of the query will be the same as seen previously, i.e.:
+```sql
 SELECT group, MAX(column) FROM table GROUP by group
-
 SELECT category, MAX(amount) as highest_amount FROM sales group by category;
-
+```
 ### Minimum by group
 getting the lowest amount in each group. The syntax of the query will be the same as seen previously, i.e.:
+```sql
 SELECT group, MIN(column) FROM table GROUP by group
-
 SELECT category, MIN(amount) as lowest_amount FROM sales group by category;
-
+```
 ### Aggregation functions and dates
 When building reports, we frequently need to deliver information grouped by a period of time. To achieve this, we will use a combination of GROUP BY with the strftim[...]
 We are asked to determine the total amount of sales per year. To solve this, we have to group by date and sum the amounts as follows:
+```sql
 SELECT SUM(amount), strftime("%Y", sale_date) AS year FROM sales GROUP BY strftime("%Y", sale_date)
-
 SELECT sum(amount) as sale_sum, strftime('%m', sale_date) as month FROM sales group by strftime('%m', sale_date);
-
 SELECT strftime('%m',registration_date) as month, count(registration_date) as user_count FROM registrations group by strftime('%m', registration_date);
-
+```
 ### Grouping without specifying column names
 When it comes to grouping data in an SQL query, there is a way to avoid the redundancy of the SELECT clause. For example, consider the following query:
+```sql
 SELECT strftime("%Y", sale_date) AS year, SUM(amount) FROM sales GROUP BY strftime("%Y", sale_date)
-You can simplify it as follows:
+> You can simplify it as follows:
 SELECT strftime("%Y", sale_date) AS year, SUM(amount) FROM sales GROUP BY 1
-This notation is interpreted as "group by the first criterion". It is also possible to apply this syntax in the ORDER BY clause:
+> This notation is interpreted as "group by the first criterion". It is also possible to apply this syntax in the ORDER BY clause:
 SELECT strftime("%Y", sale_date) AS year, SUM(amount) FROM sales GROUP BY 1 ORDER BY 1
-This way, you can achieve the same grouping and ordering without repeating the SELECT clause expression.
-
+> This way, you can achieve the same grouping and ordering without repeating the SELECT clause expression.
 SELECT email, count(email) as repetitions FROM users group by 1 ORDER BY 1;
-
+```
 ### Grouping by multiple columns
 In SQL, it is possible to group by multiple columns using the following syntax:
+```sql
 SELECT column1, column2, aggregation_function(column3) FROM table GROUP BY column1, column2
-And as we learned in the previous exercise, we can also write the query as follows:
+> And as we learned in the previous exercise, we can also write the query as follows:
 SELECT column1, column2, aggregation_function(column3) FROM table GROUP BY 1, 2
-
+```
 Calculate the average of each student in each subject. The columns should be named email, subject, and grade_average
+```sql
 SELECT email, subject, avg(grade) as grade_average FROM students group by 1,2;
-
+```
 ## Having
 ### Introduction to Having
 In SQL, the GROUP BY clause allows us to group data. If we want to filter the obtained information, we will use HAVING.
