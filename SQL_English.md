@@ -15,7 +15,7 @@ SELECT upper(email) as email_upper FROM users;
 SELECT lower(email) as email_lower FROM users;
 ```
 
-### Removing whitespace FROM a string
+### Removing whitespace from a string
 ```sql
 SELECT trim(name), trim(email) FROM users;
 ```
@@ -138,13 +138,13 @@ In this case, to get the month, we pass %m as an argument to the strftime functi
 SELECT amount, strftime('%m',sale_date) as sale_month, strftime('%Y',sale_date) as sale_year FROM sales;
 ```
 ### Extracting both the month and year
-We have learned to extract the month and the year FROM a date. However, how could we extract both data in a single column?
-To extract both the month and the year FROM a date in a single column, you can use the function strftime('%m-%Y'). This will allow you to get a result in the format "month-year".
+We have learned to extract the month and the year from a date. However, how could we extract both data in a single column?
+To extract both the month and the year from a date in a single column, you can use the function strftime('%m-%Y'). This will allow you to get a result in the format "month-year".
 ```sql
 SELECT amount, strftime('%m-%Y',sale_date) as month_year FROM sales;
 ```
-### Extractions and WHERE
-We are asked to show all sales FROM the year 2012. For this, we will use the strftime function to extract the year FROM the dates, and then filter by the indicated year:
+### Extractions and Where
+We are asked to show all sales from the year 2012. For this, we will use the strftime function to extract the year from the dates, and then filter by the indicated year:
 ```sql
 SELECT * FROM sales WHERE strftime('%Y', sale_date) = '2012';
 SELECT * FROM sales WHERE strftime('%Y',sale_date) = '2015';
@@ -160,7 +160,7 @@ We can find the highest salary using:
 ```sql
 SELECT MAX(salary) FROM employees;
 ```
-When we use aggregation functions, we cannot directly select other items FROM the same table. 
+When we use aggregation functions, we cannot directly select other items from the same table. 
 For example, 
 ```sql
 SELECT email, MAX(salario) FROM empleados; would throw an error because we would be selecting email along with the function.
@@ -191,7 +191,7 @@ SELECT COUNT(*) FROM table
 ```sql
 SELECT count(*) FROM employees;
 ```
---Exercise 1: Aggregation functions with WHERE
+--Exercise 1: Aggregation functions with Where
 ```sql
 SELECT AVG(column1) FROM table WHERE column2 < value
 SELECT sum(salary) FROM employees WHERE age > '27'
@@ -218,7 +218,7 @@ SELECT count(*) FROM users WHERE name like'%a'
 
 ## Distinct
 ### Selecting and filtering repeated data
-In SQL, the DISTINCT keyword allows us to filter repeated results FROM a query.
+In SQL, the DISTINCT keyword allows us to filter repeated results from a query.
 ```sql
 SELECT DISTINCT color AS unique_color
 FROM colors
@@ -230,7 +230,7 @@ SELECT distinct email as unique_email FROM users;
 ```
 ### Selecting distinct years
 We are asked to create a query that shows the years in which transactions have been made, excluding repetitions.
-As we learned in previous exercises, to get the year FROM the sale date, we can use the following code:
+As we learned in previous exercises, to get the year from the sale date, we can use the following code:
 ```sql
 SELECT strftime('%Y', sale_date) as sale_year FROM sales
 ```
@@ -308,14 +308,14 @@ SELECT sum(amount) as sale_sum, strftime('%m', sale_date) as month FROM sales gr
 SELECT strftime('%m',registration_date) as month, count(registration_date) as user_count FROM registrations group by strftime('%m', registration_date);
 ```
 ### Grouping without specifying column names
-When it comes to grouping data in an SQL query, there is a way to avoid the redundancy of the SELECT clause. For example, consider the following query:
+When it comes to grouping data in an SQL query, there is a way to avoid the redundancy of the select clause. For example, consider the following query:
 ```sql
 SELECT strftime("%Y", sale_date) AS year, SUM(amount) FROM sales GROUP BY strftime("%Y", sale_date)
 > You can simplify it as follows:
 SELECT strftime("%Y", sale_date) AS year, SUM(amount) FROM sales GROUP BY 1
 > This notation is interpreted as "group by the first criterion". It is also possible to apply this syntax in the ORDER BY clause:
 SELECT strftime("%Y", sale_date) AS year, SUM(amount) FROM sales GROUP BY 1 ORDER BY 1
-> This way, you can achieve the same grouping and ordering without repeating the SELECT clause expression.
+> This way, you can achieve the same grouping and ordering without repeating the select clause expression.
 SELECT email, count(email) as repetitions FROM users group by 1 ORDER BY 1;
 ```
 ### Grouping by multiple columns
@@ -333,7 +333,7 @@ SELECT email, subject, avg(grade) as grade_average FROM students group by 1,2;
 ### Introduction to Having
 In SQL, the GROUP BY clause allows us to group data. If we want to filter the obtained information, we will use HAVING.
 HAVING is used to filter the results of a query that involves aggregated functions. In other words, HAVING allows applying filtering conditions to the results of functions like COUNT[...]
-We are asked to create a report showing the months and the number of enrollees, but only WHERE there are 2 or more enrollees.
+We are asked to create a report showing the months and the number of enrollees, but only where there are 2 or more enrollees.
 ```sql
 SELECT strftime("%m", Registration_Date) AS month, COUNT(Registration_Date) user_count 
 FROM registrations 
@@ -357,7 +357,7 @@ having email_count > 1;
 ```
 
 ### Having and count
-Create a query that shows the number of users and the department WHERE there are more than one employee. The columns should be named user_count and department, respectively.
+Create a query that shows the number of users and the department where there are more than one employee. The columns should be named user_count and department, respectively.
 ```sql
 SELECT count(name) as user_count, department FROM employees
 group by department
@@ -378,7 +378,7 @@ Once we have grouped data using the GROUP BY clause, it is common to need to ord
 The order of the clauses in a query should be as follows:
 Order	Clause	Description
 1	SELECT	Specifies the columns to be returned in the result.
-2	FROM	Specifies the tables FROM which to extract the data.
+2	FROM	Specifies the tables from which to extract the data.
 3	WHERE	Filters records before any aggregation or grouping.
 4	GROUP BY	Groups records by one or more columns.
 5	HAVING	Filters records after aggregation.
@@ -401,7 +401,7 @@ having Average_Salary > 3000 ORDER BY 2 desc;
 ## Subqueries
 ### Introduction to subqueries
 Subqueries, allow us to use the results of one query within another query.
-We are asked to SELECT all people earning above the average.
+We are asked to select all people earning above the average.
 These types of questions can be answered using subqueries.
 The idea to answer this is as follows:
 We calculate the average 
@@ -417,9 +417,9 @@ SELECT * FROM employees WHERE salary <= (SELECT avg(salary) FROM employees)
 ```
 
 ### Subqueries and WHERE part 1
-Within subqueries, we can use the same clauses we have learned so far, such as the WHERE clause. This means we can apply the WHERE clause both inside the sub[...]
+Within subqueries, we can use the same clauses we have learned so far, such as the where clause. This means we can apply the where clause both inside the sub[...]
 
-SELECT all the information of the records that are greater than the average salary of the finance department.
+Select all the information of the records that are greater than the average salary of the finance department.
 ```sql
 SELECT * FROM employees WHERE salary > (SELECT avg(salary) FROM employees WHERE department = 'Finance')
 ```
@@ -427,14 +427,14 @@ Using the data FROM the employees table, select all employees whose salary is hi
 ```sql
 SELECT * FROM employees WHERE salary > (SELECT max(salary) FROM employees WHERE Department = 'Finance')
 ```
-SELECT all records above the average grade.
+Select all records above the average grade.
 ```sql
 SELECT * FROM grades WHERE grades > (SELECT avg(grades) FROM grades)
 ```
 ### Subqueries with IN
 The IN operator is a very useful operator in subqueries
-We want to SELECT all the codes FROM Argentina, Brazil, Chile, or Colombia.
-One way to approach the problem would be to combine all options with WHERE and multiple OR operators.
+We want to select all the codes from Argentina, Brazil, Chile, or Colombia.
+One way to approach the problem would be to combine all options with where and multiple OR operators.
 Another option is using the IN operator as follows:
 ```sql
 SELECT * FROM paises WHERE pais IN ('Argentina', 'Brasil', 'Chile', 'Colombia');
@@ -444,8 +444,8 @@ Similarly, we can make a query like the following:
 SELECT * FROM table WHERE columna IN (SELECT * FROM otra_tabla);
 ```
 We are asked to show the names of all the people who have an average grade less than 50.
-Select the IDs FROM the "notas" table with promedio_notas <= 50
-SELECT the names FROM the "estudiantes" table whose ID is within the previous subquery.
+Select the IDs from the "notas" table with promedio_notas <= 50
+Select the names from the "estudiantes" table whose ID is within the previous subquery.
 ```sql
 SELECT nombre FROM estudiantes WHERE estudiante_id IN (SELECT estudiante_id FROM notas WHERE promedio_notas <= 50);
 ```
@@ -463,8 +463,8 @@ The column should be called nombres_pacientes.
 ```sql
 SELECT nombre AS nombres_pacientes FROM pacientes WHERE paciente_id IN (SELECT paciente_id FROM consultas WHERE fecha_consulta < '2023-05-16');
 ```
-### Subqueries in the FROM clause
-A subquery in the FROM clause has the following form.
+### Subqueries in the from clause
+A subquery in the from clause has the following form.
 ```sql
 SELECT * FROM (SELECT * FROM tabla1);
 ```
@@ -476,18 +476,19 @@ SELECT AVG(total_venta) AS promedio_ventas FROM (SELECT empleado_id, SUM(monto) 
 ```
 We have the "goles" table that records the goals scored by each player in different matches.
 We are asked for a query to calculate the total average goals per player.
-Tip: It's not the same as the average goals per match.
+> [!TIP] 
+> It's not the same as the average goals per match.
 ```sql
 SELECT AVG(total_goles) AS promedio_goles FROM (SELECT jugador_id, SUM(goles) AS total_goles FROM goles GROUP BY 1);
 ```
 ## Combining queries
 ### Introduction to the SQL UNION clause
-The UNION operator in SQL is used to combine the result of two or more SELECT statements into a single result set.
+The UNION operator in SQL is used to combine the result of two or more select statements into a single result set.
 The basic syntax of UNION is as follows:
 ```sql
 SELECT columna1, columna2 FROM tabla1 UNION SELECT columna1, columna2 FROM tabla2;
 ```
-The columns SELECTed in the SELECT statements must have the same column names, sequence, and data types.
+The columns selected in the SELECT statements must have the same column names, sequence, and data types.
 ```sql
 SELECT apellido FROM Estudiantes UNION SELECT apellido FROM Profesores;
 ```
@@ -501,7 +502,7 @@ The main feature of UNION is that it removes duplicate rows FROM the final resul
 SELECT email AS correos_unicos FROM usuarios UNION SELECT email FROM clientes;
 ```
 ### UNION vs UNION ALL
-In the previous exercises, we learned that the UNION operator is used to combine the results of two or more SELECT statements into a single result set, removing duplicate rows.
+In the previous exercises, we learned that the UNION operator is used to combine the results of two or more select statements into a single result set, removing duplicate rows.
 If we want to get the duplicate rows in the result, we use the UNION ALL operator.
 We can combine both tables using UNION ALL as follows:
 ```sql
@@ -525,7 +526,7 @@ Create a query that combines both tables including the duplicate rows.
 SELECT * FROM empleados1 UNION ALL SELECT * FROM empleados2;
 ```
 ### Introduction to INTERSECT
-The INTERSECT operator is used to combine two SELECT statements and return the results that are found in both queries.
+The INTERSECT operator is used to combine two select statements and return the results that are found in both queries.
 We can find the common clients using INTERSECT as follows:
 ```sql
 SELECT nombre FROM clientes1 INTERSECT SELECT nombre FROM clientes2;
@@ -605,7 +606,7 @@ INSERT INTO productos (nombre, stock, fecha) VALUES ('Bolso', 10, CURRENT_DATE);
 ```
 ### Adding date and time when inserting
 If we want to insert any date when creating a record, we simply need to specify the date in the expected format.
-The date format is: YYYY-MM-DD, i.e., year-month-day, WHERE the year is 4 digits, the month is 2 digits, and the day is 2 digits.
+The date format is: YYYY-MM-DD, i.e., year-month-day, where the year is 4 digits, the month is 2 digits, and the day is 2 digits.
 Example:
 ```sql
 INSERT INTO usuarios (nombre, fecha_creacion) VALUES ('Gonzalo', '2021-01-01');
@@ -690,17 +691,18 @@ The 'telefono' column will have the default value 111-1111
 INSERT INTO usuarios (nombre, apellido, email) VALUES ('Lucía', 'Sánchez', 'luciasanchez@outlook.com');
 ```
 ## Deleting and modifying records
-### Deleting all records FROM a table
-In SQL, the DELETE clause is used to delete records FROM a table.
-When the DELETE FROM table_name statement is executed, all records in the specified table are deleted.
-It is important to note that this operation is irreversible and will permanently delete the data FROM the table, so you must be very careful when using this statement.
+### Deleting all records from a table
+In SQL, the delete clause is used to delete records from a table.
+When the delete from table_name statement is executed, all records in the specified table are deleted.
+It is important to note that this operation is irreversible and will permanently delete the data from the table, so you must be very careful when using this statement.
 ```sql
 DELETE FROM productos;
-Note: the DELETE statement does not include the *
+> [!NOTE]
+> the delete statement does not include the *
 ```
-### Deleting a specific record with WHERE
-The DELETE statement is used to delete data FROM a table.
-If we want to delete specific rows instead of all the data in the table, we can use the WHERE clause along with the DELETE statement.
+### Deleting a specific record with Where
+The delete statement is used to delete data from a table.
+If we want to delete specific rows instead of all the data in the table, we can use the where clause along with the delete statement.
 This allows us to specify a condition to determine which rows will be deleted.
 For example, if we have a table of products and want to delete only those products with a price equal to 1000, we can use the following query:
 ```sql
@@ -711,7 +713,7 @@ Delete a specific record in the 'usuarios' table:
 DELETE FROM usuarios WHERE id = 2;
 ```
 ### Editing records
-The UPDATE statement is used to modify existing data in a table.
+The update statement is used to modify existing data in a table.
 It is used as follows:
 ```sql
 UPDATE table_name SET column_name = new_value
@@ -725,15 +727,15 @@ Edit the 'registrado' column so that all users have the value TRUE:
 ```sql
 UPDATE usuarios SET registrado = TRUE;
 ```
-### Editing specific records using WHERE
-If we want to edit only some rows in our table, we can use UPDATE in conjunction with WHERE.
+### Editing specific records using Where
+If we want to edit only some rows in our table, we can use update in conjunction with where.
 In this way, only the records that meet the specified condition will be modified.
 ```sql
 UPDATE table_name SET column_name = new_value WHERE condition;
 ```
 Suppose we manage a table called 'empleados' that contains information about the employees of a company.
 Among the columns are id_empleado, nombre, salario, and departamento.
-If we want to increase the salary by 15% only for employees who work in the 'Sales' department, we can use the UPDATE statement along with WHERE as follows:
+If we want to increase the salary by 15% only for employees who work in the 'Sales' department, we can use the update statement along with where as follows:
 ```sql
 UPDATE empleados SET salario = salario * 1.15 WHERE departamento = 'Ventas';
 ```
@@ -848,7 +850,7 @@ For example, if we want to delete the 'temperaturas' table that we created in th
 ```sql
 DROP TABLE temperaturas;
 ```
-If we try to SELECT FROM the 'temperaturas' table after deleting it, we will get an error.
+If we try to select from the 'temperaturas' table after deleting it, we will get an error.
 
 Exercise: In this exercise, we will have a table with data that we do not need.
 We will delete it, create it again, and populate it with the requested data.
@@ -879,7 +881,7 @@ The syntax for doing this is as follows:
 ```sql
 ALTER TABLE table_name ADD COLUMN column_name data_type;
 ```
-WHERE we need to specify the name of the existing table, the name of the new column, and the data type we will use.
+Where we need to specify the name of the existing table, the name of the new column, and the data type we will use.
 For example, if we have a 'personas' table with the columns 'nombre' and 'apellido', and we want to add the 'edad' column of type INTEGER, we can do it as follows:
 ```sql
 ALTER TABLE personas ADD COLUMN edad INTEGER;
@@ -905,11 +907,11 @@ INSERT INTO productos VALUES
 ### Introduction to restrictions
 Key ideas
 Restrictions or constraints in English are rules that can be applied to the columns of a table.
-The NOT NULL restriction is a type of restriction that prevents null values FROM being entered into a column.
+The NOT NULL restriction is a type of restriction that prevents null values from being entered into a column.
 If we enter a null value in a column with the NOT NULL restriction, the operation will fail.
 Adding a restriction when creating a table
-When creating tables, we can add restrictions (constraints) to the columns to prevent data that does not meet certain conditions FROM being entered.
-In this exercise, we will learn to add the NOT NULL restriction, which prevents null values FROM being added to a column.
+When creating tables, we can add restrictions (constraints) to the columns to prevent data that does not meet certain conditions from being entered.
+In this exercise, we will learn to add the NOT NULL restriction, which prevents null values from being added to a column.
 For example, when creating a table of people with name and surname, we can make the name mandatory (not null) and the surname optional.
 To achieve this, we will create the table and add the NOT NULL restriction to the name column as follows:
 ```sql
@@ -928,7 +930,7 @@ Key ideas
 Restrictions or constraints in English are rules that can be applied to the columns of a table.
 A restriction can be added when creating a table.
 In SQLite, restrictions cannot be directly added to already created tables.
-However, we can achieve this by creating a new table with the restriction, copying the data FROM the original table to the new table, deleting the original table, and renaming the new table to the original table name.
+However, we can achieve this by creating a new table with the restriction, copying the data from the original table to the new table, deleting the original table, and renaming the new table to the original table name.
 
 For example, if we have a table 'personas' with the columns 'nombre' and 'apellido'.
 ```sql
@@ -944,8 +946,8 @@ CREATE TABLE personas2 (
     apellido TEXT
 );
 
-Copy the data FROM the original table to the new table.
-/* 2. Copy the data FROM the original table to the new table */
+Copy the data from the original table to the new table.
+/* 2. Copy the data from the original table to the new table */
 INSERT INTO personas2 (nombre, apellido)
 SELECT nombre, apellido
 FROM personas;
@@ -970,10 +972,10 @@ ALTER TABLE patentes2 RENAME TO patentes;
 ```
 ### Removing a restriction
 Just as restrictions can be added to columns, they can also be removed.
-Removing a restriction FROM an existing table
-To remove a restriction FROM an existing table in SQLite, we need to follow a procedure similar to adding a restriction.
+Removing a restriction from an existing table
+To remove a restriction from an existing table in SQLite, we need to follow a procedure similar to adding a restriction.
 Create a new table without the restriction.
-Copy the data FROM the original table to the new table.
+Copy the data from the original table to the new table.
 Delete the original table.
 Rename the new table to the original table name.
 
@@ -1011,7 +1013,7 @@ INSERT INTO productos VALUES
 ### Check constraints
 Key ideas
 There are different types of restrictions that can be applied to the columns of a table.
-The NOT NULL restriction prevents null values FROM being entered into a column.
+The NOT NULL restriction prevents null values from being entered into a column.
 The UNIQUE restriction prevents duplicates in a specific column.
 The CHECK restriction allows us to establish a condition that the values of a column must meet.
 Check constraints
@@ -1035,7 +1037,7 @@ INSERT INTO productos VALUES
 ```
 ### Primary key
 There are different types of restrictions that can be applied to the columns of a table, such as NOT NULL, UNIQUE, and CHECK.
-The Primary Key restriction prevents null values FROM being entered and ensures that there are no duplicates in a specific column.
+The Primary Key restriction prevents null values from being entered and ensures that there are no duplicates in a specific column.
 Practically, we can say that it is a combination of Unique and Not Null.
 What is a primary key?
 The primary key, or PRIMARY KEY in English, is a restriction that serves to uniquely identify each record in a table.
@@ -1047,7 +1049,7 @@ id	monto de la boleta	fecha de emision
 And we want to find the ticket with id 2.
 If we did not have a primary key, we could have two tickets with the same id, and we would not know which one we want, or we could have tickets with a null id, and we would not know which ticket we are looking for.
 The primary key restriction ensures this does not happen.
-When we have a primary key, we are certain that we can search for any record in the database and then modify or delete it, and no other record will be modified or deleted except the SELECTed one.
+When we have a primary key, we are certain that we can search for any record in the database and then modify or delete it, and no other record will be modified or deleted except the selected one.
 This allows us to maintain data integrity.
 Adding a primary key to a new table
 To add a primary key to a new table, we simply need to specify it in the column definition.
@@ -1069,7 +1071,7 @@ INSERT INTO posts VALUES
 ```
 ### Autoincrement
 Key ideas
-The Primary Key restriction prevents null values FROM being entered and ensures that there are no duplicates in a specific column.
+The Primary Key restriction prevents null values from being entered and ensures that there are no duplicates in a specific column.
 Practically, we can say that it is a combination of Unique and Not Null.
 Autoincrement fields allow us to generate a unique value automatically for each record we insert into a table.
 If a primary key field is an integer, it automatically becomes an autoincrement field in SQLite.
@@ -1092,7 +1094,8 @@ INSERT INTO usuarios (nombre, fecha_creacion) VALUES
 ('Juan', '2024-01-03'),
 ('María', '2024-01-04');
 
-Note: the autoincrement word is optional in SQLite in the table definition. In fact, sometimes it can cause some issues.
+> [!NOTE]
+> the autoincrement word is optional in SQLite in the table definition. In fact, sometimes it can cause some issues.
 ```
 ### Autoincrement part 2
 If a record is entered with a value greater than the current sequence, the database will update the sequence so that the next record has a value greater than the record we just inserted.
@@ -1125,7 +1128,7 @@ INSERT INTO transacciones (monto, fecha) VALUES (5000.00, '2024-01-05');
 ```
 ### Primary key and text
 The primary key is not exclusively LIMITed to numeric values; text data can also be used.
-For example, consider a 'personas' table WHERE we could use the email address as the primary key, as each individual has a unique email address.
+For example, consider a 'personas' table where we could use the email address as the primary key, as each individual has a unique email address.
 In SQLite, fields that are of type INTEGER and are designated as PRIMARY KEY cannot contain null values.
 However, unlike other database management systems like MySQL or PostgreSQL, when PRIMARY KEY is used with data types such as text or others, it is allowed for the value to be null.
 Therefore, if we want a field to be both primary key and not null, we must specify it using the combination of PRIMARY KEY and NOT NULL.
@@ -1224,7 +1227,8 @@ In this exercise, first we will try to create a transaction with a non-existent 
 Then, we will try to delete a user who has associated transactions to observe the error.
 Next, we will delete our previous queries and modify the 'transacciones' table to remove the foreign key.
 Only the foreign key should be removed, not the column.
-TIP: This requires creating a temporary table, copying the data FROM the original table to the temporary table, deleting the original table, and renaming the temporary table to the original table name.
+> [!TIP] 
+> This requires creating a temporary table, copying the data from the original table to the temporary table, deleting the original table, and renaming the temporary table to the original table name.
 Finally, transactions should be associated with the user with id 3, who does not exist, to demonstrate that without the FK, we can insert transactions without associated users.
 Points 1 and 2 are to observe what happens. To get the correct answer, you must perform points 3 and 4 in the editor.
 ```sql
@@ -1238,14 +1242,14 @@ UPDATE transacciones SET usuario_id = 3;
 ```
 ## Queries in multiple tables
 Key ideas
-The JOIN clause allows combining data FROM multiple tables into a single result table.
+The JOIN clause allows combining data from multiple tables into a single result table.
 To perform the join, it is necessary to specify the tables to be joined and the corresponding join condition.
 Example:
 ```sql
 SELECT * FROM usuarios INNER JOIN datos_contacto ON email1 = email2;
 ```
 Exercise:
-Using what we have learned, SELECT all users along with their notes. Observe the results before proceeding.
+Using what we have learned, select all users along with their notes. Observe the results before proceeding.
 ```sql
 SELECT * FROM usuarios INNER JOIN notas ON usuarios.email = notas.email;
 ```
@@ -1266,16 +1270,16 @@ Exercise:
 ```sql
 SELECT * FROM usuarios u INNER JOIN notas n ON u.email = n.email;
 ```
-### SELECTing some attributes
-We can SELECT the data FROM each table that we want to display in the query.
-SELECTing some attributes
-Just as when working with a single table, we can SELECT only the attributes we want to display in the query.
-When we have two tables, we can SELECT all the attributes FROM one table and only some FROM the other as follows:
+### Selecting some attributes
+We can select the data from each table that we want to display in the query.
+selecting some attributes
+Just as when working with a single table, we can select only the attributes we want to display in the query.
+When we have two tables, we can select all the attributes from one table and only some from the other as follows:
 Example:
 ```sql
 SELECT table1.*, table2.attribute1, table2.attribute2 FROM table1 JOIN table2 ON table1.id = table2.id;
 ```
-This way, we SELECT everything FROM the 'usuarios' table and only the phone numbers FROM the 'datos_contacto' table,
+This way, we select everything FROM the 'usuarios' table and only the phone numbers FROM the 'datos_contacto' table,
 so we don't have two email columns with duplicate data.
 ```sql
 SELECT usuarios.*, datos_contacto.telefono FROM usuarios JOIN datos_contacto ON usuarios.email = datos_contacto.email;
@@ -1295,8 +1299,8 @@ SELECT usuarios.*, datos_contacto.telefono FROM usuarios JOIN datos_contacto ON 
 ### Order of clauses
 Clauses have a specific order that we must follow for the query to work correctly.
 Command sequence:
-SELECT     - SELECT these data.
-FROM       - FROM this table.
+SELECT     - Select these data.
+FROM       - From this table.
 JOIN       - Join them with this table.
 WHERE      - Filter the values that meet this condition.
 GROUP BY   - Group the results by this criterion.
@@ -1305,7 +1309,7 @@ ORDER BY   - Sort the results by this other criterion.
 LIMIT      - LIMIT the results to this amount.
 
 Exercise:
-Given the following tables, SELECT all the information of the user 'juan.perez@example.com'.
+Given the following tables, select all the information of the user 'juan.perez@example.com'.
 ```sql
 SELECT * FROM usuarios JOIN notas ON usuarios.email = notas.email WHERE usuarios.email = 'juan.perez@example.com';
 ```
@@ -1335,7 +1339,7 @@ SELECT nombre, COUNT(p.pedido_id) AS total_pedidos FROM clientes c JOIN pedidos 
 Some important details to keep in mind:
 If there are columns with the same name, we need to specify the table name before the column name.
 When grouping data, we must keep in mind that the columns not in the GROUP BY clause must be used with aggregation functions.
-Therefore, in these types of exercises, SELECT * is not recommended, especially if the table has many columns.
+Therefore, in these types of exercises, select * is not recommended, especially if the table has many columns.
 
 Exercise:
 We have two tables: 'Productos' and 'Ventas'.
@@ -1416,7 +1420,7 @@ profesor_id  nombre  alumno_id  nombre
 1            Ana     2          Elena
 2            Pedro   1          Marta
 
-WHERE we can see that for each record in the 'profesores' table, there are one or more records in the 'profesores_alumnos' table,
+Where we can see that for each record in the 'profesores' table, there are one or more records in the 'profesores_alumnos' table,
 and for each record in the 'profesores_alumnos' table, there is a record in the 'alumnos' table.
 
 To join more than 2 tables, a join can be made for each table to be joined.
@@ -1471,10 +1475,10 @@ libro_id  usuario_id
 Within the table, we can see that user 1 has requested book 1 twice, which is not a problem if there is no uniqueness restriction.
 
 Exercise:
-SELECT all users who have requested the same book more than once.
-The columns to display are usuario_id, libro_id, and veces, WHERE veces is the number of times the user has requested the book.
+Select all users who have requested the same book more than once.
+The columns to display are usuario_id, libro_id, and veces, where veces is the number of times the user has requested the book.
 Hint: Group by libro_id and usuario_id and count how many records there are for each group.
-Reflect on whether to use WHERE or HAVING to filter the results.
+Reflect on whether to use where or HAVING to filter the results.
 ```sql
 SELECT usuario_id, libro_id, COUNT(libro_id) AS veces FROM pedidos GROUP BY libro_id, usuario_id HAVING veces > 1;
 ```
@@ -1488,7 +1492,7 @@ If the answer is yes, then we do not need a uniqueness restriction in the interm
 If the answer is no, then we must ensure that there are no duplicate records in the intermediate table, and this is done with a uniqueness restriction.
 
 In this case, an employee cannot be assigned to the same project more than once.
-To prevent this FROM happening, when creating the table, we will add a composite primary key of the foreign keys of the main tables.
+To prevent this from happening, when creating the table, we will add a composite primary key of the foreign keys of the main tables.
 ```sql
 CREATE TABLE Empleados_Proyectos (
     empleado_id INT,
@@ -1501,7 +1505,7 @@ CREATE TABLE Empleados_Proyectos (
 This way, if a record with an employee and a project that already exists in the table is attempted to be added, an error will be generated,
 ensuring that there are no duplicate records in the intermediate table.
 Exercise:
-Create a query that SELECTs all employees along with the number of projects assigned to each one, demonstrating that there are no duplicate records in the intermediate table.
+Create a query that selects all employees along with the number of projects assigned to each one, demonstrating that there are no duplicate records in the intermediate table.
 The columns of the query should be 'nombre', 'puesto', and 'cantidad_proyectos'.
 ```sql
 SELECT e.nombre, e.puesto, COUNT(ep.proyecto_id) AS cantidad_proyectos
@@ -1513,7 +1517,7 @@ ORDER BY cantidad_proyectos DESC;
 ## Types of Joins
 ### Inner Join
 Key ideas
-The JOIN clause allows us to combine data FROM multiple tables into a single result table.
+The JOIN clause allows us to combine data from multiple tables into a single result table.
 There are several types of joins, and when the type of join is not specified, INNER JOIN is used by default.
 The difference between the types of joins lies in how records that do not have a common key in both tables are handled.
 INNER JOIN is the default option.
@@ -1528,12 +1532,12 @@ is the same as:
 SELECT * FROM usuarios INNER JOIN datos_contacto ON usuarios.email = datos_contacto.email
 ```
 What does INNER JOIN do?
-INNER JOIN combines records FROM both tables based on a join condition.
+INNER JOIN combines records from both tables based on a join condition.
 Only records with a common key in both tables are included.
 If there is no common key, the records are not included in the final result.
 
 Exercise
-Join the tables using JOIN (or INNER JOIN) to get all the records FROM both tables.
+Join the tables using JOIN (or INNER JOIN) to get all the records from both tables.
 Look at the tables before doing the exercise and pay special attention to Francisco, who has no notes in the system.
 Francisco does not appear because he has no record in notes associated with the email in usuarios.
 ```sql
@@ -1563,7 +1567,7 @@ Does the result of the code match your drawing? YES
 SELECT a.nombre, p.titulo FROM actores a INNER JOIN peliculas p ON a.actor_id = p.actor_id;
 ```
 ### Left Join
-When using a LEFT JOIN, if the key is in the left table but not in the right table, the record FROM the left table will appear in the final result with NULL values in the fields of the right table.
+When using a LEFT JOIN, if the key is in the left table but not in the right table, the record from the left table will appear in the final result with NULL values in the fields of the right table.
 
 Inner join vs. Left join
 To illustrate the difference, we will work with the tables 'usuarios' and 'notas'.
@@ -1624,7 +1628,7 @@ SELECT * FROM table1 LEFT JOIN table2 ON table1.attribute = table2.attribute
 ```
 Exercise
 We have a table called 'empleados' and another called 'departamentos'.
-Using what we have learned, SELECT all employees along with their corresponding departments, including employees who have not yet been assigned to any department.
+Using what we have learned, select all employees along with their corresponding departments, including employees who have not yet been assigned to any department.
 Both tables have the email column.
 
 | empleados |               | departamentos |
@@ -1638,16 +1642,16 @@ SELECT * FROM empleados e LEFT JOIN departamentos d ON e.email = d.email;
 ```
 ### Left Join with Venn Diagram
 In the Venn diagram, a LEFT JOIN is visualized as the left set.
-When performing a Left Join between table A and table B, all records FROM table A appear in the results, even those without a corresponding key in table B.
+When performing a Left Join between table A and table B, all records from table A appear in the results, even those without a corresponding key in table B.
 We can visualize the Left Join as the left set in a Venn diagram.
 
 Analyzing the result
 Additionally, by looking at the Venn diagram, we can observe the result of the Left Join operation between the tables 'productos' and 'ventas'.
 In it, we see:
-The records with id 1, 2, and 3 FROM the 'productos' table appear in the Left Join results, as all three are in the left set.
-The record with id 4 FROM the 'ventas' table does not appear in the Left Join results, as it is not in the left set.
-Records 1 and 2 do not appear with data FROM the 'ventas' table, as they are only in the left table.
-Record 3 appears with data FROM the 'ventas' table, as it is the only one found in both tables.
+The records with id 1, 2, and 3 from the 'productos' table appear in the Left Join results, as all three are in the left set.
+The record with id 4 from the 'ventas' table does not appear in the Left Join results, as it is not in the left set.
+Records 1 and 2 do not appear with data from the 'ventas' table, as they are only in the left table.
+Record 3 appears with data from the 'ventas' table, as it is the only one found in both tables.
 
 Exercise
 Given the following tables:
@@ -1676,26 +1680,26 @@ The resulting table should only contain two columns: 'Profesion' and 'Nombre'.
 SELECT pr.profesion, pe.nombre FROM profesion pr LEFT JOIN personas pe ON pr.id = pe.profesion_id;
 ```
 ### Right Join
-When using RIGHT JOIN, if the key is in the right table but not in the left table, the record FROM the right table will appear in the final result with NULL values in the fields of the left table.
+When using RIGHT JOIN, if the key is in the right table but not in the left table, the record from the right table will appear in the final result with NULL values in the fields of the left table.
 
 RIGHT JOIN functions similarly to LEFT JOIN but reverses the order of the tables.
-While LEFT JOIN returns all rows FROM the left table and the corresponding matches FROM the right table (filling with NULL if there is no match),
-RIGHT JOIN does the opposite: it returns all rows FROM the right table and the corresponding matches FROM the left table.
+While LEFT JOIN returns all rows from the left table and the corresponding matches from the right table (filling with NULL if there is no match),
+RIGHT JOIN does the opposite: it returns all rows from the right table and the corresponding matches from the left table.
 
 To perform a RIGHT JOIN in SQL, the following syntax is used:
 ```sql
 SELECT * FROM table1 RIGHT JOIN table2 ON table1.attribute = table2.attribute;
 ```
 Exercise
-We are asked to SELECT all records FROM the departments of all offices along with their corresponding employees, including those departments that have no associated employees.
+We are asked to select all records from the departments of all offices along with their corresponding employees, including those departments that have no associated employees.
 Both tables contain the email column.
 ```sql
 SELECT * FROM empleados e RIGHT JOIN departamentos d ON e.email = d.email;
 ```
 ### Left Join and Right Join
 Key ideas
-When using LEFT JOIN, if the key is in the left table but not in the right table, the record FROM the left table will appear in the final result with NULL values in the fields of the right table.
-When using RIGHT JOIN, if the key is in the right table but not in the left table, the record FROM the right table will appear in the final result with NULL values in the fields of the left table.
+When using LEFT JOIN, if the key is in the left table but not in the right table, the record from the left table will appear in the final result with NULL values in the fields of the right table.
+When using RIGHT JOIN, if the key is in the right table but not in the left table, the record from the right table will appear in the final result with NULL values in the fields of the left table.
 LEFT JOIN and RIGHT JOIN are reflections of each other.
 Using LEFT JOIN or RIGHT JOIN simply depends on which table you want to name first.
 ```sql
@@ -1706,13 +1710,13 @@ is practically the same as:
 SELECT * FROM table2 RIGHT JOIN table1 ON table2.id = table1.id
 ```
 LEFT JOIN and RIGHT JOIN are reflections of each other.
-However, there is a small difference when used in conjunction with SELECT, as the attributes of the first table will be displayed first.
+However, there is a small difference when used in conjunction with select, as the attributes of the first table will be displayed first.
 To get the results in the same order, we can simply specify the order we want.
 ```sql
 SELECT usuarios.*, notas.* FROM Notas RIGHT JOIN Usuarios ON Notas.email = Usuarios.email;
 ```
 Exercise
-SELECT all records of all products (table 'productos') along with their prices (table 'precios'), including products that have not been assigned a price.
+Select all records of all products (table 'productos') along with their prices (table 'precios'), including products that have not been assigned a price.
 The tables are related by the 'producto_id' column.
 ```sql
 SELECT * FROM productos p LEFT JOIN precios pre ON p.producto_id = pre.producto_id;
@@ -1725,16 +1729,16 @@ We must know how to identify the type of JOIN to use in a query based on the req
 Useful guide to identify the type of join:
 
 INNER JOIN
-When to use it: When you need only the rows WHERE there are matches in both tables.
+When to use it: When you need only the rows where there are matches in both tables.
 Result: Returns only the rows with corresponding data in both tables.
 
 LEFT JOIN (or LEFT OUTER JOIN)
-When to use it: When you need all rows FROM the left table and the matching rows FROM the right table.
-Result: Returns all rows FROM the left table and the matches FROM the right table, with NULLs WHERE there are no matches.
+When to use it: When you need all rows from the left table and the matching rows from the right table.
+Result: Returns all rows from the left table and the matches from the right table, with NULLs where there are no matches.
 
 RIGHT JOIN (or RIGHT OUTER JOIN)
-When to use it: When you need all rows FROM the right table and the matching rows FROM the left table.
-Result: Returns all rows FROM the right table and the matches FROM the left table, with NULLs WHERE there are no matches.
+When to use it: When you need all rows from the right table and the matching rows from the left table.
+Result: Returns all rows from the right table and the matches from the left table, with NULLs where there are no matches.
 
 Exercise
 We have a database with two main tables: 'autores' and 'libros'.
@@ -1762,16 +1766,16 @@ SELECT e.nombre AS nombre_empleado, p.nombre_proyecto FROM empleados e LEFT JOIN
 Exercise
 We have a database with two main tables: 'empleados' and 'proyectos'.
 Obtain a list of all projects along with the names of the employees assigned to each project, including those projects that have no assigned employees.
-The result should consist only of the columns 'nombre_empleado' and 'nombre_proyecto', corresponding to the name of the employee and the name of the project FROM their respective tables, including those without assigned employees (employee NULL).
+The result should consist only of the columns 'nombre_empleado' and 'nombre_proyecto', corresponding to the name of the employee and the name of the project from their respective tables, including those without assigned employees (employee NULL).
 ```sql
 SELECT e.nombre AS nombre_empleado, p.nombre_proyecto FROM empleados e RIGHT JOIN proyectos p ON e.id_proyecto = p.id;
 ```
 ### Full outer join
-When using FULL OUTER JOIN, all records FROM both tables are obtained, including non-matching records.
+When using FULL OUTER JOIN, all records from both tables are obtained, including non-matching records.
 
 Full outer join
 Full outer join is a combination of LEFT JOIN and RIGHT JOIN.
-It returns all records FROM both tables, including non-matching records.
+It returns all records from both tables, including non-matching records.
 
 Implementing full outer join in SQLite
 The SQLite database engine does not support FULL OUTER JOIN operations.
@@ -1822,7 +1826,7 @@ FROM clientes c RIGHT JOIN pedidos p
 ON c.id_cliente = p.id_cliente;
 ```
 ### Left excluding join
-A left excluding join is a combination of left join with a WHERE clause to show records FROM the left table that do not have matches in the right table.
+A left excluding join is a combination of left join with a where clause to show records from the left table that do not have matches in the right table.
 In this example, if we want to obtain students without grades, we can do it with a left excluding join.
 ```sql
 SELECT * 
@@ -1835,7 +1839,7 @@ id  nombre  apellido  id  alumno_id  calificacion
 3   Pedro   Lopez
 
 Exercise
-Create an SQL query that shows all the data FROM the mentioned tables of people without a profession.
+Create an SQL query that shows all the data from the mentioned tables of people without a profession.
 ```sql
 SELECT * 
 FROM personas pe LEFT JOIN profesion pr 
@@ -1843,7 +1847,7 @@ ON pr.id = pe.profesion_id
 WHERE pe.profesion_id IS NULL;
 ```
 ### Right excluding join
-A right excluding join is a combination of right join with a WHERE clause to show records FROM the right table that do not have matches in the left table.
+A right excluding join is a combination of right join with a where clause to show records from the right table that do not have matches in the left table.
 
 How does a right excluding join work?
 Right excluding join is very similar to Left excluding Join.
@@ -1854,7 +1858,7 @@ FROM tableA RIGHT JOIN tableB
 ON tableA.name = tableB.name 
 WHERE tableA.name IS NULL;
 ```
-It is important to note that in addition to changing the JOIN, we need to change the WHERE clause and substitute tableA with tableB.
+It is important to note that in addition to changing the JOIN, we need to change the where clause and substitute tableA with tableB.
 
 Practical example
 In a database, we have the 'calificaciones' and 'cursos' tables.
@@ -1895,7 +1899,7 @@ ON c.docente_id = d.id
 WHERE c.docente_id IS NULL;
 ```
 ### Full outer excluding join
-Full Outer Excluding Join is a combination of FULL OUTER JOIN with a WHERE clause to show records that do not have matches in both tables.
+Full Outer Excluding Join is a combination of FULL OUTER JOIN with a where clause to show records that do not have matches in both tables.
 Although SQLite does not directly support FULL OUTER JOIN, we can perform a FULL OUTER EXCLUDING JOIN using a combination of LEFT EXCLUDING JOIN and RIGHT EXCLUDING JOIN.
 ```sql
 SELECT * 
@@ -1908,7 +1912,7 @@ FROM tabla_A RIGHT JOIN tabla_B
 ON tabla_A.clave = tabla_B.clave 
 WHERE tabla_A.clave IS NULL;
 ```
-This query will give us all records FROM table_A that do not have matches in table_B, and all records FROM table_B that do not have matches in table_A.
+This query will give us all records from table_A that do not have matches in table_B, and all records from table_B that do not have matches in table_A.
 
 Exercise
 Consider the following tables:
@@ -1931,7 +1935,7 @@ This query should show both employees who are not assigned to any existing depar
 Once you have written the query, execute it and analyze the results and answer the following questions:
 Why does Carlos appear in the query result? - because he does not have an assigned department
 Why does the Marketing department appear in the result? - because it does not have assigned employees
-How is this result different FROM a regular FULL OUTER JOIN? - it shows all non-related records FROM both tables, even when one of the tables does not have a created record but is associated.
+How is this result different from a regular FULL OUTER JOIN? - it shows all non-related records from both tables, even when one of the tables does not have a created record but is associated.
 ```sql
 SELECT e.id_empleado, e.nombre, e.id_departamento, d.departamento 
 FROM empleados e LEFT JOIN departamentos d 
@@ -1943,7 +1947,8 @@ FROM empleados e RIGHT JOIN departamentos d
 ON e.id_departamento = d.id_departamento 
 WHERE e.id_empleado IS NULL;
 ```
-Note: to avoid duplicate columns, we must specify it in the SELECT, but we must ensure that in the LEFT we show the id of the left table and in the RIGHT the id of the right table.
+> [!NOTE] 
+> to avoid duplicate columns, we must specify it in the select, but we must ensure that in the LEFT we show the id of the left table and in the RIGHT the id of > the right table.
 
 ### Natural Join
 Key ideas
@@ -2003,7 +2008,7 @@ SELECT columns
 FROM table1 NATURAL LEFT JOIN table2;
 ```
 Exercise
-Given the provided tables, create a report that SELECTs all students (their names), enrolled courses, and enrollment dates.
+Given the provided tables, create a report that selects all students (their names), enrolled courses, and enrollment dates.
 If a student is not enrolled in any courses, the student should be shown without enrollment data.
 ```sql
 SELECT e.nombre, i.curso, i.fecha 
@@ -2075,8 +2080,10 @@ id_amigo  nombre  id_amigo_conectado
 Write an SQL query using self join to get the name of each friend along with the name of their connected friend.
 Only show friends who have a connected friend.
 The columns of the resulting table should be called 'nombre' and 'nombre_amigo_conectado'.
-Tip 1: Which type of join would you use to get the connected friends? Inner Join to show only those with connected friends
-Tip 2: Which columns of the 'amigos' table relate to each other? ID_Amigo and ID_amigo_conectado
+> [!TIP] 
+> Which type of join would you use to get the connected friends? Inner Join to show only those with connected friends
+> [!TIP]
+> Which columns of the 'amigos' table relate to each other? ID_Amigo and ID_amigo_conectado
 ```sql
 SELECT a1.nombre, a2.nombre AS nombre_amigo_conectado 
 FROM amigos a1 INNER JOIN amigos a2 
@@ -2085,11 +2092,11 @@ ON a1.id_amigo_conectado = a2.id_amigo;
 ### Cross Join
 Key ideas
 Cross Join generates the Cartesian product of two tables.
-Cross Join does not require a join condition, as it combines all rows FROM the first table with all rows FROM the second table.
+Cross Join does not require a join condition, as it combines all rows from the first table with all rows from the second table.
 
 Cross Join
-Cross Join, also known as Cartesian product, combines each row FROM the first table with each row FROM the second table, generating a result set that is the Cartesian product of both tables.
-It is useful when you want to combine all rows FROM one table with all rows FROM another table.
+Cross Join, also known as Cartesian product, combines each row from the first table with each row from the second table, generating a result set that is the Cartesian product of both tables.
+It is useful when you want to combine all rows from one table with all rows from another table.
 The syntax of Cross Join is as follows:
 ```sql
 SELECT columns 
@@ -2104,7 +2111,7 @@ FROM figuras CROSS JOIN colores;
 ```
 Exercise
 Given a table of numbers and a table of suits.
-Generate a query that shows all numbers along with all possible suits, simulating a deck of cards ordered by numbers FROM lowest to highest and suits in alphabetical order.
+Generate a query that shows all numbers along with all possible suits, simulating a deck of cards ordered by numbers from lowest to highest and suits in alphabetical order.
 The columns of the resulting table should be called 'numero' and 'pinta'.
 ```sql
 SELECT * 
@@ -2113,13 +2120,13 @@ ORDER BY numero, pinta;
 ```
 ### Join with aggregate functions
 Key ideas:
-Combining data FROM multiple tables: The JOIN clause allows us to combine rows FROM two or more tables.
+Combining data from multiple tables: The JOIN clause allows us to combine rows from two or more tables.
 Choosing the type of JOIN: The choice of JOIN type depends on whether we want to count rows without matches; if so, we use LEFT JOIN, otherwise, we use INNER JOIN.
 Grouping data: The use of GROUP BY allows us to group rows that have the same value in one or more columns.
 Aggregate functions: On grouped data, we can use aggregate functions such as SUM(), COUNT(), and AVG().
 
 What are we going to learn?
-In these exercises, we will work with very common problems in data analysis, WHERE we need to combine data FROM multiple tables, group them, and obtain information FROM aggregated data.
+In these exercises, we will work with very common problems in data analysis, where we need to combine data from multiple tables, group them, and obtain information from aggregated data.
 Throughout these exercises, we will learn to identify which type of JOIN to use for each case.
 
 Scenario
@@ -2221,7 +2228,7 @@ In the first normal form, there should be a primary key that uniquely identifies
 In this case, let's assume that each combination of name and surname in the 'personas' table corresponds to a unique person.
 Therefore, Juan Pérez with marital statuses Casado, Soltero, and Divorciado are different people.
 To convert this table to the first normal form, we will add a primary key that uniquely identifies each record.
-In SQLite, we cannot add a primary key to a table that already has data, so we will have to create a new table with the primary key and then insert the data FROM the original table into the new table.
+In SQLite, we cannot add a primary key to a table that already has data, so we will have to create a new table with the primary key and then insert the data from the original table into the new table.
 ```sql
 CREATE TABLE personas2 (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -2230,7 +2237,7 @@ CREATE TABLE personas2 (
     estado_civil TEXT NOT NULL
 );
 
-/* SELECT the data FROM 'personas' and insert it into 'personas2' */
+/* Select the data from 'personas' and insert it into 'personas2' */
 INSERT INTO personas2 (nombre, apellido, estado_civil)
 SELECT nombre, apellido, estado_civil 
 FROM personas;
@@ -2301,7 +2308,7 @@ Identify the repetitive groups in the 'empleados_desnormalizado' table.
 The repetitive group is the 'proyecto'.
 
 Create the 'empleados' and 'proyectos' tables in the first normal form to store information about employees and projects in a normalized structure.
-Insert the information FROM the 'empleados_desnormalizado' table into the normalized tables.
+Insert the information from the 'empleados_desnormalizado' table into the normalized tables.
 Create a query that shows the information of employees and the projects they are assigned to in a normalized structure.
 The columns of the query should be 'nombre', 'apellido', and 'id_proyecto'.
 ```sql
@@ -2335,7 +2342,7 @@ Repetitive groups
 Repetitive groups are sets of fields that repeat within a table.
 However, there are several ways in which these repetitive groups can appear in a table.
 
-In the previous exercise, we saw an example of a repetitive group WHERE there were several fields with the same purpose.
+In the previous exercise, we saw an example of a repetitive group where there were several fields with the same purpose.
 For example: telefono1, telefono2, and telefono3.
 Another way to have repetitive groups is to have multiple values in a single field.
 
@@ -2407,7 +2414,7 @@ The problems associated with repetitive groups are similar to those presented in
 If you want to change the name of a department, you would have to change it in all rows corresponding to that department.
 Or a department could be written in different ways, for example, TI, T.I., Tecnologías de la Información, etc.
 And it would be difficult to establish a restriction to ensure all departments have the same name.
-To eliminate repetitive groups FROM this table, a new 'Personas' table should be created, separate FROM the 'Departamentos' table, that relates people to departments.
+To eliminate repetitive groups from this table, a new 'Personas' table should be created, separate from the 'Departamentos' table, that relates people to departments.
 
 Departamentos:
 id  nombre_departamento
@@ -2479,7 +2486,7 @@ ID_de_curso   Nombre_del_curso
 102           Historia
 103           Ciencia
 
-Then, the columns 'Nombre del estudiante' and 'Nombre del curso' should be removed FROM the 'notas' table, and the foreign keys 'ID de estudiante' and 'ID de curso' should be added respectively.
+Then, the columns 'Nombre del estudiante' and 'Nombre del curso' should be removed from the 'notas' table, and the foreign keys 'ID de estudiante' and 'ID de curso' should be added respectively.
 
 Table notas:
 ID_de_estudiante   ID_de_curso   Nota
