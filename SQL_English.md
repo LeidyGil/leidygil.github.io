@@ -760,6 +760,7 @@ Exercise: We have a 'posts' table with the following columns:
 | contenido | TEXT |
 | autor | TEXT |
 | fecha | TEXT |
+
 Edit the post with id 1 to have the title "Aprendiendo SQL" and the content "SQL is a programming language for managing relational databases".
 ```sql
 UPDATE posts
