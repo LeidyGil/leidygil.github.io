@@ -376,14 +376,15 @@ having grade_average >= 50;
 ### Having and order
 Once we have grouped data using the GROUP BY clause, it is common to need to order those groups according to some specific criterion. Generally, we want to order the groups by func[...]
 The order of the clauses in a query should be as follows:
-Order	Clause	Description
-1	SELECT	Specifies the columns to be returned in the result.
-2	FROM	Specifies the tables from which to extract the data.
-3	WHERE	Filters records before any aggregation or grouping.
-4	GROUP BY	Groups records by one or more columns.
-5	HAVING	Filters records after aggregation.
-6	ORDER BY	Orders the returned records by one or more columns.
-7	LIMIT	LIMITs the number of returned records.
+| Order | Clause | Description |
+| ----- | ------ | ----------- |
+| 1 | SELECT | Specifies the columns to be returned in the result. |
+| 2 | FROM | Specifies the tables from which to extract the data. |
+| 3 | WHERE | Filters records before any aggregation or grouping. |
+| 4 | GROUP BY | Groups records by one or more columns. |
+| 5 | HAVING | Filters records after aggregation. |
+| 6 | ORDER BY | Orders the returned records by one or more columns. |
+| 7 | LIMIT | LIMITs the number of returned records. |
 
 Given the following sales table, write an SQL query to obtain the products that have been sold in a total quantity greater than 1000, ordered in descending order of quantity sold.
 ```sql
@@ -510,16 +511,18 @@ SELECT * FROM tabla1 UNION ALL SELECT * FROM tabla2;
 ```
 Exercise: Given the following tables empleados1 and empleados2
 empleados1:
-Nombre     Apellido      Edad
-Juan       Pérez         30
-María      González      25
-Carlos     Rodríguez     40
+| Nombre | Apellido | Edad |
+| ------ | -------- | ---- |
+| Juan | Pérez | 30 |
+| María | González | 25 |
+| Carlos | Rodríguez | 40 |
 
 empleados2:
-Nombre     Apellido      Edad
-Ana        Martínez      22
-María      González      25
-Carmen     López         25
+| Nombre | Apellido | Edad |
+| ------ | -------- | ---- |
+| Ana | Martínez | 22 |
+| María | González | 25 |
+| Carmen | López | 25 |
 
 Create a query that combines both tables including the duplicate rows.
 ```sql
@@ -573,10 +576,10 @@ INSERT INTO productos VALUES (7, 'Bolso', 1000, NULL);
 ### Adding a record specifying columns
 When inserting data, it is possible to specifically mention the columns to be inserted, instead of mentioning all values in the order defined in the table.
 We are asked to insert a new product with the following data, but specifying the columns:
-id: 7
-nombre: Bolso
-precio: 1000
-stock: 10
+| id | nombre | precio | stock |
+| ------ | -------- | ---- | ---- |
+| 7 | Bolso | 1000 | 10 |
+
 ```sql
 INSERT INTO productos (id, precio, nombre, stock) VALUES (7, 1000, 'Bolso', 10);
 ```
@@ -750,12 +753,13 @@ To do this, we need to specify the name of each column we want to modify, follow
 UPDATE table_name SET column1 = 'new_value', column2 = 'new_value', column3 = 'new_value' WHERE condition;
 ```
 Exercise: We have a 'posts' table with the following columns:
-Column    Data Type
-id        INTEGER
-titulo    TEXT
-contenido TEXT
-autor     TEXT
-fecha     TEXT
+| Column | Data Type |
+| ------ | -------- |
+| id | INTEGER |
+| titulo | TEXT |
+| contenido | TEXT |
+| autor | TEXT |
+| fecha | TEXT |
 Edit the post with id 1 to have the title "Aprendiendo SQL" and the content "SQL is a programming language for managing relational databases".
 ```sql
 UPDATE posts
@@ -778,8 +782,10 @@ Once the table is created, we can insert data as we learned in previous exercise
 INSERT INTO productos VALUES ('Ipad Pro 2022'), ('Iphone 13 Pro Max'), ('Macbook Pro 2023');
 ```
 Exercise: Create a table called 'alumnos' that stores a column 'nombre' of type text
-Column    Data Type
-nombre    text
+| Column | Data Type |
+| ------ | -------- |
+| nombre | text |
+
 Insert a record into the created table using the following data:
 nombre: Lucía
 ```sql
@@ -793,10 +799,12 @@ For example, if we want to create a 'productos' table that includes the name, de
 CREATE TABLE productos (nombre TEXT, descripcion TEXT, precio INT);
 ```
 Exercise: Create a table called 'alumnos' with the following columns:
-Column    Data Type
-nombre    text
-apellido  text
-telefono  text
+| Column | Data Type |
+| ------ | -------- |
+| nombre | text |
+| apellido | text |
+| telefono | text |
+
 Insert a record into the created table using the following data:
 nombre: Lucía
 apellido: Sánchez
@@ -812,12 +820,14 @@ BOOLEAN to store true or false values
 DATE to store dates
 
 Create a table called 'usuarios' with the following columns:
-Column      Data Type
-nombre      text
-apellido    text
-edad        integer
-activo      boolean
-nacimiento  date
+| Column | Data Type |
+| ------ | -------- |
+| nombre | text |
+| apellido | text |
+| edad | integer |
+| activo | boolean |
+| nacimiento | date |
+  
 Then insert a record into the created table using the following data:
 nombre: Lucía
 apellido: Sánchez
@@ -839,7 +849,8 @@ temperatura_celsius
 23.4
 26.5
 27.1
-Important: To enter the decimal part of the numbers, use the dot (.) as the decimal separator
+> [!IMPORTANT]
+> To enter the decimal part of the numbers, use the dot (.) as the decimal separator
 ```sql
 CREATE TABLE temperaturas (temperatura_celsius double);
 INSERT INTO temperaturas VALUES (23.4), (26.5), (27.1);
@@ -855,10 +866,12 @@ If we try to select from the 'temperaturas' table after deleting it, we will get
 Exercise: In this exercise, we will have a table with data that we do not need.
 We will delete it, create it again, and populate it with the requested data.
 Delete the 'temperaturas' table and recreate it with the following columns:
-Column      Data Type
-ciudad      TEXT
-temperatura REAL
-fecha       Date
+| Column | Data Type |
+| ------ | -------- |
+| ciudad | text |
+| temperatura | REAL |
+| fecha | Date |
+
 Then insert the following records:
 ciudad       temperatura fecha
 Buenos Aires 20.0        2024-01-01
@@ -888,14 +901,17 @@ ALTER TABLE personas ADD COLUMN edad INTEGER;
 ```
 Exercise: In this exercise, we will modify the 'productos' table to add the 'descripcion' column of type TEXT.
 Currently, the 'productos' table has the following columns:
-Column    Data Type
-nombre    TEXT
-precio    REAL
+| Column | Data Type |
+| ------ | -------- |
+| nombre | text |
+| precio | real |
+
 After creating it, you must insert the following records:
-nombre     precio   descripcion
-Camisa     1000.00  Camisa de manga corta
-Pantalón   2000.00  Pantalón de mezclilla
-Camisa XL  1000.00  Camisa de manga larga
+| Nombre | Precio | Descripcion |
+| ------ | ------ | -------- |
+| Camisa | 1000.00 | Camisa de manga corta |
+| Pantalón | 2000.00 | Pantalón de mezclilla |
+| Camisa XL | 1000.00 | Camisa de manga larga |
 ```sql
 ALTER TABLE productos ADD COLUMN descripcion text;
 INSERT INTO productos VALUES 
@@ -906,10 +922,12 @@ INSERT INTO productos VALUES
 ## Restrictions - Constraints
 ### Introduction to restrictions
 Key ideas
-Restrictions or constraints in English are rules that can be applied to the columns of a table.
+Restrictions or constraints are rules that can be applied to the columns of a table.
 The NOT NULL restriction is a type of restriction that prevents null values from being entered into a column.
 If we enter a null value in a column with the NOT NULL restriction, the operation will fail.
+
 Adding a restriction when creating a table
+
 When creating tables, we can add restrictions (constraints) to the columns to prevent data that does not meet certain conditions from being entered.
 In this exercise, we will learn to add the NOT NULL restriction, which prevents null values from being added to a column.
 For example, when creating a table of people with name and surname, we can make the name mandatory (not null) and the surname optional.
@@ -927,7 +945,6 @@ INSERT INTO empleados VALUES ('Pedro', 'Pérez');
 ```
 ### Adding a restriction to an existing table
 Key ideas
-Restrictions or constraints in English are rules that can be applied to the columns of a table.
 A restriction can be added when creating a table.
 In SQLite, restrictions cannot be directly added to already created tables.
 However, we can achieve this by creating a new table with the restriction, copying the data from the original table to the new table, deleting the original table, and renaming the new table to the original table name.
@@ -974,10 +991,10 @@ ALTER TABLE patentes2 RENAME TO patentes;
 Just as restrictions can be added to columns, they can also be removed.
 Removing a restriction from an existing table
 To remove a restriction from an existing table in SQLite, we need to follow a procedure similar to adding a restriction.
-Create a new table without the restriction.
-Copy the data from the original table to the new table.
-Delete the original table.
-Rename the new table to the original table name.
+1. Create a new table without the restriction.
+2. Copy the data from the original table to the new table.
+3. Delete the original table.
+4. Rename the new table to the original table name.
 
 Exercise
 ```sql
@@ -991,10 +1008,10 @@ ALTER TABLE personas2 RENAME TO personas;
 ### Unique constraint
 Key ideas
 There are different types of restrictions that can be applied to the columns of a table.
-The uniqueness constraint, or UNIQUE, prevents duplicates in a specific column.
+The uniqueness constraint, or Unique, prevents duplicates in a specific column.
 A very popular case of this restriction is to avoid people with the same email address.
 
-To add a UNIQUE constraint, we simply need to specify it when creating the table.
+To add a Unique constraint, we simply need to specify it when creating the table.
 For example, if we want the email address of people to be unique, we can create the table as follows:
 ```sql
 CREATE TABLE personas (
@@ -1003,7 +1020,7 @@ CREATE TABLE personas (
     email text UNIQUE
 );
 
-Create a table with UNIQUE constraint
+Create a table with Unique constraint
 create table productos (nombre text not null, precio double not null, codigo text unique);
 INSERT INTO productos VALUES
 ('Camisa', 1000.00, 'CAM-001'),
@@ -1012,11 +1029,13 @@ INSERT INTO productos VALUES
 ```
 ### Check constraints
 Key ideas
-There are different types of restrictions that can be applied to the columns of a table.
-The NOT NULL restriction prevents null values from being entered into a column.
-The UNIQUE restriction prevents duplicates in a specific column.
-The CHECK restriction allows us to establish a condition that the values of a column must meet.
+1. There are different types of restrictions that can be applied to the columns of a table.
+2. The NOT NULL restriction prevents null values from being entered into a column.
+3. The UNIQUE restriction prevents duplicates in a specific column.
+4. The CHECK restriction allows us to establish a condition that the values of a column must meet.
+
 Check constraints
+
 The CHECK restriction allows us to establish a condition that the values of a column must meet.
 For example, if we want the salary of employees to be greater than zero, we can add a CHECK restriction to the 'salario' column.
 To add a CHECK restriction, we simply need to specify it in the column definition, providing the condition that the column value must meet.
@@ -1039,19 +1058,22 @@ INSERT INTO productos VALUES
 There are different types of restrictions that can be applied to the columns of a table, such as NOT NULL, UNIQUE, and CHECK.
 The Primary Key restriction prevents null values from being entered and ensures that there are no duplicates in a specific column.
 Practically, we can say that it is a combination of Unique and Not Null.
-What is a primary key?
+**What is a primary key?**
 The primary key, or PRIMARY KEY in English, is a restriction that serves to uniquely identify each record in a table.
 For example, suppose we have a table called 'boletas' with the following records:
-id	monto de la boleta	fecha de emision
-1	10.000	2021-10-01
-2	12.000	2021-10-02
-3	16.000	2021-10-03
+| id | monto de la boleta | fecha de emision |
+| ---- | ---------------- | ---------------- |
+| 1 | 10.000 | 2021-10-01 |
+| 2 | 12.000 | 2021-10-02 |
+| 3 | 16.000 | 2021-10-03 |
+
 And we want to find the ticket with id 2.
-If we did not have a primary key, we could have two tickets with the same id, and we would not know which one we want, or we could have tickets with a null id, and we would not know which ticket we are looking for.
-The primary key restriction ensures this does not happen.
-When we have a primary key, we are certain that we can search for any record in the database and then modify or delete it, and no other record will be modified or deleted except the selected one.
-This allows us to maintain data integrity.
-Adding a primary key to a new table
+* If we did not have a primary key, we could have two tickets with the same id, and we would not know which one we want, or we could have tickets with a null id, and we would not know which ticket we are looking for.
+* The primary key restriction ensures this does not happen.
+* When we have a primary key, we are certain that we can search for any record in the database and then modify or delete it, and no other record will be modified or deleted except the selected one.
+* This allows us to maintain data integrity.
+* 
+**Adding a primary key to a new table**
 To add a primary key to a new table, we simply need to specify it in the column definition.
 For example:
 ```sql
@@ -1071,18 +1093,20 @@ INSERT INTO posts VALUES
 ```
 ### Autoincrement
 Key ideas
-The Primary Key restriction prevents null values from being entered and ensures that there are no duplicates in a specific column.
-Practically, we can say that it is a combination of Unique and Not Null.
-Autoincrement fields allow us to generate a unique value automatically for each record we insert into a table.
-If a primary key field is an integer, it automatically becomes an autoincrement field in SQLite.
-What are autoincrement fields?
+1. The Primary Key restriction prevents null values from being entered and ensures that there are no duplicates in a specific column.
+2. Practically, we can say that it is a combination of Unique and Not Null.
+3. Autoincrement fields allow us to generate a unique value automatically for each record we insert into a table.
+4. If a primary key field is an integer, it automatically becomes an autoincrement field in SQLite.
+
+**What are autoincrement fields?**
 Autoincrement fields are fields that generate a unique value automatically for each record we insert into a table.
 Usually, the increment is 1 by 1.
 So if we have a table like the following:
-id	monto de la boleta	fecha de emision
-1	10.000	2021-10-01
-2	12.000	2021-10-02
-3	16.000	2021-10-03
+| id | monto de la boleta | fecha de emision |
+| ---- | ---------------- | ---------------- |
+| 1 | 10.000 | 2021-10-01 |
+| 2 | 12.000 | 2021-10-02 |
+| 3 | 16.000 | 2021-10-03 |
 And we add a new record without specifying the 'id' field value, the database will generate a unique value for that field, which in this case would be 4.
 
 Create a table with autoincrement field
@@ -1100,21 +1124,27 @@ INSERT INTO usuarios (nombre, fecha_creacion) VALUES
 ### Autoincrement part 2
 If a record is entered with a value greater than the current sequence, the database will update the sequence so that the next record has a value greater than the record we just inserted.
 For example, if we have a table with the following records:
-id	nombre
-1	Ana
-2	Gonzalo
-3	Juan
+| id | nombre |
+| ---- | ----- |
+| 1 | Ana |
+| 2 | Gonzalo |
+| 3 | Juan |
 Then we insert a new record with an id greater than the current sequence:
+```sql
 INSERT INTO usuarios (id, nombre) VALUES (10, 'María');
+```
 And then insert a new record without specifying the id:
+```sql
 INSERT INTO usuarios (nombre) VALUES ('Pedro');
+```
 We will get the following table:
-id	nombre
-1	Ana
-2	Gonzalo
-3	Juan
-10	María
-11	Pedro
+| id | nombre |
+| ---- | ----- |
+| 1 | Ana |
+| 2 | Gonzalo |
+| 3 | Juan |
+| 10 | María |
+| 11 | Pedro |
 
 Exercise:
 create table transacciones (id integer primary key, monto real not null, fecha date);
@@ -1127,9 +1157,9 @@ INSERT INTO transacciones VALUES (10, 4000.00, '2024-01-04');
 INSERT INTO transacciones (monto, fecha) VALUES (5000.00, '2024-01-05');
 ```
 ### Primary key and text
-The primary key is not exclusively LIMITed to numeric values; text data can also be used.
+1. The primary key is not exclusively LIMITed to numeric values; text data can also be used.
 For example, consider a 'personas' table where we could use the email address as the primary key, as each individual has a unique email address.
-In SQLite, fields that are of type INTEGER and are designated as PRIMARY KEY cannot contain null values.
+2. In SQLite, fields that are of type INTEGER and are designated as PRIMARY KEY cannot contain null values.
 However, unlike other database management systems like MySQL or PostgreSQL, when PRIMARY KEY is used with data types such as text or others, it is allowed for the value to be null.
 Therefore, if we want a field to be both primary key and not null, we must specify it using the combination of PRIMARY KEY and NOT NULL.
 Example:
@@ -1137,8 +1167,9 @@ Example:
 CREATE TABLE posts (
     title text primary key not null
 );
-
+```
 Create a table with primary key and not null constraint
+```sql
 create table personas (email text primary key not null, nombre text, apellido text);
 INSERT INTO personas VALUES
 ('example1@example.com','John', 'Doe'),
@@ -1150,35 +1181,38 @@ A foreign key is a restriction that can be added to a column of a table to indic
 For example, if we have a table of people and a table of cars, we could add a 'persona_id' column to the cars table,
 and add the foreign key restriction to indicate that the value of that column must exist in the people table.
 This ensures that cars of non-existent people are not inserted or that people with assigned cars are not deleted, leaving cars without an owner.
-
 People table:
-Column  Type      Restrictions
-id      INTEGER   PRIMARY KEY
-nombre  TEXT
-apellido TEXT
+| Column | Type | Restrictions |
+| ---- | ----- | ----- |
+| id | INTEGER | PRIMARY KEY |
+| nombre | TEXT |  |
+| apellido | TEXT | |
 
 Cars table:
-Column     Type      Restrictions
-id         INTEGER   PRIMARY KEY
-patente    TEXT
-persona_id INTEGER   FOREIGN KEY (persona_id) REFERENCES personas(id)
+| Column | Type | Restrictions |
+| ---- | ----- | ----- |
+| id | INTEGER | PRIMARY KEY |
+| patente | TEXT |  |
+| persona_id | INTEGER | FOREIGN KEY (persona_id) REFERENCES personas(id) |
 
 With the following data:
 People:
-id   nombre  apellido
-1    John    Doe
-2    Jane    Smith
+| id | nombre | apellido |
+| ---- | ----- | ----- |
+| 1 | John | Doe |
+| 2 | Jane | Smith |
 
 Cars:
-id   patente persona_id
-1    ABC123  1
-2    DEF456  2
+| id | patente | persona_id |
+| ---- | ----- | ----- |
+| 1 | ABC123 | 1 |
+| 2 | DEF456 | 2 |
 
 We can see that the car with patente ABC123 belongs to the person with id 1, and the car with patente DEF456 belongs to the person with id 2.
 Additionally, the foreign key ensures that we cannot delete the person with id 1 while there is a car with persona_id 1.
 Similarly, we cannot insert a car with persona_id 3, as there is no person with id 3.
 
-Adding the foreign key:
+**Adding the foreign key:**
 To add a foreign key to an existing table, we must specify the FOREIGN KEY restriction followed by the column name and the table it references,
 and finally the column of the referenced table. The syntax is as follows:
 ```sql
@@ -1200,37 +1234,40 @@ Exercise:
 We have the 'transacciones' and 'usuarios' tables with the following structures:
 
 Transacciones table:
-Column      Type      Restrictions
-id          INTEGER   PRIMARY KEY
-monto       REAL
-usuario_id  INTEGER   FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+| Column | Type | Restrictions |
+| ---- | ----- | ----- |
+| id | INTEGER | PRIMARY KEY |
+| monto | REAL |  |
+| usuario_id | INTEGER | FOREIGN KEY (usuario_id) REFERENCES usuarios(id) |
 
 Usuarios table:
-Column      Type      Restrictions
-id          INTEGER   PRIMARY KEY
-nombre      TEXT
-apellido    TEXT
+| Column | Type | Restrictions |
+| ---- | ----- | ----- |
+| id | INTEGER | PRIMARY KEY |
+| nombre | TEXT |  |
+| apellido | TEXT | |
 
 With the following data:
 Transacciones:
-id  monto  usuario_id
-1   100    1
-2   200    2
-3   300    1
+| id | monto | usuario_id |
+| ---- | ----- | ----- |
+| 1 | 100 | 1 |
+| 2 | 200 | 2 |
+| 3 | 300 | 1 |
 
 Usuarios:
-id  nombre  apellido
-1   John    Doe
-2   Jane    Smith
+| id | nombre | apellido |
+| ---- | ----- | ----- |
+| 1 | John | Doe |
+| 2 | Jane | Smith |
 
-In this exercise, first we will try to create a transaction with a non-existent user to observe the error.
-Then, we will try to delete a user who has associated transactions to observe the error.
-Next, we will delete our previous queries and modify the 'transacciones' table to remove the foreign key.
-Only the foreign key should be removed, not the column.
+* In this exercise, first we will try to create a transaction with a non-existent user to observe the error.
+* Then, we will try to delete a user who has associated transactions to observe the error.
+* Next, we will delete our previous queries and modify the 'transacciones' table to remove the foreign key.
+* Only the foreign key should be removed, not the column.
 > [!TIP] 
 > This requires creating a temporary table, copying the data from the original table to the temporary table, deleting the original table, and renaming the temporary table to the original table name.
-Finally, transactions should be associated with the user with id 3, who does not exist, to demonstrate that without the FK, we can insert transactions without associated users.
-Points 1 and 2 are to observe what happens. To get the correct answer, you must perform points 3 and 4 in the editor.
+* Finally, transactions should be associated with the user with id 3, who does not exist, to demonstrate that without the FK, we can insert transactions without associated users.
 ```sql
 INSERT INTO transacciones (monto, usuario_id) VALUES (300, 3);
 DELETE FROM usuarios WHERE id = 1;
@@ -1242,8 +1279,8 @@ UPDATE transacciones SET usuario_id = 3;
 ```
 ## Queries in multiple tables
 Key ideas
-The JOIN clause allows combining data from multiple tables into a single result table.
-To perform the join, it is necessary to specify the tables to be joined and the corresponding join condition.
+1. The JOIN clause allows combining data from multiple tables into a single result table.
+2. To perform the join, it is necessary to specify the tables to be joined and the corresponding join condition.
 Example:
 ```sql
 SELECT * FROM usuarios INNER JOIN datos_contacto ON email1 = email2;
@@ -1260,7 +1297,7 @@ For example, we can do the following:
 ```sql
 SELECT * FROM usuarios JOIN datos_contacto ON usuarios.email = datos_contacto.email;
 ```
-Alias
+**Alias**
 In SQL, we can use aliases to refer to tables in a shorter way.
 For example, if we want to refer to the 'usuarios' table as 'u' and the 'datos_contacto' table as 'dc', we can do the following:
 ```sql
@@ -1272,9 +1309,11 @@ SELECT * FROM usuarios u INNER JOIN notas n ON u.email = n.email;
 ```
 ### Selecting some attributes
 We can select the data from each table that we want to display in the query.
-selecting some attributes
+
+**Selecting some attributes**
 Just as when working with a single table, we can select only the attributes we want to display in the query.
 When we have two tables, we can select all the attributes from one table and only some from the other as follows:
+
 Example:
 ```sql
 SELECT table1.*, table2.attribute1, table2.attribute2 FROM table1 JOIN table2 ON table1.id = table2.id;
@@ -1289,24 +1328,25 @@ Exercise:
 SELECT usuarios.*, notas.notas FROM usuarios JOIN notas ON usuarios.email = notas.email;
 ```
 ### JOIN without results
-The JOIN clause only combines records that have a common key in both tables.
-There are other types of JOIN that we will review later.
-The answer is quite simple: if there is no common data between both tables, we will not get results.
-There is an email column in both tables, but the email data in 'usuarios' is not in 'datos_contacto', so the result is empty.
+1. The JOIN clause only combines records that have a common key in both tables.
+2. There are other types of JOIN that we will review later.
+3. The answer is quite simple: if there is no common data between both tables, we will not get results.
+4. There is an email column in both tables, but the email data in 'usuarios' is not in 'datos_contacto', so the result is empty.
 ```sql
 SELECT usuarios.*, datos_contacto.telefono FROM usuarios JOIN datos_contacto ON usuarios.email = datos_contacto.email;
 ```
 ### Order of clauses
 Clauses have a specific order that we must follow for the query to work correctly.
-Command sequence:
-SELECT     - Select these data.
-FROM       - From this table.
-JOIN       - Join them with this table.
-WHERE      - Filter the values that meet this condition.
-GROUP BY   - Group the results by this criterion.
-HAVING     - Filter by these grouped criteria.
-ORDER BY   - Sort the results by this other criterion.
-LIMIT      - LIMIT the results to this amount.
+| Command | sequence |
+| ----- | ----- |
+| SELECT | Select these data | 
+| FROM | From this table |
+| JOIN | Join them with this table |
+| WHERE | Filter the values that meet this condition |
+| GROUP BY | Group the results by this criterion |
+| HAVING | Filter by these grouped criteria |
+| ORDER BY | Sort the results by this other criterion |
+| LIMIT | LIMIT the results to this amount |
 
 Exercise:
 Given the following tables, select all the information of the user 'juan.perez@example.com'.
@@ -1318,28 +1358,30 @@ Using GROUP BY and aggregation functions in queries with multiple tables
 Just as in queries on a single table, we can use aggregation functions and grouping in queries on multiple tables.
 Suppose we have two tables: a table called 'clientes' and another table called 'pedidos'.
 Clientes table:
-cliente_id  nombre
-1           Juan Pérez
-2           Ana Gómez
-3           Luis Fernández
+| cliente_id | nombre |
+| ----- | ----- |
+| 1 | Juan Pérez |
+| 2 | Ana Gómez |
+| 3 | Luis Fernández |
 
 Pedidos table:
-pedido_id  cliente_id  fecha
-101        1           2023-01-15
-102        2           2023-02-20
-103        1           2023-03-10
-104        3           2023-04-22
-105        2           2023-05-18
-106        1           2023-06-30
+| cliente_id | nombre | nombre |
+| ----- | ----- | ----- |
+| 101 | 1 | 2023-01-15 | 
+| 102 | 2 | 2023-02-20 | 
+| 103 | 1 | 2023-03-10 | 
+| 104 | 3 | 2023-04-22 | 
+| 105 | 2 | 2023-05-18 | 
+| 106 | 1 | 2023-06-30 | 
 
 To show the total number of orders placed by each client, we can use the following SQL query:
 ```sql
 SELECT nombre, COUNT(p.pedido_id) AS total_pedidos FROM clientes c JOIN pedidos p ON c.cliente_id = p.cliente_id GROUP BY c.cliente_id, nombre;
 ```
-Some important details to keep in mind:
-If there are columns with the same name, we need to specify the table name before the column name.
-When grouping data, we must keep in mind that the columns not in the GROUP BY clause must be used with aggregation functions.
-Therefore, in these types of exercises, select * is not recommended, especially if the table has many columns.
+**Some important details to keep in mind:**
+* If there are columns with the same name, we need to specify the table name before the column name.
+* When grouping data, we must keep in mind that the columns not in the GROUP BY clause must be used with aggregation functions.
+* Therefore, in these types of exercises, select * is not recommended, especially if the table has many columns.
 
 Exercise:
 We have two tables: 'Productos' and 'Ventas'.
@@ -1352,11 +1394,11 @@ SELECT nombre, SUM(v.cantidad) AS total_vendido FROM productos p JOIN ventas v O
 ## Cardinality
 ### One-to-one relationships
 Key ideas
-The cardinality of a relationship is the number of elements of one table that can be related to those of another table.
-Depending on how the relationships between tables are modeled, one-to-one, one-to-many, or many-to-many relationships can be had.
-In a one-to-one relationship, a record of one table can only be related to a record of the other table.
+1. The cardinality of a relationship is the number of elements of one table that can be related to those of another table.
+2. Depending on how the relationships between tables are modeled, one-to-one, one-to-many, or many-to-many relationships can be had.
+3. In a one-to-one relationship, a record of one table can only be related to a record of the other table.
 
-What is the cardinality of a relationship?
+**What is the cardinality of a relationship?**
 The cardinality of a relationship is the number of elements of one table that can be related to those of another table.
 Relationships between tables can be classified into three main types according to their cardinality.
 In this exercise, we will look at the one-to-one relationship, denoted as 1:1.
@@ -1391,34 +1433,39 @@ Each teacher can have several students, and each student can have several teache
 To achieve this, we have a 'profesores' table, a 'alumnos' table, and a 'profesores_alumnos' table that relates teachers to students.
 
 Profesores table:
-profesor_id  nombre
-1            Ana
-2            Pedro
-3            Luis
+| profesor_id | nombre |
+| ----- | ----- |
+| 1 | Ana |
+| 2 | Pedro |
+| 3 | Luis |
 
 Alumnos table:
-alumno_id  nombre
-1          Marta
-2          Elena
-3          Juan
+| alumno_id | nombre |
+| ----- | ----- |
+| 1 | Marta |
+| 2 | Elena |
+| 3 | Juan |
 
 Profesores_alumnos table:
-profesor_id  alumno_id
-1            1
-1            2
-2            1
+| profesor_id | alumno_id |
+| ----- | ----- |
+| 1 | 1 |
+| 1 | 2 |
+| 2 | 1 |
 
 By joining the 'profesores' and 'profesores_alumnos' tables with a JOIN, we get:
-profesor_id  nombre  alumno_id
-1            Ana     1
-1            Ana     2
-2            Pedro   1
+| profesor_id | nombre | alumno_id |
+| ----- | ----- | ----- |
+| 1 | Ana | 1 |
+| 1 | Ana | 2 |
+| 2 | Pedro | 1 |
 
 By joining the previous table with the 'alumnos' table, we get:
-profesor_id  nombre  alumno_id  nombre
-1            Ana     1          Marta
-1            Ana     2          Elena
-2            Pedro   1          Marta
+| profesor_id | nombre | alumno_id | alumno_id |
+| ----- | ----- | ----- | ----- |
+| 1 | Ana | 1 | Marta |
+| 1 | Ana | 2 | Elena |
+| 2 | Pedro | 1 | Marta |
 
 Where we can see that for each record in the 'profesores' table, there are one or more records in the 'profesores_alumnos' table,
 and for each record in the 'profesores_alumnos' table, there is a record in the 'alumnos' table.
@@ -1435,11 +1482,11 @@ SELECT * FROM objetos o JOIN objetos_colores oc ON o.objeto_id = oc.objeto_id JO
 ```
 ### Characteristics of the intermediate table
 Key ideas
-In a many-to-many relationship, a record of one table can be related to one or several records of another table, and vice versa.
-Relational databases do not allow many-to-many relationships directly, so an intermediate table that relates the main tables is needed.
-The intermediate table must have a column that is a foreign key for each of the main tables.
+1. In a many-to-many relationship, a record of one table can be related to one or several records of another table, and vice versa.
+2. Relational databases do not allow many-to-many relationships directly, so an intermediate table that relates the main tables is needed.
+3. The intermediate table must have a column that is a foreign key for each of the main tables.
 
-Understanding the intermediate table
+**Understanding the intermediate table**
 If we have two tables, A and B, that we want to relate in a many-to-many manner, we need an intermediate table C that relates both tables.
 
 Exercise:
@@ -1451,9 +1498,9 @@ SELECT * FROM profesores p JOIN profesores_alumnos pa ON p.profesor_id = pa.prof
 ```
 ### Without uniqueness restriction
 Key ideas
-The intermediate table must have a column that is a foreign key for each of the main tables.
-If there is a uniqueness restriction, it ensures that there are no duplicate records in the intermediate table.
-This is achieved with a composite primary key of the foreign keys of the main tables.
+1. The intermediate table must have a column that is a foreign key for each of the main tables.
+2. If there is a uniqueness restriction, it ensures that there are no duplicate records in the intermediate table.
+3. This is achieved with a composite primary key of the foreign keys of the main tables.
 
 ### Uniqueness restriction
 Suppose we have a library management system that includes three main tables: 'Libros', 'Usuarios', and 'Pedidos'.
@@ -1464,33 +1511,30 @@ Before building the intermediate table, we need to ask an important question: Ca
 If the answer is yes, then we do not need a uniqueness restriction in the intermediate table.
 If the answer is no, then we must ensure that there are no duplicate records in the intermediate table, and this is done with a uniqueness restriction.
 In this example, it makes sense that a user can request the same book more than once, so our intermediate table would have the following structure:
-
-libro_id  usuario_id
-1         1
-1         1
-2         2
-2         2
-3         1
-
+| libro_id | usuario_id |
+| ----- | ----- |
+| 1 | 1 |
+| 1 | 1 |
+| 2 | 2 |
+| 2 | 2 |
+| 3 | 1 |
 Within the table, we can see that user 1 has requested book 1 twice, which is not a problem if there is no uniqueness restriction.
 
 Exercise:
 Select all users who have requested the same book more than once.
 The columns to display are usuario_id, libro_id, and veces, where veces is the number of times the user has requested the book.
-Hint: Group by libro_id and usuario_id and count how many records there are for each group.
+> [!TIP]
+> Group by libro_id and usuario_id and count how many records there are for each group.
 Reflect on whether to use where or HAVING to filter the results.
 ```sql
 SELECT usuario_id, libro_id, COUNT(libro_id) AS veces FROM pedidos GROUP BY libro_id, usuario_id HAVING veces > 1;
 ```
-With uniqueness restriction
+**With uniqueness restriction**
 Suppose we have a system that stores information about projects and employees.
-Each employee can work on multiple projects, and each project can have multiple employees working on it.
-To handle this, we have an 'empleados' table, a 'proyectos' table, and an 'empleados_proyectos' table that relates employees to projects.
+Each employee can work on multiple projects, and each project can have multiple employees working on it. To handle this, we have an 'empleados' table, a 'proyectos' table, and an 'empleados_proyectos' table that relates employees to projects.
 Before building the intermediate table, we need to ask an important question: Can an employee be in the same project more than once?
-
-If the answer is yes, then we do not need a uniqueness restriction in the intermediate table.
-If the answer is no, then we must ensure that there are no duplicate records in the intermediate table, and this is done with a uniqueness restriction.
-
+* If the answer is yes, then we do not need a uniqueness restriction in the intermediate table.
+* If the answer is no, then we must ensure that there are no duplicate records in the intermediate table, and this is done with a uniqueness restriction.
 In this case, an employee cannot be assigned to the same project more than once.
 To prevent this from happening, when creating the table, we will add a composite primary key of the foreign keys of the main tables.
 ```sql
@@ -1504,6 +1548,7 @@ CREATE TABLE Empleados_Proyectos (
 ```
 This way, if a record with an employee and a project that already exists in the table is attempted to be added, an error will be generated,
 ensuring that there are no duplicate records in the intermediate table.
+
 Exercise:
 Create a query that selects all employees along with the number of projects assigned to each one, demonstrating that there are no duplicate records in the intermediate table.
 The columns of the query should be 'nombre', 'puesto', and 'cantidad_proyectos'.
@@ -1517,12 +1562,12 @@ ORDER BY cantidad_proyectos DESC;
 ## Types of Joins
 ### Inner Join
 Key ideas
-The JOIN clause allows us to combine data from multiple tables into a single result table.
-There are several types of joins, and when the type of join is not specified, INNER JOIN is used by default.
-The difference between the types of joins lies in how records that do not have a common key in both tables are handled.
-INNER JOIN is the default option.
-So far, we have used INNER JOIN, but we have not specified it.
-If the type of JOIN is not specified, INNER JOIN is used by default.
+1. The JOIN clause allows us to combine data from multiple tables into a single result table.
+2. There are several types of joins, and when the type of join is not specified, INNER JOIN is used by default.
+3. The difference between the types of joins lies in how records that do not have a common key in both tables are handled.
+4. INNER JOIN is the default option.
+5. So far, we have used INNER JOIN, but we have not specified it.
+6. If the type of JOIN is not specified, INNER JOIN is used by default.
 This implies that:
 ```sql
 SELECT * FROM usuarios JOIN datos_contacto ON usuarios.email = datos_contacto.email
@@ -1531,7 +1576,7 @@ is the same as:
 ```sql
 SELECT * FROM usuarios INNER JOIN datos_contacto ON usuarios.email = datos_contacto.email
 ```
-What does INNER JOIN do?
+**What does INNER JOIN do?**
 INNER JOIN combines records from both tables based on a join condition.
 Only records with a common key in both tables are included.
 If there is no common key, the records are not included in the final result.
@@ -1545,11 +1590,11 @@ SELECT * FROM usuarios u INNER JOIN notas n ON u.email = n.email;
 ```
 ### Inner Join with Venn Diagram
 Key ideas
-Venn diagrams are a visual way to represent sets and operations between them.
-We can use Venn diagrams to visualize what happens with the records of the tables when performing different types of JOINs.
-In a Venn diagram, an INNER JOIN is visualized as the intersection between two circles.
+1. Venn diagrams are a visual way to represent sets and operations between them.
+2. We can use Venn diagrams to visualize what happens with the records of the tables when performing different types of JOINs.
+3. In a Venn diagram, an INNER JOIN is visualized as the intersection between two circles.
 
-Venn Diagrams
+**Venn Diagrams**
 A Venn diagram allows us to visualize sets and operations between them.
 These diagrams consist of circles representing sets of data.
 In them, the elements that the different sets of data have in common are represented in the intersection of the circles.
@@ -1569,40 +1614,43 @@ SELECT a.nombre, p.titulo FROM actores a INNER JOIN peliculas p ON a.actor_id = 
 ### Left Join
 When using a LEFT JOIN, if the key is in the left table but not in the right table, the record from the left table will appear in the final result with NULL values in the fields of the right table.
 
-Inner join vs. Left join
+**Inner join vs. Left join**
+
 To illustrate the difference, we will work with the tables 'usuarios' and 'notas'.
-| usuarios |                | notas |
-+----------+                +-------+
-| email    |                | email |
-| nombre   |                | notas |
-| edad     |                |       |
-+----------+                +-------+
+| usuarios | notas |
+| -------- | ----- |
+| email    | email |
+| nombre   | notas |
+| edad     |  |
 
 Table 'usuarios'
-email                    nombre           edad
-juan.perez@example.com   Juan Pérez       30
-maria.gonzalez@example.com Maria González 25
-john.doe@example.com     John Doe         40
-francisco@example.com    Test User        22
+| email | nombre | edad |
+| -------- | ----- | ----- |
+| juan.perez@example.com | Juan Pérez | 30 |
+| maria.gonzalez@example.com | Maria González | 25 |
+| john.doe@example.com | John Doe | 40 |
+| francisco@example.com | Test User | 22 |
 
 Table 'notas'
-email                    notas
-juan.perez@example.com   90
-maria.gonzalez@example.com 100
-john.doe@example.com     80
-juan.perez@example.com   100
-maria.gonzalez@example.com 100
+| email | notas |
+| -------- | ----- |
+| juan.perez@example.com | 90 |
+| maria.gonzalez@example.com | 100 |
+| john.doe@example.com  | 80 |
+| juan.perez@example.com | 100 |
+| maria.gonzalez@example.com | 100 |
 
 If we do an INNER JOIN between the tables 'usuarios' and 'notas' using the email field as the key, we will get the following records:
 ```sql
 SELECT u.email, u.nombre, u.edad, n.notas FROM usuarios u INNER JOIN notas n ON u.email = n.email;
 ```
-email                    nombre           edad  notas
-juan.perez@example.com   Juan Pérez       30    90
-juan.perez@example.com   Juan Pérez       30    100
-maria.gonzalez@example.com Maria González 25    100
-maria.gonzalez@example.com Maria González 25    100
-john.doe@example.com     John Doe         40    80
+| email | nombre | edad | edad |
+| ----- | ----- | ----- | ----- |
+| juan.perez@example.com | Juan Pérez | 30 | 90 |
+| juan.perez@example.com | Juan Pérez | 30 | 100 |
+| maria.gonzalez@example.com | Maria González | 25 | 100 |
+| maria.gonzalez@example.com | Maria González | 25 | 100 |
+| john.doe@example.com | John Doe | 40 | 80 |
 
 Here we see that francisco@example.com does not appear in the final result, as he has no notes in the system.
 However, if we use a LEFT JOIN between the tables 'usuarios' and 'notas', as follows:
@@ -1610,13 +1658,14 @@ However, if we use a LEFT JOIN between the tables 'usuarios' and 'notas', as fol
 SELECT u.email, u.nombre, u.edad, n.notas FROM usuarios u LEFT JOIN notas n ON u.email = n.email;
 ```
 We will get the following records:
-email                    nombre           edad  notas
-juan.perez@example.com   Juan Pérez       30    90
-juan.perez@example.com   Juan Pérez       30    100
-maria.gonzalez@example.com Maria González 25    100
-maria.gonzalez@example.com Maria González 25    100
-john.doe@example.com     John Doe         40    80
-francisco@example.com    Test User        22    NULL
+| email | nombre | edad | edad |
+| ----- | ----- | ----- | ----- |
+| juan.perez@example.com | Juan Pérez | 30 | 90 |
+| juan.perez@example.com | Juan Pérez | 30 | 100 |
+| maria.gonzalez@example.com | Maria González | 25 | 100 |
+| maria.gonzalez@example.com | Maria González | 25 | 100 |
+| john.doe@example.com | John Doe | 40 | 80 |
+| francisco@example.com | Test User | 22 | NULL |
 
 By doing a LEFT JOIN, the record of francisco@example.com appears in the final result with NULL values in the fields of the 'notas' table,
 since Francisco has no notes in the system, but he is in the 'usuarios' table.
@@ -1631,12 +1680,12 @@ We have a table called 'empleados' and another called 'departamentos'.
 Using what we have learned, select all employees along with their corresponding departments, including employees who have not yet been assigned to any department.
 Both tables have the email column.
 
-| empleados |               | departamentos |
-+-----------+               +---------------+
-| email     |<------------->| email          |
-| nombre    |               | departamento   |
-| edad      |               +---------------+
-+-----------+               +---------------+
+| empleados |                departamentos |
+|-----------|               ---------------|
+| email     |                email         |
+| nombre    |                departamento  |
+| edad      |               
+             
 ```sql
 SELECT * FROM empleados e LEFT JOIN departamentos d ON e.email = d.email;
 ```
@@ -1645,33 +1694,15 @@ In the Venn diagram, a LEFT JOIN is visualized as the left set.
 When performing a Left Join between table A and table B, all records from table A appear in the results, even those without a corresponding key in table B.
 We can visualize the Left Join as the left set in a Venn diagram.
 
-Analyzing the result
+**Analyzing the result**
 Additionally, by looking at the Venn diagram, we can observe the result of the Left Join operation between the tables 'productos' and 'ventas'.
 In it, we see:
-The records with id 1, 2, and 3 from the 'productos' table appear in the Left Join results, as all three are in the left set.
-The record with id 4 from the 'ventas' table does not appear in the Left Join results, as it is not in the left set.
-Records 1 and 2 do not appear with data from the 'ventas' table, as they are only in the left table.
-Record 3 appears with data from the 'ventas' table, as it is the only one found in both tables.
+* The records with id 1, 2, and 3 from the 'productos' table appear in the Left Join results, as all three are in the left set.
+* The record with id 4 from the 'ventas' table does not appear in the Left Join results, as it is not in the left set.
+* Records 1 and 2 do not appear with data from the 'ventas' table, as they are only in the left table.
+* Record 3 appears with data from the 'ventas' table, as it is the only one found in both tables.
 
 Exercise
-Given the following tables:
-| Profesion |
-+----------+
-| id       | Profesion     |
-+----------+
-| 1        | Ingeniero     |
-| 2        | Médico        |
-| 3        | Abogado       |
-| 4        | Arquitecto    |
-
-| Personas |
-+----------+
-| id       | Nombre  | profesion_id |
-+----------+
-| 1        | Juan    | 1            |
-| 2        | Maria   | 2            |
-| 3        | Ana     | 3            |
-
 We have a table called 'Personas' that contains the names of people and the id of the profession they belong to.
 We want to get a list of all professions and the people who belong to each of them.
 If a profession has no associated people, the profession name should be shown with NULL in the 'Nombre' field.
@@ -1698,10 +1729,10 @@ SELECT * FROM empleados e RIGHT JOIN departamentos d ON e.email = d.email;
 ```
 ### Left Join and Right Join
 Key ideas
-When using LEFT JOIN, if the key is in the left table but not in the right table, the record from the left table will appear in the final result with NULL values in the fields of the right table.
-When using RIGHT JOIN, if the key is in the right table but not in the left table, the record from the right table will appear in the final result with NULL values in the fields of the left table.
-LEFT JOIN and RIGHT JOIN are reflections of each other.
-Using LEFT JOIN or RIGHT JOIN simply depends on which table you want to name first.
+1. When using LEFT JOIN, if the key is in the left table but not in the right table, the record from the left table will appear in the final result with NULL values in the fields of the right table.
+2. When using RIGHT JOIN, if the key is in the right table but not in the left table, the record from the right table will appear in the final result with NULL values in the fields of the left table.
+3. LEFT JOIN and RIGHT JOIN are reflections of each other.
+4. Using LEFT JOIN or RIGHT JOIN simply depends on which table you want to name first.
 ```sql
 SELECT * FROM table1 LEFT JOIN table2 ON table1.id = table2.id
 ```
@@ -1709,7 +1740,7 @@ is practically the same as:
 ```sql
 SELECT * FROM table2 RIGHT JOIN table1 ON table2.id = table1.id
 ```
-LEFT JOIN and RIGHT JOIN are reflections of each other.
+**LEFT JOIN and RIGHT JOIN are reflections of each other.**
 However, there is a small difference when used in conjunction with select, as the attributes of the first table will be displayed first.
 To get the results in the same order, we can simply specify the order we want.
 ```sql
@@ -1723,20 +1754,19 @@ SELECT * FROM productos p LEFT JOIN precios pre ON p.producto_id = pre.producto_
 ```
 ### Identifying types of join
 Key ideas:
-There are multiple types of JOIN
-So far, we have seen INNER JOIN, LEFT JOIN, and RIGHT JOIN
-We must know how to identify the type of JOIN to use in a query based on the request
-Useful guide to identify the type of join:
+1. There are multiple types of JOIN
+2. We must know how to identify the type of JOIN to use in a query based on the request
+3. Useful guide to identify the type of join:
 
-INNER JOIN
+**INNER JOIN**
 When to use it: When you need only the rows where there are matches in both tables.
 Result: Returns only the rows with corresponding data in both tables.
 
-LEFT JOIN (or LEFT OUTER JOIN)
+**LEFT JOIN (or LEFT OUTER JOIN)**
 When to use it: When you need all rows from the left table and the matching rows from the right table.
 Result: Returns all rows from the left table and the matches from the right table, with NULLs where there are no matches.
 
-RIGHT JOIN (or RIGHT OUTER JOIN)
+**RIGHT JOIN (or RIGHT OUTER JOIN)**
 When to use it: When you need all rows from the right table and the matching rows from the left table.
 Result: Returns all rows from the right table and the matches from the left table, with NULLs where there are no matches.
 
@@ -1773,11 +1803,10 @@ SELECT e.nombre AS nombre_empleado, p.nombre_proyecto FROM empleados e RIGHT JOI
 ### Full outer join
 When using FULL OUTER JOIN, all records from both tables are obtained, including non-matching records.
 
-Full outer join
 Full outer join is a combination of LEFT JOIN and RIGHT JOIN.
 It returns all records from both tables, including non-matching records.
 
-Implementing full outer join in SQLite
+**Implementing full outer join in SQLite**
 The SQLite database engine does not support FULL OUTER JOIN operations.
 However, the same effect can be achieved with the following syntax:
 ```sql
@@ -1835,8 +1864,9 @@ ON a.id = c.alumno_id
 WHERE c.calificacion IS NULL;
 ```
 And as a result, we would obtain:
-id  nombre  apellido  id  alumno_id  calificacion
-3   Pedro   Lopez
+| id | nombre | apellido | id | alumno_id | calificacion |
+| ----- | ----- | ----- | ----- |----- |----- |
+| 3 | Pedro | Lopez |  |  |  |
 
 Exercise
 Create an SQL query that shows all the data from the mentioned tables of people without a profession.
@@ -1862,22 +1892,6 @@ It is important to note that in addition to changing the JOIN, we need to change
 
 Practical example
 In a database, we have the 'calificaciones' and 'cursos' tables.
-
-Table: calificaciones
-id  alumno_id  curso_id  calificacion
-1   1          1         8.5
-2   1          2         7.9
-3   2          1         9.2
-4   2          2         8.8
-5   3          1         7.5
-6   4          2         9.1
-
-Table: cursos
-id  nombre        docente_id
-1   Matemáticas   1
-2   Ciencias      1
-3   Arte          1
-
 We are asked to obtain all the information of the courses without grades.
 To solve this with a right excluding join, the query would be:
 ```sql
@@ -1887,8 +1901,9 @@ ON cu.id = c.curso_id
 WHERE c.id IS NULL;
 ```
 As a result, we would obtain:
-id  alumno_id  curso_id  calificacion  id  nombre  docente_id
-3   Arte       1
+| id | alumno_id | curso_id | calificacion | id | nombre | docente_id |
+| ----- | ----- | ----- | ----- | ----- | ----- | ----- |
+| 3 | Arte | 1 |  |  |  |  |
 
 Exercise
 Use a right join to obtain the teachers who do not have an assigned course.
@@ -1915,21 +1930,6 @@ WHERE tabla_A.clave IS NULL;
 This query will give us all records from table_A that do not have matches in table_B, and all records from table_B that do not have matches in table_A.
 
 Exercise
-Consider the following tables:
-
-Table empleados:
-id_empleado  nombre  id_departamento
-1            Ana     10
-2            Juan    20
-3            María   30
-4            Carlos  NULL
-
-Table departamentos:
-id_departamento  departamento
-10              Recursos Humanos
-20              Finanzas
-40              Marketing
-
 Write an SQL query that implements a FULL OUTER EXCLUDING JOIN between the 'empleados' and 'departamentos' tables.
 This query should show both employees who are not assigned to any existing department and departments that do not have assigned employees.
 Once you have written the query, execute it and analyze the results and answer the following questions:
@@ -1952,10 +1952,9 @@ WHERE e.id_empleado IS NULL;
 
 ### Natural Join
 Key ideas
-Natural Join is a JOIN that additionally assumes columns with the same name are the join columns.
-The advantage of using NATURAL JOIN is that it simplifies writing the query, but it is only useful when the join columns have the same name and data type in both tables.
+1. Natural Join is a JOIN that additionally assumes columns with the same name are the join columns.
+2. The advantage of using NATURAL JOIN is that it simplifies writing the query, but it is only useful when the join columns have the same name and data type in both tables.
 
-Natural Join
 NATURAL JOIN is a type of join in SQL that is used to combine two tables using columns with the same name.
 Its syntax is as follows:
 ```sql
@@ -1965,20 +1964,7 @@ FROM table1 NATURAL JOIN table2;
 As it is expected that the columns have the same name, it is not necessary to specify it.
 
 Let's see an example:
-Suppose we have two tables, 'clientes' and 'pedidos', with the following structure:
-
-Table clientes
-id_cliente  nombre  email
-1           Juan    juan@example.com
-2           María   maria@example.com
-3           Pedro   pedro@example.com
-
-Table pedidos
-id_pedido  id_cliente  producto  cantidad
-1          1           Laptop    1
-2          2           Tablet    2
-3          1           Smartphone 1
-
+Suppose we have two tables, 'clientes' and 'pedidos'
 In this case, both tables have a column 'id_cliente', so, when doing a Natural Join, this will be the column used to join the tables.
 ```sql
 SELECT * 
