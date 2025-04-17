@@ -478,8 +478,10 @@ SELECT AVG(total_venta) AS promedio_ventas FROM (SELECT empleado_id, SUM(monto) 
 ```
 We have the "goles" table that records the goals scored by each player in different matches.
 We are asked for a query to calculate the total average goals per player.
+
 > [!TIP] 
 > It's not the same as the average goals per match.
+
 ```sql
 SELECT AVG(total_goles) AS promedio_goles FROM (SELECT jugador_id, SUM(goles) AS total_goles FROM goles GROUP BY 1);
 ```
@@ -858,8 +860,10 @@ temperatura_celsius
 23.4
 26.5
 27.1
+
 > [!IMPORTANT]
 > To enter the decimal part of the numbers, use the dot (.) as the decimal separator
+
 ```sql
 CREATE TABLE temperaturas (temperatura_celsius double);
 INSERT INTO temperaturas VALUES (23.4), (26.5), (27.1);
@@ -924,6 +928,7 @@ After creating it, you must insert the following records:
 | Camisa | 1000.00 | Camisa de manga corta |
 | Pantalón | 2000.00 | Pantalón de mezclilla |
 | Camisa XL | 1000.00 | Camisa de manga larga |
+
 ```sql
 ALTER TABLE productos ADD COLUMN descripcion text;
 INSERT INTO productos VALUES 
@@ -1201,6 +1206,7 @@ A foreign key is a restriction that can be added to a column of a table to indic
 For example, if we have a table of people and a table of cars, we could add a 'persona_id' column to the cars table,
 and add the foreign key restriction to indicate that the value of that column must exist in the people table.
 This ensures that cars of non-existent people are not inserted or that people with assigned cars are not deleted, leaving cars without an owner.
+
 People table:
 
 | Column | Type | Restrictions |
@@ -1567,12 +1573,16 @@ Within the table, we can see that user 1 has requested book 1 twice, which is no
 Exercise:
 Select all users who have requested the same book more than once.
 The columns to display are usuario_id, libro_id, and veces, where veces is the number of times the user has requested the book.
+
 > [!TIP]
 > Group by libro_id and usuario_id and count how many records there are for each group.
+
 Reflect on whether to use where or HAVING to filter the results.
+
 ```sql
 SELECT usuario_id, libro_id, COUNT(libro_id) AS veces FROM pedidos GROUP BY libro_id, usuario_id HAVING veces > 1;
 ```
+
 **With uniqueness restriction**
 
 Suppose we have a system that stores information about projects and employees.
@@ -2135,10 +2145,13 @@ Given the 'amigos' table that contains information about connected friends on a 
 Write an SQL query using self join to get the name of each friend along with the name of their connected friend.
 Only show friends who have a connected friend.
 The columns of the resulting table should be called 'nombre' and 'nombre_amigo_conectado'.
+
 > [!TIP] 
 > Which type of join would you use to get the connected friends? Inner Join to show only those with connected friends
+
 > [!TIP]
 > Which columns of the 'amigos' table relate to each other? ID_Amigo and ID_amigo_conectado
+
 ```sql
 SELECT a1.nombre, a2.nombre AS nombre_amigo_conectado 
 FROM amigos a1 INNER JOIN amigos a2 
@@ -2413,6 +2426,7 @@ For example: telefono1, telefono2, and telefono3.
 Another way to have repetitive groups is to have multiple values in a single field.
 
 The problems associated with this form of repetitive groups are different:
+
 * When modifying a person's phone number, the 'Telefonos' field, which has multiple records, must be modified, and we could forget one or accidentally overwrite it.
 * When the data is stored this way, it is difficult to know how many phones each person has.
 * The phones could have different formats, and it would be difficult to establish a restriction to ensure all phones have the same format.
@@ -2420,6 +2434,7 @@ The problems associated with this form of repetitive groups are different:
 
 For example, if we wanted to count the number of phones each person has, we could count the number of '+' symbols in the 'Telefonos' field.
 To achieve this, we can calculate the total number of characters in the 'Telefonos' field and subtract the number of characters in the same field after removing the '+' symbols.
+
 ```sql
 SELECT id, nombre_completo, 
 LENGTH(telefonos) - LENGTH(REPLACE(telefonos, '+', '')) AS cantidad_telefonos 
