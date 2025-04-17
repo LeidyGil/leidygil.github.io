@@ -637,7 +637,7 @@ INSERT INTO ventas VALUES ('Gorro', 5, 1000), ('Camiseta', 10, 500), ('Pantalón
 ### Creating a record with an autoincrement field
 In an SQL database, it is possible to streamline the process of inserting data into a table by using an autoincrement field.
 This type of field is especially useful for managing unique identifiers, such as the 'id' field of a table.
-The autoincrement feature is achieved by using the AUTOINCREMENT clause in the field definition.
+The autoincrement feature is achieved by using the autoincrement clause in the field definition.
 
 To illustrate this process, let's consider a table called 'empleados' with three columns: 'id' (autoincrement), 'nombre', and 'apellido'.
 This is how the table is created:
@@ -648,7 +648,7 @@ CREATE TABLE empleados (
     apellido TEXT
 );
 ```
-Here, we have defined the 'id' column as an autoincrement field using the AUTOINCREMENT clause,
+Here, we have defined the 'id' column as an autoincrement field using the autoincrement clause,
 which ensures that a unique and incrementing value will be automatically generated for each new record.
 Suppose we want to insert a new employee into this table. We can use the following SQL query:
 ```sql
@@ -1100,6 +1100,7 @@ Key ideas
 4. If a primary key field is an integer, it automatically becomes an autoincrement field in SQLite.
 
 **What are autoincrement fields?**
+
 Autoincrement fields are fields that generate a unique value automatically for each record we insert into a table.
 Usually, the increment is 1 by 1.
 So if we have a table like the following:
@@ -1934,11 +1935,11 @@ This query will give us all records from table_A that do not have matches in tab
 
 Exercise
 Write an SQL query that implements a FULL OUTER EXCLUDING JOIN between the 'empleados' and 'departamentos' tables.
-This query should show both employees who are not assigned to any existing department and departments that do not have assigned employees.
-Once you have written the query, execute it and analyze the results and answer the following questions:
-Why does Carlos appear in the query result? - because he does not have an assigned department
-Why does the Marketing department appear in the result? - because it does not have assigned employees
-How is this result different from a regular FULL OUTER JOIN? - it shows all non-related records from both tables, even when one of the tables does not have a created record but is associated.
+    - This query should show both employees who are not assigned to any existing department and departments that do not have assigned employees.
+    - Once you have written the query, execute it and analyze the results and answer the following questions:
+    - Why does Carlos appear in the query result? - because he does not have an assigned department
+    - Why does the Marketing department appear in the result? - because it does not have assigned employees
+    - How is this result different from a regular FULL OUTER JOIN? - it shows all non-related records from both tables, even when one of the tables does not have a created record but is associated.
 ```sql
 SELECT e.id_empleado, e.nombre, e.id_departamento, d.departamento 
 FROM empleados e LEFT JOIN departamentos d 
@@ -1973,10 +1974,11 @@ In this case, both tables have a column 'id_cliente', so, when doing a Natural J
 SELECT * 
 FROM clientes NATURAL JOIN pedidos;
 ```
-id_cliente  nombre  email           id_pedido  producto    cantidad
-1           Juan    juan@example.com 1          Laptop      1
-2           María   maria@example.com 2          Tablet      2
-3           Pedro   pedro@example.com 3          Smartphone  1
+| id_cliente | nombre | email | id_pedido | producto | cantidad |
+| ----- | ----- | ----- | ----- | ----- | ----- |
+| 1 | Juan | juan@example.com | 1 | Laptop | 1 |
+| 2 | María | maria@example.com | 2 | Tablet | 2 |
+| 3 | Pedro | pedro@example.com | 3 | Smartphone | 1 |
 
 Exercise
 Make a query using NATURAL JOIN that shows the product name, quantity sold, and sale date of each sold product.
@@ -2016,12 +2018,13 @@ Although the term "self join" refers to this self-relation, in practice other ty
 
 Example
 Suppose we have a table called 'empleados' with the following structure:
-id_empleado  nombre  id_supervisor
-1            Juan    NULL
-2            María   1
-3            Pedro   1
-4            Ana     2
-5            Luis    2
+| id_empleado | nombre | id_supervisor |
+| ----- | ----- | ----- |
+| 1 | Juan | NULL |
+| 2 | María | 1 |
+| 3 | Pedro | 1 |
+| 4 | Ana | 2 |
+| 5 | Luis | 2 |
 
 Use of Self Join
 To get the name of all employees along with the name of their supervisor, we can use a self join as follows:
@@ -2030,12 +2033,13 @@ SELECT e1.nombre AS nombre_empleado, e2.nombre AS nombre_supervisor
 FROM empleados e1 LEFT JOIN empleados e2 
 ON e1.id_supervisor = e2.id_empleado;
 ```
-nombre_empleado  nombre_supervisor
-Juan             NULL
-María            Juan
-Pedro            Juan
-Ana              María
-Luis             María
+| nombre_empleado | nombre_supervisor |
+| ----- | ----- |
+| Juan | NULL |
+| María | Juan |
+| Pedro | Juan |
+| Ana | María |
+| Luis | María |
 
 In this example, we are obtaining the name of each employee (e1.nombre) and the name of their supervisor (e2.nombre).
 The self join is performed by joining the 'empleados' table with itself (empleados e1 LEFT JOIN empleados e2), using the 'id_supervisor' column of e1 and the 'id_empleado' column of e2.
@@ -2043,12 +2047,13 @@ LEFT JOIN is used instead of INNER JOIN to include employees without a superviso
 
 Exercise
 Given the 'clientes' table with the following data:
-id_cliente  nombre  id_cliente_referente
-1           Juan    NULL
-2           María   1
-3           Pedro   1
-4           Ana     2
-5           Luis    2
+| id_cliente | nombre | id_cliente_referente |
+| ----- | ----- | ----- |
+| 1 | Juan | NULL |
+| 2 | María | 1 |
+| 3 | Pedro | 1 |
+| 4 | Ana | 2 |
+| 5 | Luis | 2 |
 
 Write a query that shows the name of all clients along with the name of their referring client.
 The columns of the resulting table should be called 'nombre_cliente' and 'nombre_cliente_referente'.
@@ -2059,12 +2064,13 @@ ON c1.id_cliente_referente = c2.id_cliente;
 ```
 Exercise
 Given the 'amigos' table that contains information about connected friends on a social network.
-id_amigo  nombre  id_amigo_conectado
-1         Carlos  NULL
-2         Laura   1
-3         Miguel  1
-4         Ana     2
-5         Luis    3
+| id_amigo | nombre | id_amigo_conectado |
+| ----- | ----- | ----- |
+| 1 | Carlos | NULL |
+| 2 | Laura | 1 |
+| 3 | Miguel | 1 |
+| 4 | Ana | 2 |
+| 5 | Luis | 3 |
 
 Write an SQL query using self join to get the name of each friend along with the name of their connected friend.
 Only show friends who have a connected friend.
@@ -2080,10 +2086,9 @@ ON a1.id_amigo_conectado = a2.id_amigo;
 ```
 ### Cross Join
 Key ideas
-Cross Join generates the Cartesian product of two tables.
-Cross Join does not require a join condition, as it combines all rows from the first table with all rows from the second table.
+1. Cross Join generates the Cartesian product of two tables.
+2. Cross Join does not require a join condition, as it combines all rows from the first table with all rows from the second table.
 
-Cross Join
 Cross Join, also known as Cartesian product, combines each row from the first table with each row from the second table, generating a result set that is the Cartesian product of both tables.
 It is useful when you want to combine all rows from one table with all rows from another table.
 The syntax of Cross Join is as follows:
@@ -2109,12 +2114,13 @@ ORDER BY numero, pinta;
 ```
 ### Join with aggregate functions
 Key ideas:
-Combining data from multiple tables: The JOIN clause allows us to combine rows from two or more tables.
-Choosing the type of JOIN: The choice of JOIN type depends on whether we want to count rows without matches; if so, we use LEFT JOIN, otherwise, we use INNER JOIN.
-Grouping data: The use of GROUP BY allows us to group rows that have the same value in one or more columns.
-Aggregate functions: On grouped data, we can use aggregate functions such as SUM(), COUNT(), and AVG().
+1. Combining data from multiple tables: The JOIN clause allows us to combine rows from two or more tables.
+2. Choosing the type of JOIN: The choice of JOIN type depends on whether we want to count rows without matches; if so, we use LEFT JOIN, otherwise, we use INNER JOIN.
+3. Grouping data: The use of GROUP BY allows us to group rows that have the same value in one or more columns.
+4 Aggregate functions: On grouped data, we can use aggregate functions such as SUM(), COUNT(), and AVG().
 
-What are we going to learn?
+**What are we going to learn?**
+
 In these exercises, we will work with very common problems in data analysis, where we need to combine data from multiple tables, group them, and obtain information from aggregated data.
 Throughout these exercises, we will learn to identify which type of JOIN to use for each case.
 
@@ -2123,29 +2129,32 @@ We have a table of products and a table of sales.
 We want to make a query that shows each product with the number of sales made.
 
 Table productos
-id  nombre
-1   smartphone
-2   tablet
-3   camiseta
-4   zapatos
+| id | nombre |
+| ----- | ----- |
+| 1 | smartphone |
+| 2 | tablet |
+| 3 | camiseta |
+| 4 | zapatos |
 
 Table ventas
 For this first exercise, let's assume that the 'ventas' table only allows recording the sale of one product at a time.
-id  id_producto
-1   1
-2   1
-3   2
-4   2
-5   3
-6   1
+| id | id_producto |
+| ----- | ----- |
+| 1 | 1 |
+| 2 | 1 |
+| 3 | 2 |
+| 4 | 2 |
+| 5 | 3 |
+| 6 | 1 |
 
 If we look at the sales, we will see that the product with id=1 was sold 3 times, and the product with id=2 was sold 2 times, and the rest have not been sold.
 The expected result would be:
-nombre         cantidad_ventas
-smartphone     3
-tablet         2
-camiseta       0
-zapatos        0
+| nombre | cantidad_ventas |
+| ----- | ----- |
+| smartphone | 3 |
+| tablet | 2 |
+| camiseta | 0 |
+| zapatos | 0 |
 
 The solution to this exercise requires joining the 'productos' and 'ventas' tables and grouping the results by the product name to finally count the number of sales made.
 
@@ -2173,27 +2182,30 @@ GROUP BY u.email;
 ## Normalization
 ### Introduction to the first normal form
 Key ideas
-Redundancy in a database can lead to inconsistencies when identifying the correct data, updating it, or deleting it.
-Normalization is a process of eliminating redundancy in a database.
-What is normalization?
+1. Redundancy in a database can lead to inconsistencies when identifying the correct data, updating it, or deleting it.
+2. Normalization is a process of eliminating redundancy in a database.
+
+**What is normalization?**
+
 Normalization is a process of eliminating redundancy in a database to prevent inconsistencies.
 This process consists of various stages that, when applied correctly, make the database more efficient and easier to maintain.
 Each of these stages is called a normal form.
 
-First normal form
+**First normal form**
+
 In the first normal form, each record should be uniquely identifiable in a table.
 Let's look at an example of a table that does not comply with the first normal form:
-
-Nombre   Apellido        Estado_Civil
-Juan     Pérez           Casado
-María    González        Soltera
-Pedro    Rodríguez       Casado
-Juan     Pérez           Soltero
-María    González        Viuda
-Pedro    Rodríguez       Soltero
-Juan     Pérez           Divorciado
-María    González        Soltera
-Pedro    Rodríguez       Casado
+| nombre | Apellido | Estado_Civil |
+| ----- | ----- | ----- |
+| Juan | Pérez | Casado |
+| María | González | Soltera |
+| Pedro | Rodríguez | Casado |
+| Juan | Pérez | Soltero |
+| María | González | Viuda |
+| Pedro | Rodríguez | Soltero |
+| Juan | Pérez | Divorciado |
+| María | González | Soltera |
+| Pedro | Rodríguez | Casado |
 
 In this table, if we ask for the marital status of Juan Pérez, we would not know which one is correct.
 Furthermore, is Juan Pérez one person, or are they different people who happen to have the same name and surname?
@@ -2259,30 +2271,30 @@ Repetitive groups are an indication that a table does not comply with the first 
 What are repetitive groups?
 Repetitive groups are a set of fields that repeat in a table.
 For example, if a table has fields telefono1, telefono2, and telefono3, these fields could be considered a repetitive group.
-
-id  nombre           apellido        telefono1  telefono2  telefono3
-1   Juan             Pérez           12345678   87654321   45678912
-2   María            González        23456789   98765432   56789123
+| id | nombre | apellido | telefono1 | telefono2 | telefono3 |
+| ----- | ----- | ----- | ----- | ----- | ----- |
+| 1 | Juan | Pérez | 12345678 | 87654321 | 45678912 |
+| 2 | María | González | 23456789 | 98765432 | 56789123 |
 
 Various problems are associated with repetitive groups, but in this specific case, there are two obvious problems:
-What if a person has more than three phones? Should the table be modified to add a telefono4, telefono5, etc.? What is the LIMIT?
-If most people only have one phone, how is the information for telefono2 and telefono3 handled? Are they left blank? Are they assigned a null value? We would probably end up with a large number of empty fields.
+1. What if a person has more than three phones? Should the table be modified to add a telefono4, telefono5, etc.? What is the LIMIT?
+2. If most people only have one phone, how is the information for telefono2 and telefono3 handled? Are they left blank? Are they assigned a null value? We would probably end up with a large number of empty fields.
 Solving the repetitive group problem is an important step in normalizing a database.
 In this case, we could create a 'telefonos' table that contains the phone numbers of people and relates to the 'personas' table, resulting in the following structure:
-
-tabla personas:
-id  nombre           apellido
-1   Juan             Pérez
-2   María            González
+| id | nombre | apellido |
+| ----- | ----- | ----- |
+| 1 | Carlos | Pérez |
+| 2 | María | González |
 
 tabla telefonos:
-id_persona  telefono
-1           12345678
-1           87654321
-1           45678912
-2           23456789
-2           98765432
-2           56789123
+| id | nombre |
+| ----- | ----- |
+| 1 | 12345678 |
+| 1 | 87654321 |
+| 1 | 45678912 |
+| 2 | 23456789 |
+| 2 | 98765432 |
+| 2 | 56789123 |
 
 This way, an arbitrary number of phone numbers can be stored for each person without modifying the structure of the 'personas' table.
 
@@ -2290,16 +2302,15 @@ Exercise
 Given the following table, identify the repetitive groups and propose a solution to normalize the table.
 
 tabla empleados_desnormalizado:
-id  nombre           apellido        proyecto1  proyecto2  proyecto3
-1   Juan             Pérez           1          2          3
+| id | nombre | apellido | proyecto1 | proyecto2 | proyecto3 |
+| ----- | ----- | ----- | ----- | ----- | ----- |
+| 1 | Juan | Pérez | 1 | 2 | 3 |
 
-Identify the repetitive groups in the 'empleados_desnormalizado' table.
-The repetitive group is the 'proyecto'.
-
-Create the 'empleados' and 'proyectos' tables in the first normal form to store information about employees and projects in a normalized structure.
-Insert the information from the 'empleados_desnormalizado' table into the normalized tables.
-Create a query that shows the information of employees and the projects they are assigned to in a normalized structure.
-The columns of the query should be 'nombre', 'apellido', and 'id_proyecto'.
+* Identify the repetitive groups in the 'empleados_desnormalizado' table: The repetitive group is the 'proyecto'.
+* Create the 'empleados' and 'proyectos' tables in the first normal form to store information about employees and projects in a normalized structure.
+* Insert the information from the 'empleados_desnormalizado' table into the normalized tables.
+* Create a query that shows the information of employees and the projects they are assigned to in a normalized structure.
+* The columns of the query should be 'nombre', 'apellido', and 'id_proyecto'.
 ```sql
 CREATE TABLE empleados (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -2327,7 +2338,6 @@ ON e.id = p.id_empleado;
 ### Repetitive groups part 2
 There are more than one way to have repetitive groups in a table.
 
-Repetitive groups
 Repetitive groups are sets of fields that repeat within a table.
 However, there are several ways in which these repetitive groups can appear in a table.
 
@@ -2368,36 +2378,37 @@ FROM pedidos;
 ```
 ### Repetitive groups part 3
 Key ideas
-Repetitive groups are an indication that a table does not comply with the first normal form.
-There are repetitive groups when you have columns that repeat in a table, for example: proyecto1, proyecto2, proyecto3.
-There are repetitive groups when you have multiple values in a single field, for example: producto1 producto2 producto3.
-Finally, there are repetitive groups when you have columns that repeat in multiple rows, for example: nombre, apellido.
+1. Repetitive groups are an indication that a table does not comply with the first normal form.
+2. There are repetitive groups when you have columns that repeat in a table, for example: proyecto1, proyecto2, proyecto3.
+3. There are repetitive groups when you have multiple values in a single field, for example: producto1 producto2 producto3.
+4. Finally, there are repetitive groups when you have columns that repeat in multiple rows, for example: nombre, apellido.
 
 Let's look at the 'departamentos' table:
-
-nombre_departamento    nombre_persona      apellido_persona
-Recursos Humanos       Ana                 Pérez
-TI                     Pedro               Rodríguez
-TI                     Luis                González
-Marketing              Marta               López
-Marketing              Elena               Pérez
+| nombre_departamento | nombre_persona | apellido_persona |
+| ----- | ----- | ----- |
+| Recursos Humanos | Ana | Pérez |
+| TI | Pedro | Rodríguez |
+| TI | Luis | González |
+| Marketing | Marta | López |
+| Marketing | Elena | Pérez |
 
 The previous table, although a bit harder to see, also has repetitive groups.
 Given that 'nombre_departamento' repeats in multiple rows for different people.
 
 For example, this could be represented as:
 
-nombre_departamento    personas
-Recursos Humanos       Ana Pérez
-TI                     Pedro Rodríguez, Luis González
-Marketing              Marta López, Elena Pérez
+| nombre_departamento | personas |
+| ----- | ----- |
+| Recursos Humanos | Ana Pérez |
+| TI | Pedro Rodríguez, Luis González |
+| Marketing | Marta López, Elena Pérez |
 
 Or as:
-
-nombre_departamento    Nombre Persona 1    Nombre Persona 2    Nombre Persona 3
-Recursos Humanos       Ana
-TI                     Pedro               Luis
-Marketing              Marta               Elena
+| nombre_departamento | Nombre Persona 1 | Nombre Persona 2 | Nombre Persona 3 |
+| ----- | ----- | ----- | ----- |
+| Recursos Humanos | Ana |  |  |
+| TI | Pedro | Luis |  |
+| Marketing | Marta | Elena |  |
 
 The problems associated with repetitive groups are similar to those presented in previous exercises.
 If you want to change the name of a department, you would have to change it in all rows corresponding to that department.
@@ -2405,19 +2416,20 @@ Or a department could be written in different ways, for example, TI, T.I., Tecno
 And it would be difficult to establish a restriction to ensure all departments have the same name.
 To eliminate repetitive groups from this table, a new 'Personas' table should be created, separate from the 'Departamentos' table, that relates people to departments.
 
-Departamentos:
-id  nombre_departamento
-1   Recursos Humanos
-2   TI
-3   Marketing
+| id | nombre_departamento |
+| ----- | ----- |
+| 1 | Recursos Humanos |
+| 2 | TI |
+| 3 | Marketing |
 
 Personas:
-id  nombre_persona      apellido_persona    departamento_id
-1   Ana                Pérez               1
-2   Pedro              Rodríguez           2
-3   Luis               González            2
-4   Marta              López               3
-5   Elena              Pérez               3
+| id | nombre_persona | apellido_persona | departamento_id |
+| ----- | ----- | ----- | ----- |
+| 1 | Ana | Pérez | 1 |
+| 2 | Pedro | Rodríguez | 2 |
+| 3 | Luis | González | 2 |
+| 4 | Marta | López | 3 |
+| 5 | Elena | Pérez | 3 |
 
 Didactic Exercise
 With the normalized 'Departamentos' and 'Personas' tables.
@@ -2434,18 +2446,17 @@ GROUP BY nombre_departamento;
 In the first normal form, there must be a primary key that uniquely identifies each record in a table.
 In the second normal form, there should be no partial dependencies, meaning each column in a table must depend on the entire primary key and not just part of it.
 
-Partial dependencies
 A partial dependency is when a column depends on only part of the primary key.
 This, of course, only applies to tables with composite primary keys.
 
 Let's look at an example of a table that has partial dependencies:
 We have a grade registration system stored in a single table called 'notas'. The table has the following structure:
-
-ID de estudiante   ID de curso   Nombre del estudiante   Nombre del curso   Nota
-1                  101           Juan                   Matemáticas         90
-1                  102           Juan                   Historia            85
-2                  101           Ana                    Matemáticas         95
-2                  103           Ana                    Ciencia             88
+| ID de estudiante | ID de curso | Nombre del estudiante | Nombre del curso | Nota |
+| ----- | ----- | ----- | ----- | ----- |
+| 1 | 101 | Juan | Matemáticas | 90 |
+| 1 | 102 | Juan | Historia | 85 |
+| 2 | 101 | Ana | Matemáticas | 95 |
+| 2 | 103 | Ana | Ciencia | 88 |
 
 In this table, we have a composite primary key consisting of 'ID de estudiante' and 'ID de curso'.
 This combination of columns uniquely identifies each row, given that, for this example, a student cannot be enrolled in the same course twice.
@@ -2453,36 +2464,41 @@ This combination of columns uniquely identifies each row, given that, for this e
 Partial dependencies occur when a field like 'Nombre del estudiante' depends only on 'ID de estudiante' and not on 'ID de curso'.
 In other words, it depends on part of the primary key and not the whole primary key, hence it is called a partial dependency.
 
-Why is it important to eliminate partial dependencies?
+**Why is it important to eliminate partial dependencies?**
+
 Partial dependencies can cause update and deletion problems.
 For example, if a student's name changes, it would have to be changed in all rows corresponding to that student.
 Or if a student is deleted, the information about the grades associated with that student would be lost.
 
-Eliminating partial dependencies
+**Eliminating partial dependencies**
+
 To reach the second normal form (2NF), all partial dependencies must be identified.
 'Nombre del estudiante' is partial because it depends only on 'ID de estudiante' and not on the whole primary key.
 'Nombre del curso' is partial because it depends only on 'ID de curso' and not on the whole primary key.
 The next step is to separate the 'notas' table into two additional tables, one for students and one for courses.
 
 Table estudiantes:
-ID_de_estudiante   Nombre_del_estudiante
-1                  Juan
-2                  Ana
+| ID_de_estudiante | Nombre_del_estudiante |
+| ----- | ----- |
+| 1 | Juan |
+| 2 | Ana |
 
 Table cursos:
-ID_de_curso   Nombre_del_curso
-101           Matemáticas
-102           Historia
-103           Ciencia
+| ID_de_estudiante | Nombre_del_estudiante |
+| ----- | ----- |
+| 101 | Matemáticas |
+| 102 | Historia |
+| 103 | Ciencia |
 
 Then, the columns 'Nombre del estudiante' and 'Nombre del curso' should be removed from the 'notas' table, and the foreign keys 'ID de estudiante' and 'ID de curso' should be added respectively.
 
 Table notas:
-ID_de_estudiante   ID_de_curso   Nota
-1                  101           90
-1                  102           85
-2                  101           95
-2                  103           88
+| ID_de_estudiante | ID_de_curso | Nota |
+| ----- | ----- | ----- |
+| 1 | 101 | 90 |
+| 1 | 102 | 85 |
+| 2 | 101 | 95 |
+| 2 | 103 | 88 |
 
 Exercise:
 Given the normalized 'estudiantes', 'cursos', and 'notas' tables, create a query that shows the student's name, the course name, and the grade each student obtained in each course.
@@ -2503,12 +2519,13 @@ Transitive dependencies occur when a column depends on another column that is no
 In other words, if column A depends on column B and column B depends on the primary key, then column A depends transitively on the primary key.
 
 For example, consider the following 'Peliculas' table:
-ID   Película                 Director                Nacionalidad Director
-1    El Padrino              Francis Ford Coppola     Estadounidense
-2    Ciudad de Dios          Fernando Meirelles       Brasileño
-3    El Laberinto del Fauno  Guillermo del Toro       Mexicano
-4    Amélie                  Jean-Pierre Jeunet       Francés
-5    Parasite                Bong Joon-ho             Coreano
+| ID | Película | Director | Nacionalidad Director |
+| ----- | ----- | ----- | ----- |
+| 1 | El Padrino | Francis Ford Coppola | Estadounidense |
+| 2 | Ciudad de Dios | Fernando Meirelles | Brasileño |
+| 3 | El Laberinto del Fauno | Guillermo del Toro | Mexicano |
+| 4 | Amélie | Jean-Pierre Jeunet | Francés |
+| 5 | Parasite | Bong Joon-ho | Coreano |
 
 In this table, we can see that the 'Nacionalidad Director' column depends on the 'Director' column.
 In turn, the 'Director' depends on the primary key 'ID'.
@@ -2518,13 +2535,13 @@ This type of dependency is important to identify and manage, especially in the c
 
 Exercise
 Based on the following table in 2NF, called 'Músicos', identify the transitive dependencies and propose a solution to normalize it:
-
-id   pais            musico           edad_musico
-1    Estados Unidos  Beyoncé          42
-2    Brasil          Gilberto Gil     81
-3    Francia         David Guetta     56
-4    India           A. R. Rahman     57
-5    Corea del Sur   RM               29
+| ID | pais | musico | edad_musico Director |
+| ----- | ----- | ----- | ----- |
+| 1 | Estados Unidos | Beyoncé | 42 |
+| 2 | Brasil | Gilberto Gil | 81 |
+| 3 | Francia | David Guetta | 56 |
+| 4 | India | A. R. Rahman | 57 |
+| 5 | Corea del Sur | RM | 29 |
 
 The normalized tables should be 'paises' and 'musicos'.
 Keep the names of the musicians and countries in the 'musicos' table.
