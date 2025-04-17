@@ -376,6 +376,7 @@ having grade_average >= 50;
 ### Having and order
 Once we have grouped data using the GROUP BY clause, it is common to need to order those groups according to some specific criterion. Generally, we want to order the groups by func[...]
 The order of the clauses in a query should be as follows:
+
 | Order | Clause | Description |
 | ----- | ------ | ----------- |
 | 1 | SELECT | Specifies the columns to be returned in the result. |
@@ -511,6 +512,7 @@ SELECT * FROM tabla1 UNION ALL SELECT * FROM tabla2;
 ```
 Exercise: Given the following tables empleados1 and empleados2
 empleados1:
+
 | Nombre | Apellido | Edad |
 | ------ | -------- | ---- |
 | Juan | Pérez | 30 |
@@ -518,6 +520,7 @@ empleados1:
 | Carlos | Rodríguez | 40 |
 
 empleados2:
+
 | Nombre | Apellido | Edad |
 | ------ | -------- | ---- |
 | Ana | Martínez | 22 |
@@ -576,6 +579,7 @@ INSERT INTO productos VALUES (7, 'Bolso', 1000, NULL);
 ### Adding a record specifying columns
 When inserting data, it is possible to specifically mention the columns to be inserted, instead of mentioning all values in the order defined in the table.
 We are asked to insert a new product with the following data, but specifying the columns:
+
 | id | nombre | precio | stock |
 | ------ | -------- | ---- | ---- |
 | 7 | Bolso | 1000 | 10 |
@@ -753,6 +757,7 @@ To do this, we need to specify the name of each column we want to modify, follow
 UPDATE table_name SET column1 = 'new_value', column2 = 'new_value', column3 = 'new_value' WHERE condition;
 ```
 Exercise: We have a 'posts' table with the following columns:
+
 | Column | Data Type |
 | ------ | -------- |
 | id | INTEGER |
@@ -783,6 +788,7 @@ Once the table is created, we can insert data as we learned in previous exercise
 INSERT INTO productos VALUES ('Ipad Pro 2022'), ('Iphone 13 Pro Max'), ('Macbook Pro 2023');
 ```
 Exercise: Create a table called 'alumnos' that stores a column 'nombre' of type text
+
 | Column | Data Type |
 | ------ | -------- |
 | nombre | text |
@@ -800,6 +806,7 @@ For example, if we want to create a 'productos' table that includes the name, de
 CREATE TABLE productos (nombre TEXT, descripcion TEXT, precio INT);
 ```
 Exercise: Create a table called 'alumnos' with the following columns:
+
 | Column | Data Type |
 | ------ | -------- |
 | nombre | text |
@@ -821,6 +828,7 @@ BOOLEAN to store true or false values
 DATE to store dates
 
 Create a table called 'usuarios' with the following columns:
+
 | Column | Data Type |
 | ------ | -------- |
 | nombre | text |
@@ -867,6 +875,7 @@ If we try to select from the 'temperaturas' table after deleting it, we will get
 Exercise: In this exercise, we will have a table with data that we do not need.
 We will delete it, create it again, and populate it with the requested data.
 Delete the 'temperaturas' table and recreate it with the following columns:
+
 | Column | Data Type |
 | ------ | -------- |
 | ciudad | text |
@@ -902,12 +911,14 @@ ALTER TABLE personas ADD COLUMN edad INTEGER;
 ```
 Exercise: In this exercise, we will modify the 'productos' table to add the 'descripcion' column of type TEXT.
 Currently, the 'productos' table has the following columns:
+
 | Column | Data Type |
 | ------ | -------- |
 | nombre | text |
 | precio | real |
 
 After creating it, you must insert the following records:
+
 | Nombre | Precio | Descripcion |
 | ------ | ------ | -------- |
 | Camisa | 1000.00 | Camisa de manga corta |
@@ -1062,6 +1073,7 @@ Practically, we can say that it is a combination of Unique and Not Null.
 **What is a primary key?**
 The primary key, or PRIMARY KEY in English, is a restriction that serves to uniquely identify each record in a table.
 For example, suppose we have a table called 'boletas' with the following records:
+
 | id | monto de la boleta | fecha de emision |
 | ---- | ---------------- | ---------------- |
 | 1 | 10.000 | 2021-10-01 |
@@ -1129,6 +1141,7 @@ INSERT INTO usuarios (nombre, fecha_creacion) VALUES
 If a record is entered with a value greater than the current sequence, the database will update the sequence so that the next record has a value greater than the record we just inserted.
 
 For example, if we have a table with the following records:
+
 | id | nombre |
 | ---- | ----- |
 | 1 | Ana |
@@ -1144,6 +1157,7 @@ And then insert a new record without specifying the id:
 INSERT INTO usuarios (nombre) VALUES ('Pedro');
 ```
 We will get the following table:
+
 | id | nombre |
 | ---- | ----- |
 | 1 | Ana |
@@ -1188,6 +1202,7 @@ For example, if we have a table of people and a table of cars, we could add a 'p
 and add the foreign key restriction to indicate that the value of that column must exist in the people table.
 This ensures that cars of non-existent people are not inserted or that people with assigned cars are not deleted, leaving cars without an owner.
 People table:
+
 | Column | Type | Restrictions |
 | ---- | ----- | ----- |
 | id | INTEGER | PRIMARY KEY |
@@ -1195,6 +1210,7 @@ People table:
 | apellido | TEXT | |
 
 Cars table:
+
 | Column | Type | Restrictions |
 | ---- | ----- | ----- |
 | id | INTEGER | PRIMARY KEY |
@@ -1203,12 +1219,14 @@ Cars table:
 
 With the following data:
 People:
+
 | id | nombre | apellido |
 | ---- | ----- | ----- |
 | 1 | John | Doe |
 | 2 | Jane | Smith |
 
 Cars:
+
 | id | patente | persona_id |
 | ---- | ----- | ----- |
 | 1 | ABC123 | 1 |
@@ -1219,6 +1237,7 @@ Additionally, the foreign key ensures that we cannot delete the person with id 1
 Similarly, we cannot insert a car with persona_id 3, as there is no person with id 3.
 
 **Adding the foreign key:**
+
 To add a foreign key to an existing table, we must specify the FOREIGN KEY restriction followed by the column name and the table it references,
 and finally the column of the referenced table. The syntax is as follows:
 ```sql
@@ -1240,6 +1259,7 @@ Exercise:
 We have the 'transacciones' and 'usuarios' tables with the following structures:
 
 Transacciones table:
+
 | Column | Type | Restrictions |
 | ---- | ----- | ----- |
 | id | INTEGER | PRIMARY KEY |
@@ -1247,6 +1267,7 @@ Transacciones table:
 | usuario_id | INTEGER | FOREIGN KEY (usuario_id) REFERENCES usuarios(id) |
 
 Usuarios table:
+
 | Column | Type | Restrictions |
 | ---- | ----- | ----- |
 | id | INTEGER | PRIMARY KEY |
@@ -1255,6 +1276,7 @@ Usuarios table:
 
 With the following data:
 Transacciones:
+
 | id | monto | usuario_id |
 | ---- | ----- | ----- |
 | 1 | 100 | 1 |
@@ -1262,6 +1284,7 @@ Transacciones:
 | 3 | 300 | 1 |
 
 Usuarios:
+
 | id | nombre | apellido |
 | ---- | ----- | ----- |
 | 1 | John | Doe |
@@ -1304,6 +1327,7 @@ For example, we can do the following:
 SELECT * FROM usuarios JOIN datos_contacto ON usuarios.email = datos_contacto.email;
 ```
 **Alias**
+
 In SQL, we can use aliases to refer to tables in a shorter way.
 For example, if we want to refer to the 'usuarios' table as 'u' and the 'datos_contacto' table as 'dc', we can do the following:
 ```sql
@@ -1317,6 +1341,7 @@ SELECT * FROM usuarios u INNER JOIN notas n ON u.email = n.email;
 We can select the data from each table that we want to display in the query.
 
 **Selecting some attributes**
+
 Just as when working with a single table, we can select only the attributes we want to display in the query.
 When we have two tables, we can select all the attributes from one table and only some from the other as follows:
 
@@ -1343,6 +1368,7 @@ SELECT usuarios.*, datos_contacto.telefono FROM usuarios JOIN datos_contacto ON 
 ```
 ### Order of clauses
 Clauses have a specific order that we must follow for the query to work correctly.
+
 | Command | sequence |
 | ----- | ----- |
 | SELECT | Select these data | 
@@ -1364,6 +1390,7 @@ Using GROUP BY and aggregation functions in queries with multiple tables
 Just as in queries on a single table, we can use aggregation functions and grouping in queries on multiple tables.
 Suppose we have two tables: a table called 'clientes' and another table called 'pedidos'.
 Clientes table:
+
 | cliente_id | nombre |
 | ----- | ----- |
 | 1 | Juan Pérez |
@@ -1371,6 +1398,7 @@ Clientes table:
 | 3 | Luis Fernández |
 
 Pedidos table:
+
 | cliente_id | nombre | nombre |
 | ----- | ----- | ----- |
 | 101 | 1 | 2023-01-15 | 
@@ -1385,6 +1413,7 @@ To show the total number of orders placed by each client, we can use the followi
 SELECT nombre, COUNT(p.pedido_id) AS total_pedidos FROM clientes c JOIN pedidos p ON c.cliente_id = p.cliente_id GROUP BY c.cliente_id, nombre;
 ```
 **Some important details to keep in mind:**
+
 * If there are columns with the same name, we need to specify the table name before the column name.
 * When grouping data, we must keep in mind that the columns not in the GROUP BY clause must be used with aggregation functions.
 * Therefore, in these types of exercises, select * is not recommended, especially if the table has many columns.
@@ -1405,6 +1434,7 @@ Key ideas
 3. In a one-to-one relationship, a record of one table can only be related to a record of the other table.
 
 **What is the cardinality of a relationship?**
+
 The cardinality of a relationship is the number of elements of one table that can be related to those of another table.
 Relationships between tables can be classified into three main types according to their cardinality.
 In this exercise, we will look at the one-to-one relationship, denoted as 1:1.
@@ -1439,6 +1469,7 @@ Each teacher can have several students, and each student can have several teache
 To achieve this, we have a 'profesores' table, a 'alumnos' table, and a 'profesores_alumnos' table that relates teachers to students.
 
 Profesores table:
+
 | profesor_id | nombre |
 | ----- | ----- |
 | 1 | Ana |
@@ -1446,6 +1477,7 @@ Profesores table:
 | 3 | Luis |
 
 Alumnos table:
+
 | alumno_id | nombre |
 | ----- | ----- |
 | 1 | Marta |
@@ -1453,6 +1485,7 @@ Alumnos table:
 | 3 | Juan |
 
 Profesores_alumnos table:
+
 | profesor_id | alumno_id |
 | ----- | ----- |
 | 1 | 1 |
@@ -1460,6 +1493,7 @@ Profesores_alumnos table:
 | 2 | 1 |
 
 By joining the 'profesores' and 'profesores_alumnos' tables with a JOIN, we get:
+
 | profesor_id | nombre | alumno_id |
 | ----- | ----- | ----- |
 | 1 | Ana | 1 |
@@ -1467,6 +1501,7 @@ By joining the 'profesores' and 'profesores_alumnos' tables with a JOIN, we get:
 | 2 | Pedro | 1 |
 
 By joining the previous table with the 'alumnos' table, we get:
+
 | profesor_id | nombre | alumno_id | alumno_id |
 | ----- | ----- | ----- | ----- |
 | 1 | Ana | 1 | Marta |
@@ -1493,6 +1528,7 @@ Key ideas
 3. The intermediate table must have a column that is a foreign key for each of the main tables.
 
 **Understanding the intermediate table**
+
 If we have two tables, A and B, that we want to relate in a many-to-many manner, we need an intermediate table C that relates both tables.
 
 Exercise:
@@ -1517,6 +1553,7 @@ Before building the intermediate table, we need to ask an important question: Ca
 If the answer is yes, then we do not need a uniqueness restriction in the intermediate table.
 If the answer is no, then we must ensure that there are no duplicate records in the intermediate table, and this is done with a uniqueness restriction.
 In this example, it makes sense that a user can request the same book more than once, so our intermediate table would have the following structure:
+
 | libro_id | usuario_id |
 | ----- | ----- |
 | 1 | 1 |
@@ -1627,6 +1664,7 @@ When using a LEFT JOIN, if the key is in the left table but not in the right tab
 **Inner join vs. Left join**
 
 To illustrate the difference, we will work with the tables 'usuarios' and 'notas'.
+
 | usuarios | notas |
 | -------- | ----- |
 | email    | email |
@@ -1634,6 +1672,7 @@ To illustrate the difference, we will work with the tables 'usuarios' and 'notas
 | edad     |  |
 
 Table 'usuarios'
+
 | email | nombre | edad |
 | -------- | ----- | ----- |
 | juan.perez@example.com | Juan Pérez | 30 |
@@ -1642,6 +1681,7 @@ Table 'usuarios'
 | francisco@example.com | Test User | 22 |
 
 Table 'notas'
+
 | email | notas |
 | -------- | ----- |
 | juan.perez@example.com | 90 |
@@ -1654,6 +1694,7 @@ If we do an INNER JOIN between the tables 'usuarios' and 'notas' using the email
 ```sql
 SELECT u.email, u.nombre, u.edad, n.notas FROM usuarios u INNER JOIN notas n ON u.email = n.email;
 ```
+
 | email | nombre | edad | edad |
 | ----- | ----- | ----- | ----- |
 | juan.perez@example.com | Juan Pérez | 30 | 90 |
@@ -1668,6 +1709,7 @@ However, if we use a LEFT JOIN between the tables 'usuarios' and 'notas', as fol
 SELECT u.email, u.nombre, u.edad, n.notas FROM usuarios u LEFT JOIN notas n ON u.email = n.email;
 ```
 We will get the following records:
+
 | email | nombre | edad | edad |
 | ----- | ----- | ----- | ----- |
 | juan.perez@example.com | Juan Pérez | 30 | 90 |
@@ -1879,6 +1921,7 @@ ON a.id = c.alumno_id
 WHERE c.calificacion IS NULL;
 ```
 And as a result, we would obtain:
+
 | id | nombre | apellido | id | alumno_id | calificacion |
 | ----- | ----- | ----- | ----- |----- |----- |
 | 3 | Pedro | Lopez |  |  |  |
@@ -1916,6 +1959,7 @@ ON cu.id = c.curso_id
 WHERE c.id IS NULL;
 ```
 As a result, we would obtain:
+
 | id | alumno_id | curso_id | calificacion | id | nombre | docente_id |
 | ----- | ----- | ----- | ----- | ----- | ----- | ----- |
 | 3 | Arte | 1 |  |  |  |  |
@@ -1985,6 +2029,7 @@ In this case, both tables have a column 'id_cliente', so, when doing a Natural J
 SELECT * 
 FROM clientes NATURAL JOIN pedidos;
 ```
+
 | id_cliente | nombre | email | id_pedido | producto | cantidad |
 | ----- | ----- | ----- | ----- | ----- | ----- |
 | 1 | Juan | juan@example.com | 1 | Laptop | 1 |
@@ -2022,13 +2067,13 @@ A self join is used to combine a table with itself.
 Self join is not a specific type of join, it is just the term used to refer to the operation of combining a table with itself.
 To achieve the self join, other types of joins such as INNER JOIN or LEFT JOIN are used.
 
-Self Join
 A self join is a type of join in SQL that is used to combine a table with itself.
 It is used when we want to relate rows of a table with other rows of the same table.
 Although the term "self join" refers to this self-relation, in practice other types of joins such as INNER JOIN or LEFT JOIN are used to perform this operation.
 
 Example
 Suppose we have a table called 'empleados' with the following structure:
+
 | id_empleado | nombre | id_supervisor |
 | ----- | ----- | ----- |
 | 1 | Juan | NULL |
@@ -2037,13 +2082,15 @@ Suppose we have a table called 'empleados' with the following structure:
 | 4 | Ana | 2 |
 | 5 | Luis | 2 |
 
-Use of Self Join
+**Use of Self Join**
+
 To get the name of all employees along with the name of their supervisor, we can use a self join as follows:
 ```sql
 SELECT e1.nombre AS nombre_empleado, e2.nombre AS nombre_supervisor 
 FROM empleados e1 LEFT JOIN empleados e2 
 ON e1.id_supervisor = e2.id_empleado;
 ```
+
 | nombre_empleado | nombre_supervisor |
 | ----- | ----- |
 | Juan | NULL |
@@ -2058,6 +2105,7 @@ LEFT JOIN is used instead of INNER JOIN to include employees without a superviso
 
 Exercise
 Given the 'clientes' table with the following data:
+
 | id_cliente | nombre | id_cliente_referente |
 | ----- | ----- | ----- |
 | 1 | Juan | NULL |
@@ -2075,6 +2123,7 @@ ON c1.id_cliente_referente = c2.id_cliente;
 ```
 Exercise
 Given the 'amigos' table that contains information about connected friends on a social network.
+
 | id_amigo | nombre | id_amigo_conectado |
 | ----- | ----- | ----- |
 | 1 | Carlos | NULL |
@@ -2140,6 +2189,7 @@ We have a table of products and a table of sales.
 We want to make a query that shows each product with the number of sales made.
 
 Table productos
+
 | id | nombre |
 | ----- | ----- |
 | 1 | smartphone |
@@ -2149,6 +2199,7 @@ Table productos
 
 Table ventas
 For this first exercise, let's assume that the 'ventas' table only allows recording the sale of one product at a time.
+
 | id | id_producto |
 | ----- | ----- |
 | 1 | 1 |
@@ -2160,6 +2211,7 @@ For this first exercise, let's assume that the 'ventas' table only allows record
 
 If we look at the sales, we will see that the product with id=1 was sold 3 times, and the product with id=2 was sold 2 times, and the rest have not been sold.
 The expected result would be:
+
 | nombre | cantidad_ventas |
 | ----- | ----- |
 | smartphone | 3 |
@@ -2206,6 +2258,7 @@ Each of these stages is called a normal form.
 
 In the first normal form, each record should be uniquely identifiable in a table.
 Let's look at an example of a table that does not comply with the first normal form:
+
 | nombre | Apellido | Estado_Civil |
 | ----- | ----- | ----- |
 | Juan | Pérez | Casado |
@@ -2282,6 +2335,7 @@ Repetitive groups are an indication that a table does not comply with the first 
 What are repetitive groups?
 Repetitive groups are a set of fields that repeat in a table.
 For example, if a table has fields telefono1, telefono2, and telefono3, these fields could be considered a repetitive group.
+
 | id | nombre | apellido | telefono1 | telefono2 | telefono3 |
 | ----- | ----- | ----- | ----- | ----- | ----- |
 | 1 | Juan | Pérez | 12345678 | 87654321 | 45678912 |
@@ -2292,12 +2346,14 @@ Various problems are associated with repetitive groups, but in this specific cas
 2. If most people only have one phone, how is the information for telefono2 and telefono3 handled? Are they left blank? Are they assigned a null value? We would probably end up with a large number of empty fields.
 Solving the repetitive group problem is an important step in normalizing a database.
 In this case, we could create a 'telefonos' table that contains the phone numbers of people and relates to the 'personas' table, resulting in the following structure:
+
 | id | nombre | apellido |
 | ----- | ----- | ----- |
 | 1 | Carlos | Pérez |
 | 2 | María | González |
 
 tabla telefonos:
+
 | id | nombre |
 | ----- | ----- |
 | 1 | 12345678 |
@@ -2313,6 +2369,7 @@ Exercise
 Given the following table, identify the repetitive groups and propose a solution to normalize the table.
 
 tabla empleados_desnormalizado:
+
 | id | nombre | apellido | proyecto1 | proyecto2 | proyecto3 |
 | ----- | ----- | ----- | ----- | ----- | ----- |
 | 1 | Juan | Pérez | 1 | 2 | 3 |
@@ -2394,6 +2451,7 @@ Key ideas
 4. Finally, there are repetitive groups when you have columns that repeat in multiple rows, for example: nombre, apellido.
 
 Let's look at the 'departamentos' table:
+
 | nombre_departamento | nombre_persona | apellido_persona |
 | ----- | ----- | ----- |
 | Recursos Humanos | Ana | Pérez |
@@ -2414,6 +2472,7 @@ For example, this could be represented as:
 | Marketing | Marta López, Elena Pérez |
 
 Or as:
+
 | nombre_departamento | Nombre Persona 1 | Nombre Persona 2 | Nombre Persona 3 |
 | ----- | ----- | ----- | ----- |
 | Recursos Humanos | Ana |  |  |
@@ -2433,6 +2492,7 @@ The problems associated with repetitive groups are similar to those presented in
 | 3 | Marketing |
 
 Personas:
+
 | id | nombre_persona | apellido_persona | departamento_id |
 | ----- | ----- | ----- | ----- |
 | 1 | Ana | Pérez | 1 |
@@ -2461,6 +2521,7 @@ This, of course, only applies to tables with composite primary keys.
 
 Let's look at an example of a table that has partial dependencies:
 We have a grade registration system stored in a single table called 'notas'. The table has the following structure:
+
 | ID de estudiante | ID de curso | Nombre del estudiante | Nombre del curso | Nota |
 | ----- | ----- | ----- | ----- | ----- |
 | 1 | 101 | Juan | Matemáticas | 90 |
@@ -2488,12 +2549,14 @@ To reach the second normal form (2NF), all partial dependencies must be identifi
 The next step is to separate the 'notas' table into two additional tables, one for students and one for courses.
 
 Table estudiantes:
+
 | ID_de_estudiante | Nombre_del_estudiante |
 | ----- | ----- |
 | 1 | Juan |
 | 2 | Ana |
 
 Table cursos:
+
 | ID_de_estudiante | Nombre_del_estudiante |
 | ----- | ----- |
 | 101 | Matemáticas |
@@ -2503,6 +2566,7 @@ Table cursos:
 Then, the columns 'Nombre del estudiante' and 'Nombre del curso' should be removed from the 'notas' table, and the foreign keys 'ID de estudiante' and 'ID de curso' should be added respectively.
 
 Table notas:
+
 | ID_de_estudiante | ID_de_curso | Nota |
 | ----- | ----- | ----- |
 | 1 | 101 | 90 |
@@ -2529,6 +2593,7 @@ Transitive dependencies occur when a column depends on another column that is no
 In other words, if column A depends on column B and column B depends on the primary key, then column A depends transitively on the primary key.
 
 For example, consider the following 'Peliculas' table:
+
 | ID | Película | Director | Nacionalidad Director |
 | ----- | ----- | ----- | ----- |
 | 1 | El Padrino | Francis Ford Coppola | Estadounidense |
@@ -2545,6 +2610,7 @@ This type of dependency is important to identify and manage, especially in the c
 
 Exercise
 Based on the following table in 2NF, called 'Músicos', identify the transitive dependencies and propose a solution to normalize it:
+
 | ID | pais | musico | edad_musico Director |
 | ----- | ----- | ----- | ----- |
 | 1 | Estados Unidos | Beyoncé | 42 |
