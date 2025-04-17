@@ -1103,11 +1103,13 @@ Key ideas
 Autoincrement fields are fields that generate a unique value automatically for each record we insert into a table.
 Usually, the increment is 1 by 1.
 So if we have a table like the following:
+
 | id | monto de la boleta | fecha de emision |
 | ---- | ---------------- | ---------------- |
 | 1 | 10.000 | 2021-10-01 |
 | 2 | 12.000 | 2021-10-02 |
 | 3 | 16.000 | 2021-10-03 |
+
 And we add a new record without specifying the 'id' field value, the database will generate a unique value for that field, which in this case would be 4.
 
 Create a table with autoincrement field
