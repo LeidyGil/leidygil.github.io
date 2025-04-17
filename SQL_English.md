@@ -1127,12 +1127,14 @@ INSERT INTO usuarios (nombre, fecha_creacion) VALUES
 ```
 ### Autoincrement part 2
 If a record is entered with a value greater than the current sequence, the database will update the sequence so that the next record has a value greater than the record we just inserted.
+
 For example, if we have a table with the following records:
 | id | nombre |
 | ---- | ----- |
 | 1 | Ana |
 | 2 | Gonzalo |
 | 3 | Juan |
+
 Then we insert a new record with an id greater than the current sequence:
 ```sql
 INSERT INTO usuarios (id, nombre) VALUES (10, 'María');
@@ -1522,6 +1524,7 @@ In this example, it makes sense that a user can request the same book more than 
 | 2 | 2 |
 | 2 | 2 |
 | 3 | 1 |
+
 Within the table, we can see that user 1 has requested book 1 twice, which is not a problem if there is no uniqueness restriction.
 
 Exercise:
@@ -1534,6 +1537,7 @@ Reflect on whether to use where or HAVING to filter the results.
 SELECT usuario_id, libro_id, COUNT(libro_id) AS veces FROM pedidos GROUP BY libro_id, usuario_id HAVING veces > 1;
 ```
 **With uniqueness restriction**
+
 Suppose we have a system that stores information about projects and employees.
 Each employee can work on multiple projects, and each project can have multiple employees working on it. To handle this, we have an 'empleados' table, a 'proyectos' table, and an 'empleados_proyectos' table that relates employees to projects.
 Before building the intermediate table, we need to ask an important question: Can an employee be in the same project more than once?
@@ -1581,6 +1585,7 @@ is the same as:
 SELECT * FROM usuarios INNER JOIN datos_contacto ON usuarios.email = datos_contacto.email
 ```
 **What does INNER JOIN do?**
+
 INNER JOIN combines records from both tables based on a join condition.
 Only records with a common key in both tables are included.
 If there is no common key, the records are not included in the final result.
@@ -1599,6 +1604,7 @@ Key ideas
 3. In a Venn diagram, an INNER JOIN is visualized as the intersection between two circles.
 
 **Venn Diagrams**
+
 A Venn diagram allows us to visualize sets and operations between them.
 These diagrams consist of circles representing sets of data.
 In them, the elements that the different sets of data have in common are represented in the intersection of the circles.
@@ -1699,6 +1705,7 @@ When performing a Left Join between table A and table B, all records from table 
 We can visualize the Left Join as the left set in a Venn diagram.
 
 **Analyzing the result**
+
 Additionally, by looking at the Venn diagram, we can observe the result of the Left Join operation between the tables 'productos' and 'ventas'.
 In it, we see:
 * The records with id 1, 2, and 3 from the 'productos' table appear in the Left Join results, as all three are in the left set.
@@ -1745,6 +1752,7 @@ is practically the same as:
 SELECT * FROM table2 RIGHT JOIN table1 ON table2.id = table1.id
 ```
 **LEFT JOIN and RIGHT JOIN are reflections of each other.**
+
 However, there is a small difference when used in conjunction with select, as the attributes of the first table will be displayed first.
 To get the results in the same order, we can simply specify the order we want.
 ```sql
@@ -1763,44 +1771,46 @@ Key ideas:
 3. Useful guide to identify the type of join:
 
 **INNER JOIN**
+
 When to use it: When you need only the rows where there are matches in both tables.
 Result: Returns only the rows with corresponding data in both tables.
 
 **LEFT JOIN (or LEFT OUTER JOIN)**
+
 When to use it: When you need all rows from the left table and the matching rows from the right table.
 Result: Returns all rows from the left table and the matches from the right table, with NULLs where there are no matches.
 
 **RIGHT JOIN (or RIGHT OUTER JOIN)**
+
 When to use it: When you need all rows from the right table and the matching rows from the left table.
 Result: Returns all rows from the right table and the matches from the left table, with NULLs where there are no matches.
 
 Exercise
-We have a database with two main tables: 'autores' and 'libros'.
-Create a query to obtain information showing the name of the author along with the title of the book they have written.
-The query should include only those books that have assigned authors.
-The columns of the query should be called: 'nombre_autor' and 'titulo_libro'.
+* We have a database with two main tables: 'autores' and 'libros'.
+* Create a query to obtain information showing the name of the author along with the title of the book they have written.
+* The query should include only those books that have assigned authors.
+* The columns of the query should be called: 'nombre_autor' and 'titulo_libro'.
 ```sql
 SELECT a.nombre AS nombre_autor, l.titulo AS titulo_libro FROM autores a INNER JOIN libros l ON a.id = l.id_autor;
 ```
 Exercise
-We have a database with two main tables: 'empleados' and 'proyectos'.
-Create a query to obtain detailed information that shows the name of the employee along with the name of the project they participate in.
-The 'empleados' table has the following fields:
+* We have a database with two main tables: 'empleados' and 'proyectos'.
+* Create a query to obtain detailed information that shows the name of the employee along with the name of the project they participate in.
+* The 'empleados' table has the following fields:
 id (unique identifier of the employee)
 nombre (name of the employee)
 id_proyecto (identifier of the project in which the employee participates)
 The 'proyectos' table has the following fields:
 id (unique identifier of the project)
 nombre_proyecto (name of the project)
-The result should have columns with the following names and include all employees, even if they are not assigned to any project.
-nombre_empleado    nombre_proyecto
+* The result should have columns with the following names and include all employees, even if they are not assigned to any project: nombre_empleado, nombre_proyecto
 ```sql
 SELECT e.nombre AS nombre_empleado, p.nombre_proyecto FROM empleados e LEFT JOIN proyectos p ON e.id_proyecto = p.id;
 ```
 Exercise
-We have a database with two main tables: 'empleados' and 'proyectos'.
-Obtain a list of all projects along with the names of the employees assigned to each project, including those projects that have no assigned employees.
-The result should consist only of the columns 'nombre_empleado' and 'nombre_proyecto', corresponding to the name of the employee and the name of the project from their respective tables, including those without assigned employees (employee NULL).
+* We have a database with two main tables: 'empleados' and 'proyectos'.
+* Obtain a list of all projects along with the names of the employees assigned to each project, including those projects that have no assigned employees.
+* The result should consist only of the columns 'nombre_empleado' and 'nombre_proyecto', corresponding to the name of the employee and the name of the project from their respective tables, including those without assigned employees (employee NULL).
 ```sql
 SELECT e.nombre AS nombre_empleado, p.nombre_proyecto FROM empleados e RIGHT JOIN proyectos p ON e.id_proyecto = p.id;
 ```
@@ -1811,6 +1821,7 @@ Full outer join is a combination of LEFT JOIN and RIGHT JOIN.
 It returns all records from both tables, including non-matching records.
 
 **Implementing full outer join in SQLite**
+
 The SQLite database engine does not support FULL OUTER JOIN operations.
 However, the same effect can be achieved with the following syntax:
 ```sql
@@ -2338,18 +2349,17 @@ ON e.id = p.id_empleado;
 ### Repetitive groups part 2
 There are more than one way to have repetitive groups in a table.
 
-Repetitive groups are sets of fields that repeat within a table.
-However, there are several ways in which these repetitive groups can appear in a table.
+Repetitive groups are sets of fields that repeat within a table. However, there are several ways in which these repetitive groups can appear in a table.
 
 In the previous exercise, we saw an example of a repetitive group where there were several fields with the same purpose.
 For example: telefono1, telefono2, and telefono3.
 Another way to have repetitive groups is to have multiple values in a single field.
 
 The problems associated with this form of repetitive groups are different:
-When modifying a person's phone number, the 'Telefonos' field, which has multiple records, must be modified, and we could forget one or accidentally overwrite it.
-When the data is stored this way, it is difficult to know how many phones each person has.
-The phones could have different formats, and it would be difficult to establish a restriction to ensure all phones have the same format.
-Checking if the same phone is assigned to more than one person also becomes more complicated than having a denormalized table.
+* When modifying a person's phone number, the 'Telefonos' field, which has multiple records, must be modified, and we could forget one or accidentally overwrite it.
+* When the data is stored this way, it is difficult to know how many phones each person has.
+* The phones could have different formats, and it would be difficult to establish a restriction to ensure all phones have the same format.
+* Checking if the same phone is assigned to more than one person also becomes more complicated than having a denormalized table.
 
 For example, if we wanted to count the number of phones each person has, we could count the number of '+' symbols in the 'Telefonos' field.
 To achieve this, we can calculate the total number of characters in the 'Telefonos' field and subtract the number of characters in the same field after removing the '+' symbols.
@@ -2411,10 +2421,10 @@ Or as:
 | Marketing | Marta | Elena |  |
 
 The problems associated with repetitive groups are similar to those presented in previous exercises.
-If you want to change the name of a department, you would have to change it in all rows corresponding to that department.
-Or a department could be written in different ways, for example, TI, T.I., Tecnologías de la Información, etc.
-And it would be difficult to establish a restriction to ensure all departments have the same name.
-To eliminate repetitive groups from this table, a new 'Personas' table should be created, separate from the 'Departamentos' table, that relates people to departments.
+* If you want to change the name of a department, you would have to change it in all rows corresponding to that department.
+* Or a department could be written in different ways, for example, TI, T.I., Tecnologías de la Información, etc.
+* And it would be difficult to establish a restriction to ensure all departments have the same name.
+* To eliminate repetitive groups from this table, a new 'Personas' table should be created, separate from the 'Departamentos' table, that relates people to departments.
 
 | id | nombre_departamento |
 | ----- | ----- |
