@@ -125,7 +125,7 @@ We are asked to show all the information in the table and additionally add a col
 ```sql
 SELECT *, strftime('%Y', sale_date) as sale_year FROM sales
 ```
-To display the results of this type of function, it is necessary to assign a name to the new column, otherwise, the resulting column will retain the name "strftime('%Y', sale_d[...].
+To display the results of this type of function, it is necessary to assign a name to the new column; otherwise, the resulting column will retain the name "strftime('%Y', fecha_venta)", which would be an unreadable designation for a report.
 ```sql
 SELECT amount, strftime('%Y',sale_date) as sale_year FROM sales;
 ```
@@ -257,7 +257,7 @@ SELECT distinct category, price FROM products;
 ```
 ## Introduction to Groups
 ### Grouping values with GROUP BY
-The GROUP BY clause is a powerful tool in SQL that is used to group rows with identical values in one or more specific columns, allowing for aggregation operations[...]
+The GROUP BY clause is a powerful tool in SQL used to group rows with identical values in one or more specific columns, allowing aggregation operations to be performed on each group.
 In this first exercise, we will learn to use GROUP BY to get all the distinct elements of a table, the same as we previously did with distinct.
 We can select unique elements using GROUP BY as follows:
 ```sql
@@ -300,7 +300,7 @@ SELECT group, MIN(column) FROM table GROUP by group
 SELECT category, MIN(amount) as lowest_amount FROM sales group by category;
 ```
 ### Aggregation functions and dates
-When building reports, we frequently need to deliver information grouped by a period of time. To achieve this, we will use a combination of GROUP BY with the strftim[...]
+When building reports, we frequently need to deliver information grouped by a period of time. To achieve this, we will use a combination of GROUP BY with the strftime function.
 We are asked to determine the total amount of sales per year. To solve this, we have to group by date and sum the amounts as follows:
 ```sql
 SELECT SUM(amount), strftime("%Y", sale_date) AS year FROM sales GROUP BY strftime("%Y", sale_date)
@@ -332,7 +332,7 @@ SELECT email, subject, avg(grade) as grade_average FROM students group by 1,2;
 ## Having
 ### Introduction to Having
 In SQL, the GROUP BY clause allows us to group data. If we want to filter the obtained information, we will use HAVING.
-HAVING is used to filter the results of a query that involves aggregated functions. In other words, HAVING allows applying filtering conditions to the results of functions like COUNT[...]
+HAVING is used to filter the results of a query that involves aggregate functions. In other words, HAVING allows applying filtering conditions to the results of functions like COUNT, MAX, MIN, SUM, and AVG after the data has been grouped with the GROUP BY clause.
 We are asked to create a report showing the months and the number of enrollees, but only where there are 2 or more enrollees.
 ```sql
 SELECT strftime("%m", Registration_Date) AS month, COUNT(Registration_Date) user_count 
@@ -340,7 +340,7 @@ FROM registrations
 GROUP BY strftime("%m", Registration_Date)
 HAVING user_count >= 2
 ```
-In this query, we first use GROUP BY to group by month. Then, we use the aggregation function COUNT(Registration_Date) to count the number of enrollees. After grouping[...]
+In this query, we first use GROUP BY to group by month. Then, we use the aggregate function COUNT(Fecha_Inscripcion) to count the number of registrations. After grouping the data and calculating the total registrations, we apply the HAVING clause to filter the results.
 ```sql
 SELECT strftime('%m', registration_date) as month, count(registration_date) as user_count FROM registrations
 group by strftime('%m', registration_date)
@@ -349,7 +349,7 @@ having user_count = 1;
 
 ### Finding duplicates
 One of the most common uses of HAVING is finding duplicates.
-Show the emails that appear more than once. The result table should have two columns: one named email, and another named email_count that shows the number of repetitions correspond[...]
+Show the emails that appear more than once. The resulting table must have two columns: one named correo, and another named cuenta_correos, which shows the number of occurrences corresponding to each correo
 ```sql
 SELECT email, count(email) as email_count FROM corporate_emails
 group by email
@@ -374,7 +374,7 @@ having grade_average >= 50;
 ```
 
 ### Having and order
-Once we have grouped data using the GROUP BY clause, it is common to need to order those groups according to some specific criterion. Generally, we want to order the groups by func[...]
+Once we have grouped data using the GROUP BY clause, it is common to need to order those groups according to some specific criterion. In general, we want to sort groups based on some aggregate metric, such as sum, count, average, etc. To do this, we use the ORDER BY clause along with aggregate functions.
 The order of the clauses in a query should be as follows:
 
 | Order | Clause | Description |
@@ -393,7 +393,7 @@ SELECT product, sum(quantity) as total_quantity FROM sales
 group by product
 having total_quantity > 1000 ORDER BY 2 desc;
 ```
-Your task is to write an SQL query that returns the departments whose average salary is greater than 3000, ordered FROM highest to lowest average salary. The results should show the department name[...]
+Your task is to write an SQL query that returns the departments whose average salary is greater than 3000, ordered FROM highest to lowest average salary. The results must display the department name and the average salary, with the column names as Departamento and Salario_Promedio, respectively.
 ```sql
 SELECT Department, AVG(salary) as Average_Salary FROM employees
 group by Department
@@ -419,7 +419,7 @@ SELECT * FROM employees WHERE salary <= (SELECT avg(salary) FROM employees)
 ```
 
 ### Subqueries and WHERE part 1
-Within subqueries, we can use the same clauses we have learned so far, such as the where clause. This means we can apply the where clause both inside the sub[...]
+Within subqueries, we can use the same clauses we have learned so far, such as the WHERE clause. This means that the WHERE clause can be applied both inside and outside the subquery.
 
 Select all the information of the records that are greater than the average salary of the finance department.
 ```sql
