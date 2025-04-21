@@ -191,20 +191,20 @@ SELECT COUNT(*) FROM table
 ```sql
 SELECT count(*) FROM employees;
 ```
---Exercise 1: Aggregation functions with Where
+Exercise 1: Aggregation functions with Where
 ```sql
 SELECT AVG(column1) FROM table WHERE column2 < value
 SELECT sum(salary) FROM employees WHERE age > '27'
 ```
---Exercise 2: Aggregation functions with WHERE
+Exercise 2: Aggregation functions with WHERE
 ```sql
 SELECT AVG(salary) FROM employees WHERE salary > '50000'
 ```
---Exercise 3
+Exercise 3
 ```sql
 SELECT count(*) FROM employees WHERE department = 'Marketing'
 ```
---Exercise 4:
+Exercise 4:
 And is exclusive. when you want to filter by multiple values in a column, you must use OR instead of AND
 ```sql
 SELECT count(*) FROM employees 
@@ -271,7 +271,7 @@ We want to know how many times each color appears. We can achieve this by combin
 SELECT color, COUNT(color) as Repetitions FROM colors GROUP BY color
 SELECT email, count(email) as repetitions FROM users group by email;
 ```
---Practicing grouping and counting
+Practicing grouping and counting
 ```sql
 SELECT department, count(department) as employee_count FROM employees group by department;
 ```
@@ -1721,7 +1721,7 @@ SELECT u.email, u.nombre, u.edad, n.notas FROM usuarios u LEFT JOIN notas n ON u
 We will get the following records:
 
 | email | nombre | edad | edad |
-| ----- | ----- | ----- | ----- |
+| ----- | ----- | ----- | ---- |
 | juan.perez@example.com | Juan Pérez | 30 | 90 |
 | juan.perez@example.com | Juan Pérez | 30 | 100 |
 | maria.gonzalez@example.com | Maria González | 25 | 100 |
@@ -1743,7 +1743,7 @@ Using what we have learned, select all employees along with their corresponding 
 Both tables have the email column.
 
 | empleados |                departamentos |
-|-----------|               ---------------|
+|---------|               ---------------|
 | email     |                email         |
 | nombre    |                departamento  |
 | edad      |               
