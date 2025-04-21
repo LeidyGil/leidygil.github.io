@@ -1,9 +1,10 @@
 remote_theme: pages-themes/architect@v0.2.0
 plugins:
 - jekyll-remote-theme # add this line to the plugins list if you already have one
+- jekyll-feed
+- jekyll-paginate
 
-title: [QAKnowledge]
-description: [This is a knowledge base about all the topics I have learned during my experience as a QA Software Engineer.]
+title: "QAKnowledge"
+description: "This is a knowledge base about all the topics I have learned during my experience as a QA Software Engineer"
 
-show_downloads: ["true"]
 google_analytics: [Your Google Analytics tracking ID]
